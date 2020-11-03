@@ -22,7 +22,7 @@ poly = dec2base(base2dec(crc_gen_poly, 8), 2) - '0';
 poly = fliplr(poly);
 m = length(poly)-1; % CRC degree
 
-snr_dBs = -1:0.5:3;
+snr_dBs = 4.5:0.5:5;
 
 Max_list_size = 2^(k+m) - 2^k + 1;
 List_size_instances = cell(size(snr_dBs, 2), 1);
@@ -30,14 +30,14 @@ Ave_list_sizes = zeros(size(snr_dBs, 2), 1);
 
 % Simulation part
 
-for iter = 1:size(snr_dBs, 2)
+parfor iter = 1:size(snr_dBs, 2)
     snr = 10^(snr_dBs(iter)/10);
 %     alpha = qfunc(sqrt(snr)); % the crossover probability
     
     num_error = 0;
     num_erasure = 0;
     num_trial = 0;
-    while num_error < 10 || num_trial < 1e3
+    while num_error < 50 || num_trial < 1e4
         num_trial = num_trial + 1;
         info_sequence = randi([0, 1], 1, k);
         
@@ -99,7 +99,7 @@ end
 % save the results
 timestamp = datestr(now, 'mmddyy_HHMMSS');
 path = './Simulation_results/';
-save([path, timestamp, '_simulation_list_sizes_hard_SLVD.mat'],'List_size_instances','Ave_list_sizes');
+save([path, timestamp, '_simulation_list_sizes_ZTCC_13_17_CRC_103_k_64.mat'],'List_size_instances','Ave_list_sizes');
 
 
 
