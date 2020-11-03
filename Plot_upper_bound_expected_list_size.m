@@ -33,7 +33,7 @@ omega = size(code_generator, 2);
 n = omega*N; % the blocklength of ZTCC
 d_CRC = 12; % the minimum distance of the low-rate conv. code.
 rho = d_CRC; % the covering radius of the low-rate conv. code.
-snr_dB = -3:0.5:15;  % E_s/(N_0/2) in dB
+snr_dB = -10:0.5:5;  % E_s/(N_0/2) in dB
 
 code_string = '';
 for iter = 1:size(code_generator,2)
@@ -48,6 +48,10 @@ end
 
 load(file_name, 'weight_node');
 weight_spectrum = weight_node.weight_spectrum;
+
+path = './Simulation_results/';
+load([path, '110320_023555_simulation_list_sizes_ZTCC_13_17_CRC_177_k_64.mat'],'Ave_list_sizes');
+
 
 
 % Step 2: Compute the upper bound
@@ -95,12 +99,14 @@ end
 
 
 % Step 3: plot the upper bound
-semilogy(snr_dB, Upper_bound_list_size);
+figure;
+semilogy(snr_dB, Upper_bound_list_size); hold on
+semilogy(snr_dB, Ave_list_sizes);
 grid on;
 legend('Upper bound');
 xlabel('SNR','interpreter','latex');
 ylabel('$\mathrm{E}[L]$','interpreter','latex');
-title('k=64, degree-6 CRC: (103), ZTCC(13, 17)');
+title('k=64, degree-6 CRC: (177), ZTCC(13, 17)');
 
 
 
