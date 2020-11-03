@@ -3,8 +3,7 @@ function [check_flag,correct_flag,path_rank, dec]=DBS_LVA_Hamming(trellis, rxSig
 %       2)rxSig: the received signal
 %       3)polynomial: the CRC code, in binary; 
 %       4)input: the original input sequence
-%       5)Metric_thrld: the maximum Euclidean metric difference we consider
-%       6)L: maximum list size
+%       5)L: maximum list size
 
 %Output: 1)check_flag: whether LVA finds a codeword that checks CRC
 %        2)correct_flag: whether the codeword found is equal to the input

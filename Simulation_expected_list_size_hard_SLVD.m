@@ -11,7 +11,7 @@ clc;
 
 % System parameters
 k = 64;
-crc_gen_poly = '103';
+crc_gen_poly = '177';
 constraint_length = 4;
 code_generator = [13, 17];
 v = constraint_length - 1;
@@ -22,14 +22,13 @@ poly = dec2base(base2dec(crc_gen_poly, 8), 2) - '0';
 poly = fliplr(poly);
 m = length(poly)-1; % CRC degree
 
-snr_dBs = 4.5:0.5:5;
+snr_dBs = -3:0.5:4;
 
 Max_list_size = 2^(k+m) - 2^k + 1;
 List_size_instances = cell(size(snr_dBs, 2), 1);
 Ave_list_sizes = zeros(size(snr_dBs, 2), 1);
 
 % Simulation part
-
 parfor iter = 1:size(snr_dBs, 2)
     snr = 10^(snr_dBs(iter)/10);
 %     alpha = qfunc(sqrt(snr)); % the crossover probability
@@ -37,7 +36,7 @@ parfor iter = 1:size(snr_dBs, 2)
     num_error = 0;
     num_erasure = 0;
     num_trial = 0;
-    while num_error < 50 || num_trial < 1e4
+    while num_error < 5 || num_trial < 1e3
         num_trial = num_trial + 1;
         info_sequence = randi([0, 1], 1, k);
         
@@ -62,6 +61,7 @@ parfor iter = 1:size(snr_dBs, 2)
         
         %quantization
         rxSig = double(rxSig > 0);
+        noise_weight = sum(rxSig~=codeword);
 
 %         % send codeword over the BSC
 %         rxSig = bsc(codeword, alpha);
@@ -79,7 +79,7 @@ parfor iter = 1:size(snr_dBs, 2)
         elseif check_flag == 1 && correct_flag == 0
             num_error = num_error + 1;
         end
-        node = struct('snr', snr_dBs(iter), 'list_rank', path_rank,'check_flag',check_flag, 'correct_flag', correct_flag);
+        node = struct('snr', snr_dBs(iter), 'list_rank', path_rank,'noise_weight',noise_weight,'check_flag',check_flag, 'correct_flag', correct_flag);
         List_size_instances{iter} = [List_size_instances{iter}; node];
     end
 end
@@ -99,7 +99,7 @@ end
 % save the results
 timestamp = datestr(now, 'mmddyy_HHMMSS');
 path = './Simulation_results/';
-save([path, timestamp, '_simulation_list_sizes_ZTCC_13_17_CRC_103_k_64.mat'],'List_size_instances','Ave_list_sizes');
+save([path, timestamp, '_simulation_list_sizes_ZTCC_13_17_CRC_177_k_64.mat'],'snr_dBs','List_size_instances','Ave_list_sizes');
 
 
 
