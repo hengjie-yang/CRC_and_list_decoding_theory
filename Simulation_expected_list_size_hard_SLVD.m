@@ -10,8 +10,8 @@ clear all;
 clc;
 
 % System parameters
-k = 64;
-crc_gen_poly = '177';
+k = 4;
+crc_gen_poly = '17';
 constraint_length = 4;
 code_generator = [13, 17];
 v = constraint_length - 1;
@@ -36,7 +36,7 @@ parfor iter = 1:size(snr_dBs, 2)
     num_error = 0;
     num_erasure = 0;
     num_trial = 0;
-    while num_error < 100 || num_trial < 1e4
+    while num_error < 50 || num_trial < 1e4
         num_trial = num_trial + 1;
         info_sequence = randi([0, 1], 1, k);
         
@@ -99,7 +99,7 @@ end
 % save the results
 timestamp = datestr(now, 'mmddyy_HHMMSS');
 path = './Simulation_results/';
-save([path, timestamp, '_list_sizes_ZTCC_13_17_CRC_177_k_64.mat'],'snr_dBs','List_size_instances','Ave_list_sizes');
+save([path, timestamp, '_list_sizes_ZTCC_13_17_CRC_17_k_4.mat'],'snr_dBs','List_size_instances','Ave_list_sizes');
 
 
 
