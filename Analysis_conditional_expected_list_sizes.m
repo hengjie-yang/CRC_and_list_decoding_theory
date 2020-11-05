@@ -23,7 +23,7 @@ v = 3; % the # memeory elements
 omega = 2;
 n = omega*(k + m + v); % the blocklength, remember to make n small
 
-crc_gen_poly = '17'; % make sure this is indeed a degree-m CRC gen. poly.
+crc_gen_poly = '11'; % make sure this is indeed a degree-m CRC gen. poly.
 poly = dec2base(base2dec(crc_gen_poly, 8), 2) - '0';
 poly = fliplr(poly);
 crc_coded_sequence = zeros(1, k+m+v);
@@ -82,7 +82,83 @@ title('k = 4, m = 3, CRC:(17), ZTCC (13, 17)');
 path = './Simulation_results/';
 
 timestamp = datestr(now, 'mmddyy_HHMMSS');
-saveas(gcf, [path, timestamp, '_plot_conditional_exp_list_sizes_ZTCC_13_17_CRC_17_k_4.fig']);
+save([path, timestamp, '_cond_exp_list_sizes_ZTCC_13_17_CRC_11_k_4.mat'],'Error_instances', 'Conditional_expected_list_sizes');
+% saveas(gcf, [path, timestamp, '_plot_conditional_exp_list_sizes_ZTCC_13_17_CRC_17_k_4.fig']);
+
+
+%% Plot the simulated expected list sizes and the theoretical list sizes
+
+path = './Simulation_results/';
+% load([path, '110420_180539_list_sizes_ZTCC_13_17_CRC_17_k_4.mat'], 'Ave_list_sizes', 'snr_dBs');
+
+
+snrs = 10.^(snr_dBs./10);
+alphas = qfunc(sqrt(snrs));
+
+Theoretical_exp_list_sizes = zeros(1, size(snrs, 2));
+
+% pre-compute each type
+P = zeros(n+1, 2); % P(kk+1,:) = [1-kk/n, kk/n];
+for kk = 0:n
+    P(kk+1,1) = 1 - kk/n;
+    P(kk+1,2) = kk/n;
+end
+
+
+% compute the theoretical expected list size
+for iter = 1:size(snrs, 2)
+    alpha = alphas(iter);
+    Q = [1-alpha, alpha];
+    for w = 0:n
+        D = Relative_Entropy(P(w+1, :), Q);
+        H = Entropy(P(w+1, :));
+        Theoretical_exp_list_sizes(iter) = Theoretical_exp_list_sizes(iter)+...
+            nchoosek(n, w)*2^(-n*(D+H))*Conditional_expected_list_sizes(w+1);
+    end
+end
+
+
+% Plot both curves
+figure;
+plot(snr_dBs, Theoretical_exp_list_sizes, '--'); hold on
+plot(snr_dBs, Ave_list_sizes, '+-'); hold on
+legend('Theoretical', 'Simulation');
+grid on
+xlabel('$E_s/N_0$ (dB)', 'interpreter', 'latex');
+ylabel('Expected list size');
+
+title('k = 4, m = 3, CRC: (11), ZTCC: (13, 17)');
+
+
+
+
+
+function D = Relative_Entropy(P, Q)
+
+% make sure P, Q are of the same dimension
+if P(1)<1 && P(1)>0
+    D = sum(P.*log2(P./Q));
+elseif P(1) == 1
+    D = P(1)*log2(P(1)/Q(1));
+else
+    D = P(2)*log2(P(2)/Q(2));
+end   
+
+end
+
+
+function H = Entropy(P)
+
+if P(1) == 1 || P(2) == 1
+    H = 0;
+else
+    H = -sum(P.*log2(P));
+end
+
+end
+
+
+
 
 
 
