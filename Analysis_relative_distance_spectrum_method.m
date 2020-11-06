@@ -25,14 +25,17 @@ v = 3; % the # memory elements
 omega = 2;
 n = omega*(k + m + v); % the blocklength
 weights = 0:n;
+Max_list_size = 2^(k+m) - 2^k + 1;
 
 crc_gen_poly = '17';
 poly = dec2base(base2dec(crc_gen_poly, 8), 2) - '0';
-poly = fliplr(poly);
+poly = fliplr(poly); % degree from low to high
+crc_coded_sequence = zeros(1, k+m+v);
 
 
-constraint_len = 4;
+constraint_len = v+1;
 code_generator = [13, 17];
+trellis = poly2trellis(constraint_len, code_generator);
 
 constraint_len_overall = constraint_len + m;
 code_generator_overall = [151, 125];
@@ -46,26 +49,40 @@ Conditional_upper_bounds = zeros(n+1, 1); % the upper bound on E[L|W=w]
 
 tic
 disp('Step 1: Compute relative distance spectra for all noise vectors.');
-for ii = 0:num_noise - 1
+for ii = 0:num_noise-1
     
     % generate the noise vector
     rxSig = dec2bin(ii, n) - '0';
     w = sum(rxSig);
     
     % compute the relative distance spectrum of ZTCC and CRC-ZTCC
-    weight_node_high_rate = Compute_relative_distance_spectrum(constraint_len, code_generator, k+m+(constraint_len-1), rxSig);
-    weight_spectrum_high_rate = weight_node_high_rate.weight_spectrum;
-    
-    weight_node_low_rate = Compute_relative_distance_spectrum(constraint_len_overall, code_generator_overall, k+(constraint_len_overall-1), rxSig);
-    weight_spectrum_low_rate = weight_node_low_rate.weight_spectrum;
+%     weight_node_high_rate = Compute_relative_distance_spectrum(constraint_len, code_generator, k+m+(constraint_len-1), rxSig);
+%     distance_spectrum_high_rate = weight_node_high_rate.weight_spectrum;
+%     
+%     weight_node_low_rate = Compute_relative_distance_spectrum(constraint_len_overall, code_generator_overall, k+(constraint_len_overall-1), rxSig);
+%     distance_spectrum_low_rate = weight_node_low_rate.weight_spectrum;
+
+    % use brute-force version to compute distance spectra
+    weight_node = Compute_relative_distance_spectrum_brute_force(constraint_len, code_generator, k+m, poly, rxSig);
+    distance_spectrum_high_rate = weight_node.distance_spectrum_high_rate;
+    distance_spectrum_low_rate = weight_node.distance_spectrum_low_rate;
     
     % Find the partial sum of ZTCCs up to undetected distance
-    undetected_dist = find(weight_spectrum_low_rate > 0);
+    undetected_dist = find(distance_spectrum_low_rate > 0);
     undetected_dist = undetected_dist(1); % take the smallest value
     
+    
+    % decode based on the noise vector
+    [check_flag, correct_flag, path_rank, dec] = ...
+            DBS_LVA_Hamming(trellis, rxSig, poly, crc_coded_sequence, Max_list_size);
+    
     % Compute the upper bound on s^*(z)
-    val = sum(weight_spectrum_high_rate(1:undetected_dist));
-    Upper_bound_instances{w+1} = [Upper_bound_instances{w+1}, val];
+    val = sum(distance_spectrum_high_rate(1:undetected_dist));
+    if val >= path_rank % check if val is indeed an upper bound
+        Upper_bound_instances{w+1} = [Upper_bound_instances{w+1}, val];
+    else
+        Upper_bound_instances{w+1} = [Upper_bound_instances{w+1}, -1];
+    end
     
     if mod(ii, 10000) == 0
         timeVal = tic;
