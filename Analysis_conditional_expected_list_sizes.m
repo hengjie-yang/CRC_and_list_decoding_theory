@@ -62,7 +62,7 @@ end
 toc
 
 
-%% compute the conditional list sizes
+% compute the conditional list sizes
 
 for w = 0:n
     correct_num = nchoosek(n, w);
@@ -72,12 +72,16 @@ for w = 0:n
 end
 
 
+
+
 figure;
 plot(0:n, Conditional_expected_list_sizes','Marker','o');
 grid on
 xlabel('Noise Weight','interpreter', 'latex');
 ylabel('Conditional expected list size', 'interpreter', 'latex');
 title('k = 4, m = 3, CRC:(17), ZTCC (13, 17)');
+
+
 
 path = './Simulation_results/';
 
