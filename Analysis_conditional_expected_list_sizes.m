@@ -9,6 +9,8 @@
 
 clear all;
 clc;
+
+
 set(0,'DefaultTextFontName','Times','DefaultTextFontSize',16,...
     'DefaultAxesFontName','Times','DefaultAxesFontSize',16,...
     'DefaultLineLineWidth',1,'DefaultLineMarkerSize',7.75);
@@ -73,11 +75,10 @@ end
 
 
 
-
 figure;
 plot(0:n, Conditional_expected_list_sizes','Marker','o');
 grid on
-xlabel('Noise Weight','interpreter', 'latex');
+xlabel('Noise weight $w$','interpreter', 'latex');
 ylabel('Conditional expected list size', 'interpreter', 'latex');
 title('k = 4, m = 3, CRC:(17), ZTCC (13, 17)');
 

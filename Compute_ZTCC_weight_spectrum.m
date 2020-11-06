@@ -15,7 +15,7 @@ function weight_node = Compute_ZTCC_weight_spectrum(constraint_length, code_gene
 %   Copyright 2020 Hengjie Yang
 
 
-polys = [];
+% polys = [];
 trellis = poly2trellis(constraint_length, code_generator);
 NumStates = trellis.numStates;
 T = zeros(NumStates, NumStates);
@@ -66,7 +66,7 @@ weight_spectrum = weight_spectrum';
 
 weight_node.weight_spectrum = weight_spectrum;
 weight_node.overall_weight_function = Poly;
-weight_node.weight_function_per_state = polys;
+% weight_node.weight_function_per_state = polys;
 
 
 % Save results

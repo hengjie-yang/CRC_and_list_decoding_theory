@@ -16,7 +16,7 @@
 clear;
 clc;
 
-set(0,'DefaultTextFontName','Times','DefaultTextFontSize',14,...
+set(0,'DefaultTextFontName','Times','DefaultTextFontSize',16,...
     'DefaultAxesFontName','Times','DefaultAxesFontSize',14,...
     'DefaultLineLineWidth',1,'DefaultLineMarkerSize',7.75);
 set(groot, 'defaultAxesTickLabelInterpreter','latex'); 
@@ -24,15 +24,15 @@ set(groot, 'defaultLegendInterpreter','latex');
 
 
 % Input parameters
-m = 6; % the CRC-degree added to the raw information sequence.
-k = 64 + 6; % the information length for the equivalent high-rate code.
+m = 3; % the CRC-degree added to the raw information sequence.
+k = 4 + 3; % the information length for the equivalent high-rate code.
 v = 3;
 code_generator = [13, 17];
 N = k + v; % the resulting trellis length
 omega = size(code_generator, 2); 
 n = omega*N; % the blocklength of ZTCC
-d_CRC = 12; % the minimum distance of the low-rate conv. code.
-rho = d_CRC; % the covering radius of the low-rate conv. code.
+d_CRC = 10; % the minimum distance of the low-rate conv. code.
+rho = ceil(d_CRC/2); % the covering radius of the low-rate conv. code.
 snr_dB = -10:0.5:5;  % E_s/(N_0/2) in dB
 
 code_string = '';
@@ -50,7 +50,7 @@ load(file_name, 'weight_node');
 weight_spectrum = weight_node.weight_spectrum;
 
 path = './Simulation_results/';
-load([path, '110320_023555_simulation_list_sizes_ZTCC_13_17_CRC_177_k_64.mat'],'Ave_list_sizes');
+load([path, '110420_180539_sim_list_sizes_ZTCC_13_17_CRC_17_k_4.mat'],'Ave_list_sizes');
 
 
 
@@ -69,11 +69,15 @@ end
 
         
 %pre-compute the partial sum of distance spectrum
-Partial_dist = zeros(size(weight_spectrum, 1), 1); % Partial_sum(ii) = \sum_{d=0}^{ii-1} A_d, ii>=1
+Partial_dist = zeros(n+1, 1); % Partial_sum(ii) = \sum_{d=0}^{ii-1} A_d, ii>=1
 Partial_dist(1) = weight_spectrum(1); % note that the i-th entry has distance (i-1), i>=1
 
-for ii = 2:size(weight_spectrum, 1)
-    Partial_dist(ii) = Partial_dist(ii-1)+weight_spectrum(ii);
+for ii = 2:n+1
+    if ii <= size(weight_spectrum, 1) % d_max could be less than blocklength
+        Partial_dist(ii) = Partial_dist(ii-1)+weight_spectrum(ii);
+    else
+        Partial_dist(ii) = Partial_dist(ii-1);
+    end
 end
 
 
@@ -100,13 +104,13 @@ end
 
 % Step 3: plot the upper bound
 figure;
-semilogy(snr_dB, Upper_bound_list_size); hold on
-semilogy(snr_dB, Ave_list_sizes);
+plot(snr_dB, Upper_bound_list_size); hold on
+plot(snr_dB, Ave_list_sizes);
 grid on;
-legend('Upper bound');
-xlabel('SNR','interpreter','latex');
-ylabel('$\mathrm{E}[L]$','interpreter','latex');
-title('k=64, degree-6 CRC: (177), ZTCC(13, 17)');
+legend('Upper bound', 'Simulation');
+xlabel('$E_s/N_0$ (dB)','interpreter','latex');
+ylabel('Expected list size $\mathrm{E}[L]$','interpreter','latex');
+title('k=4, degree-3 CRC: (17), ZTCC(13, 17)');
 
 
 
