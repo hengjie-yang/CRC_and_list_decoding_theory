@@ -30,7 +30,7 @@ syms X;
 
 
 % Step 1: compute the one-step transfer function
-disp('Step 1: Compute all possible one-step transfer functions');
+% disp('Step 1: Compute all possible one-step transfer functions');
 T{1} = compute_transfer_func(trellis, [0, 0]); % no errors
 T{2} = compute_transfer_func(trellis, [0, 1]); % one error
 T{3} = compute_transfer_func(trellis, [1, 0]); % one error
@@ -38,7 +38,7 @@ T{4} = compute_transfer_func(trellis, [1, 1]); % two errors
  
 
 % Step 2: compute the distance spectrum relative to the error vector.
-disp('Step 2: Compute the distance spectrum relative to the error vector.');
+% disp('Step 2: Compute the distance spectrum relative to the error vector.');
 B = eye(num_states);
 B = sym(B);
 
@@ -61,10 +61,10 @@ end
 
 
 % Step 3: compute the distance spectrum relative to the error vector.
-disp('Step 3: Compute the distance spectrum relative to the error vector.');
+% disp('Step 3: Compute the distance spectrum relative to the error vector.');
 
 poly = B(1,1);
-disp(poly);
+% disp(poly);
 weight_spectrum = coeffs(poly,'All');
 weight_spectrum = fliplr(weight_spectrum);
 weight_spectrum = double(weight_spectrum);
