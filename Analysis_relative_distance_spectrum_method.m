@@ -79,12 +79,12 @@ for ii = 0:num_noise-1
     % Compute the upper bound on s^*(z)
     val = sum(distance_spectrum_high_rate(1:undetected_dist));
     if val >= path_rank % check if val is indeed an upper bound
-        Upper_bound_instances{w+1} = [Upper_bound_instances{w+1}, val];
+        Upper_bound_instances{w+1} = [Upper_bound_instances{w+1}; val];
     else
-        Upper_bound_instances{w+1} = [Upper_bound_instances{w+1}, -1];
+        Upper_bound_instances{w+1} = [Upper_bound_instances{w+1}; -1];
     end
     
-    if mod(ii, 10000) == 0
+    if mod(ii, 1000) == 0
         timeVal = tic;
         disp(['Current instance: ',num2str(ii),'/ ',num2str(num_noise),...
             ' upper bound: ',num2str(val), ' Time spent: ', num2str(toc)]);
@@ -102,6 +102,12 @@ for w = 0:n
     end
 end
 
+
+% save the results
+timestamp = datestr(now, 'mmddyy_HHMMSS');
+path = './Simulation_results/';
+save([path, timestamp, '_cond_upper_bound_ZTCC_13_17_CRC_11_k_4.mat'],...
+    'Upper_bound_instances','Conditional_upper_bounds');
 
 
 %% plot curves
