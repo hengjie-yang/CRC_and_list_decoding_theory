@@ -47,6 +47,7 @@ Upper_bound_instances = cell(n+1, 1);
 Conditional_upper_bounds = zeros(n+1, 1); % the upper bound on E[L|W=w]
 
 
+%%
 tic
 disp('Step 1: Compute relative distance spectra for all noise vectors.');
 for ii = 0:num_noise-1
@@ -135,6 +136,84 @@ legend('Max list size','Upper bound', 'Expected list size','Min list size');
 xlabel('Noise weight $w$','interpreter', 'latex');
 ylabel('List size', 'interpreter', 'latex');
 title('k = 4, m = 3, CRC:(17), ZTCC (13, 17)');
+
+
+%% Plot the final upper bound
+
+path = './Simulation_results/';
+load([path, '110420_180539_sim_list_sizes_ZTCC_13_17_CRC_17_k_4.mat'], 'Ave_list_sizes', 'snr_dBs');
+
+
+
+snrs = 10.^(snr_dBs./10);
+alphas = qfunc(sqrt(snrs));
+
+
+Upper_bound_exp_list_sizes = zeros(1, size(snrs, 2));
+Theoretical_exp_list_sizes = zeros(1, size(snrs, 2));
+
+% pre-compute each type
+P = zeros(n+1, 2); % P(kk+1,:) = [1-kk/n, kk/n];
+for kk = 0:n
+    P(kk+1,1) = 1 - kk/n;
+    P(kk+1,2) = kk/n;
+end
+
+
+% compute the theoretical expected list size
+for iter = 1:size(snrs, 2)
+    alpha = alphas(iter);
+    Q = [1-alpha, alpha];
+    for w = 0:n
+        D = Relative_Entropy(P(w+1, :), Q);
+        H = Entropy(P(w+1, :));
+        Theoretical_exp_list_sizes(iter) = Theoretical_exp_list_sizes(iter)+...
+            nchoosek(n, w)*2^(-n*(D+H))*Conditional_expected_list_sizes(w+1);
+        Upper_bound_exp_list_sizes(iter) = Upper_bound_exp_list_sizes(iter)+...
+            nchoosek(n, w)*2^(-n*(D+H))*Conditional_upper_bounds(w+1);
+    end
+end
+
+
+% Plot both curves
+figure;
+plot(snr_dBs, Upper_bound_exp_list_sizes, '--'); hold on
+plot(snr_dBs, Theoretical_exp_list_sizes, '--'); hold on
+plot(snr_dBs, Ave_list_sizes, '+-'); hold on
+legend('Upper bound','Theoretical $\mathrm{E}[L]$', 'Simulation');
+grid on
+xlabel('$E_s/N_0$ (dB)', 'interpreter', 'latex');
+ylabel('Expected list size', 'interpreter', 'latex');
+
+title('k = 4, m = 3, CRC: (17), ZTCC: (13, 17)');
+
+
+
+
+
+function D = Relative_Entropy(P, Q)
+
+% make sure P, Q are of the same dimension
+if P(1)<1 && P(1)>0
+    D = sum(P.*log2(P./Q));
+elseif P(1) == 1
+    D = P(1)*log2(P(1)/Q(1));
+else
+    D = P(2)*log2(P(2)/Q(2));
+end   
+
+end
+
+
+function H = Entropy(P)
+
+if P(1) == 1 || P(2) == 1
+    H = 0;
+else
+    H = -sum(P.*log2(P));
+end
+
+end
 
 
 

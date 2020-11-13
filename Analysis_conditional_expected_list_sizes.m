@@ -94,7 +94,7 @@ save([path, timestamp, '_cond_exp_list_sizes_ZTCC_13_17_CRC_11_k_4.mat'],'Error_
 %% Plot the simulated expected list sizes and the theoretical list sizes
 
 path = './Simulation_results/';
-% load([path, '110420_180539_list_sizes_ZTCC_13_17_CRC_17_k_4.mat'], 'Ave_list_sizes', 'snr_dBs');
+% load([path, '110420_180539_sim_list_sizes_ZTCC_13_17_CRC_17_k_4.mat'], 'Ave_list_sizes', 'snr_dBs');
 
 
 snrs = 10.^(snr_dBs./10);
