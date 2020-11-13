@@ -46,7 +46,7 @@ parfor iter = 1:size(snr_dBs, 2)
         [~, remd] = gfdeconv([zeros(1, m), msg_temp], poly, 2); 
         msg_temp = gfadd(remd, [zeros(1, m), msg_temp]);
         crc_coded_sequence = [zeros(1, v), msg_temp]; % append termination bits
-        crc_coded_sequence = fliplr(crc_coded_sequence); %deg
+        crc_coded_sequence = fliplr(crc_coded_sequence); %degree from high to low
         
         % convolutionally encode the crc-coded sequence
         codeword = convenc(crc_coded_sequence, trellis);
