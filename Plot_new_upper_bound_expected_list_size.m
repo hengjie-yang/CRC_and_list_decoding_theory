@@ -1,7 +1,8 @@
-% This script is to plot the theoretical upper bound on the expected list
+% This script is to plot the new upper bound on the expected list
 % size for the discrete version of CRC-aided list decoding of conv. code.
+% The new bound is based on upper bounding E[L|W = w].
 %
-% The upper bound can be found in October progress 10-30-20 slides.
+% The upper bound can be found in October progress 11-13-20 slides.
 %
 % Input required to the script:
 %   1) d_CRC and covering radius of high-rate conv. code \rho.
@@ -24,16 +25,19 @@ set(groot, 'defaultLegendInterpreter','latex');
 
 
 % Input parameters
-m = 3; % the CRC-degree added to the raw information sequence.
-k = 4 + 3; % the information length for the equivalent high-rate code.
+k = 64;
+m = 6;
 v = 3;
 code_generator = [13, 17];
-N = k + v; % the resulting trellis length
+N = k + m + v; % the resulting trellis length
 omega = size(code_generator, 2); 
 n = omega*N; % the blocklength of ZTCC
-d_CRC = 8; % the minimum distance of the low-rate conv. code.
-rho = ceil(d_CRC/2); % the covering radius of the low-rate conv. code.
-snr_dB = -10:0.5:5;  % E_s/(N_0/2) in dB
+d_CRC = 10; % the minimum distance of the low-rate conv. code.
+rho = 21; % the covering radius of the low-rate conv. code.
+
+
+path = './Simulation_results/';
+load([path, '110320_104420_sim_list_sizes_ZTCC_13_17_CRC_103_k_64.mat'], 'Ave_list_sizes', 'snr_dBs');
 
 code_string = '';
 for iter = 1:size(code_generator,2)
@@ -49,16 +53,12 @@ end
 load(file_name, 'weight_node');
 weight_spectrum = weight_node.weight_spectrum;
 
-path = './Simulation_results/';
-load([path, '110420_180539_sim_list_sizes_ZTCC_13_17_CRC_17_k_4.mat'],'Ave_list_sizes');
-
 
 
 % Step 2: Compute the upper bound
-snrs = 10.^(snr_dB./10);
+snrs = 10.^(snr_dBs./10);
 alphas = qfunc(sqrt(snrs));
 
-Upper_bound_list_size = zeros(1, size(snrs, 2));
 
 % pre-compute each type
 P = zeros(n+1, 2); % P(kk+1,:) = [1-kk/n, kk/n];
@@ -67,35 +67,41 @@ for kk = 0:n
     P(kk+1,2) = kk/n;
 end
 
-        
-%pre-compute the partial sum of distance spectrum
-Partial_dist = zeros(n+1, 1); % Partial_sum(ii) = \sum_{d=0}^{ii-1} A_d, ii>=1
-Partial_dist(1) = weight_spectrum(1); % note that the i-th entry has distance (i-1), i>=1
 
-for ii = 2:n+1
-    if ii <= size(weight_spectrum, 1) % d_max could be less than blocklength
-        Partial_dist(ii) = Partial_dist(ii-1)+weight_spectrum(ii);
-    else
-        Partial_dist(ii) = Partial_dist(ii-1);
+
+% pre-compute the new upper bound on E[L|W = w]
+theoretical_bound_cond_exp_list_size = zeros(n+1, 1);
+
+for w = 0:n
+    threshold = min(w, rho);
+%     threshold = w;
+    for d = 0:threshold
+        for t = w-d: min([w+d, 2*n-(w+d), size(weight_spectrum,1)-1])
+            if (mod(d+t-w, 2) == 0)
+                a = floor((d+t-w)/2);
+%               disp(['a: ',num2str(a),' t: ', num2str(t), ' d: ',num2str(d)]);
+                temp = weight_spectrum(t+1)*nchoosek(t, a)*nchoosek(n-t, d-a);
+                theoretical_bound_cond_exp_list_size(w+1) =...
+                    theoretical_bound_cond_exp_list_size(w+1)+temp;
+            end
+        end
     end
+    theoretical_bound_cond_exp_list_size(w+1) = theoretical_bound_cond_exp_list_size(w+1);
 end
 
 
 
+% compute the upper bound on E[L]
+Theoretical_bound_exp_list_sizes = zeros(1, size(snrs, 2)); % true upper bound on E[L]
 
-dist_threshold = floor((d_CRC-1)/2);
-
-for iter = 1:size(snrs ,2)
+for iter = 1:size(snrs, 2)
     alpha = alphas(iter);
     Q = [1-alpha, alpha];
-    for kk = 0:n
-        D = Relative_Entropy(P(kk+1,:), Q);
-        H = Entropy(P(kk+1,:));
-        if kk<=dist_threshold
-            Upper_bound_list_size(iter) = Upper_bound_list_size(iter) + 2^(-n*(D+H))*nchoosek(n, kk)*Partial_dist(2*kk+1);
-        else
-            Upper_bound_list_size(iter) = Upper_bound_list_size(iter) + 2^(-n*(D+H))*nchoosek(n, kk)*Partial_dist(2*rho+1);
-        end
+    for w = 0:n
+        D = Relative_Entropy(P(w+1, :), Q);
+        H = Entropy(P(w+1, :));
+        Theoretical_bound_exp_list_sizes(iter) = Theoretical_bound_exp_list_sizes(iter)+...
+            1*2^(-n*(D+H))*theoretical_bound_cond_exp_list_size(w+1);
     end
 end
 
@@ -104,13 +110,13 @@ end
 
 % Step 3: plot the upper bound
 figure;
-plot(snr_dB, Upper_bound_list_size, '--'); hold on
-plot(snr_dB, Ave_list_sizes,'+-');
+semilogy(snr_dBs, Theoretical_bound_exp_list_sizes, '--'); hold on
+semilogy(snr_dBs, Ave_list_sizes,'+-');
 grid on;
 legend('Upper bound', 'Simulation');
 xlabel('$E_s/N_0$ (dB)','interpreter','latex');
 ylabel('Expected list size $\mathrm{E}[L]$','interpreter','latex');
-title('k=4, degree-3 CRC: (17), ZTCC(13, 17)');
+title('k = 64, m = 6, CRC: (103), ZTCC: (13, 17)');
 
 
 
