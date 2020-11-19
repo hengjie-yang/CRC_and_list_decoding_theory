@@ -1,8 +1,19 @@
 % 
-%   This script is to find upper bound on s^*(z) using relative distance
-%   spectrums.
+%   This script computes an array of proposed upper bounds in a single
+%   plot. This script requires simulation data from the following files had
+%   it not been generated earlier.
+%       1) "Compute_brute_force_bound.m"
+%       2) "Analysis_conditional_expected_list_sizes.m"
+%       3) "Simulation_expected_list_size_hard_SLVD.m"
 %
-%   Algorithm: the upper bound on s^*(z) 
+%   The proposed upper bounds so far:
+%       1) Brute-force upper bound, see 11-13-20 slides, Page 9, Eq. (8)
+%       2) Randomized brute-force upper bound: similar to bound (1) except
+%       that the \# codewords at smallest undetected distance is only taken
+%       half assuming they are all randomized.
+%       3) Covering-sphere upper bound: see 11-13-20 slides, Page 9, Eq. (10).
+%       4) Sphere-packing upper bound: see 11-20-20 slides, Page 19, Eq. (21).
+%       5) Hybrid upper bound: minimum between bound (3) and (4).
 %
 %   Written by Hengjie Yang (hengjie.yang@ucla.edu) 11/05/20.
 %
@@ -45,9 +56,47 @@ constraint_len_overall = constraint_len + m;
 code_generator_overall = [151, 125];
 
 
+%% Compute the brute-force and randomization-based brute-force bound
+
+% This bound assumes that the codewords at undetected distance are all
+% equally likely to be drawn.
+
+
+
 path = './Simulation_results/';
-load([path, '110620_164250_cond_upper_bound_ZTCC_13_17_CRC_11_k_4.mat'],...
-    'Conditional_upper_bounds');
+load([path, '111320_200955_brute_force_bound_ZTCC_13_17_CRC_17_k_4.mat'],...
+    'Upper_bound_instances', 'Relative_distance_spectra');
+
+
+brute_force_bound_cond_exp_list_size = zeros(n+1, 1);
+rand_brute_force_bound_cond_exp_list_size = zeros(n+1, 1);
+
+num_noise = 2^n;
+for ii = 0:num_noise - 1
+    noise_vec = dec2bin(ii, k) - '0';
+    w = sum(noise_vec);
+    udist = size(Relative_distance_spectra{ii+1}, 1) - 1;
+    rand_brute_force_bound_cond_exp_list_size(w+1) = ...
+        rand_brute_force_bound_cond_exp_list_size(w+1) + sum(Relative_distance_spectra{ii+1}(1:udist));
+    if Relative_distance_spectra{ii+1}(udist+1) > 1 % randomization only works for more than 1 codeword
+        rand_brute_force_bound_cond_exp_list_size(w+1) = ...
+            rand_brute_force_bound_cond_exp_list_size(w+1) + floor((1/2)*Relative_distance_spectra{ii+1}(udist+1)); % randomization assumption
+    else
+        rand_brute_force_bound_cond_exp_list_size(w+1) = ...
+            rand_brute_force_bound_cond_exp_list_size(w+1) + 1;
+    end
+%     rand_brute_force_bound_cond_exp_list_size(w+1) = ...
+%         rand_brute_force_bound_cond_exp_list_size(w+1) + 1; % smallest weight assumption
+end
+
+
+for w = 0:n
+    N = nchoosek(n, w);
+    rand_brute_force_bound_cond_exp_list_size(w+1) = ...
+        rand_brute_force_bound_cond_exp_list_size(w+1) / N;
+    brute_force_bound_cond_exp_list_size(w+1) = ...
+        mean(Upper_bound_instances{w+1});
+end
 
 
 
@@ -74,77 +123,122 @@ for w = 0:n
                     covering_sphere_bound_cond_exp_list_size(w+1)+temp;
             end
         end
-    end
-    
-%     if w > half_dist
-%         temp = 0;
-%         for r = 1:half_dist
-%             for t = (w-r):min([w+r, 2*n-(w+r)])
-%                 if (mod(t+r-w, 2) == 0)
-%                     a = floor((t+r-w)/2);
-%                     temp = temp + weight_spectrum_low_rate(t+1)*nchoosek(t, a)*nchoosek(n-t, r-a)*(sum(weight_spectrum_high_rate(1:w+1)));
-%                 end
-%             end
-%         end
-%         covering_sphere_bound_cond_exp_list_size(w+1) = ...
-%         covering_sphere_bound_cond_exp_list_size(w+1) - temp;
-%     end
-    
-    
+    end  
     N = nchoosek(n, w);
     covering_sphere_bound_cond_exp_list_size(w+1) = covering_sphere_bound_cond_exp_list_size(w+1)/N;
 end
 
+
 %% Compute the sphere-packing upper bound on E[L|W = w]
+
+% weight_node = Compute_relative_distance_spectrum_brute_force(constraint_len, code_generator, k+m, poly, zeros(1,n));
+% weight_spectrum_high_rate = weight_node.distance_spectrum_high_rate;
+% weight_spectrum_low_rate = weight_node.distance_spectrum_low_rate;
+% 
+% sphere_packing_bound_cond_exp_list_size = zeros(n+1, 1);
+% half_dist = floor((d_crc - 1)/2);
+% 
+% for w = 0:n
+%     threshold = min([w, rho]);
+%     for d = 0:threshold
+%         for t = w-d: min(w+d, 2*n-(w+d))
+%             if (mod(d+t-w, 2) == 0)
+%                 a = floor((d+t-w)/2);
+%                 temp = (weight_spectrum_high_rate(t+1) - weight_spectrum_low_rate(t+1))...
+%                     *nchoosek(t, a)*nchoosek(n-t, d-a);
+%                 sphere_packing_bound_cond_exp_list_size(w+1) =...
+%                     sphere_packing_bound_cond_exp_list_size(w+1)+temp;
+%             end
+%         end
+%     end
+%     
+%     for t = 0:min(threshold+w, n)
+%         if t < w
+%             temp = weight_spectrum_low_rate(t+1)*nchoosek(n-t, w-t);
+%         else
+%             temp = weight_spectrum_low_rate(t+1)*nchoosek(t, t-w);
+%         end
+%         sphere_packing_bound_cond_exp_list_size(w+1) =...
+%                     sphere_packing_bound_cond_exp_list_size(w+1)+temp;
+%     end
+%     N = nchoosek(n, w);
+%     sphere_packing_bound_cond_exp_list_size(w+1) =...
+%         sphere_packing_bound_cond_exp_list_size(w+1) / N;
+% end
+
+
+%% Compute the new sphere-packing upper bound for the triangle-based decoder
 
 weight_node = Compute_relative_distance_spectrum_brute_force(constraint_len, code_generator, k+m, poly, zeros(1,n));
 weight_spectrum_high_rate = weight_node.distance_spectrum_high_rate;
 weight_spectrum_low_rate = weight_node.distance_spectrum_low_rate;
 
 sphere_packing_bound_cond_exp_list_size = zeros(n+1, 1);
-half_dist = floor((d_crc - 1)/2);
+hybrid_bound_cond_exp_list_size = zeros(n+1, 1);
 
 for w = 0:n
-    threshold = min([w, rho]);
-    for d = 0:threshold
-        for t = w-d: min(w+d, 2*n-(w+d))
-            if (mod(d+t-w, 2) == 0)
-                a = floor((d+t-w)/2);
-                temp = (weight_spectrum_high_rate(t+1) - weight_spectrum_low_rate(t+1))...
-                    *nchoosek(t, a)*nchoosek(n-t, d-a);
-                sphere_packing_bound_cond_exp_list_size(w+1) =...
-                    sphere_packing_bound_cond_exp_list_size(w+1)+temp;
-            end
-        end
-    end
-    
-    for t = 0:min(threshold+w, n)
+    threshold = min(w, rho);
+    for t = 0:min(w+threshold, n)
+        temp = weight_spectrum_low_rate(t+1) +...
+            (weight_spectrum_high_rate(t+1) - weight_spectrum_low_rate(t+1))*...
+            (1+sum(weight_spectrum_high_rate(1:min(2*threshold, n)+1))-sum(weight_spectrum_low_rate(1:min(2*threshold, n)+1)));
+        
         if t < w
-            temp = weight_spectrum_low_rate(t+1)*nchoosek(n-t, w-t);
+            temp = temp*nchoosek(n-t, w-t);
         else
-            temp = weight_spectrum_low_rate(t+1)*nchoosek(t, t-w);
+            temp = temp*nchoosek(t, t-w);
         end
-        sphere_packing_bound_cond_exp_list_size(w+1) =...
-                    sphere_packing_bound_cond_exp_list_size(w+1)+temp;
+        sphere_packing_bound_cond_exp_list_size(w+1) = ...
+            sphere_packing_bound_cond_exp_list_size(w+1) + temp;
     end
     N = nchoosek(n, w);
-    sphere_packing_bound_cond_exp_list_size(w+1) =...
-        sphere_packing_bound_cond_exp_list_size(w+1) / N;
+    sphere_packing_bound_cond_exp_list_size(w+1) = ...
+        sphere_packing_bound_cond_exp_list_size(w+1)  / N;
+    
+    hybrid_bound_cond_exp_list_size(w+1) = ...
+        min(sphere_packing_bound_cond_exp_list_size(w+1), covering_sphere_bound_cond_exp_list_size(w+1));
+    
+%     sphere_packing_bound_cond_exp_list_size(w+1) = ...
+%         min(sphere_packing_bound_cond_exp_list_size(w+1), covering_sphere_bound_cond_exp_list_size(w+1)); % take the min between both
 end
+    
+
+    
+
 
 
 %% Compute the actual maximum undetected distance at each noise weight W = w
 
-path = './Simulation_results/';
-file_name = '111320_200955_brute_force_bound_ZTCC_13_17_CRC_17_k_4.mat';
-hist_udists = Compute_hist_cond_undetected_dist(path, file_name, n);
+% path = './Simulation_results/';
+% file_name = '111320_200955_brute_force_bound_ZTCC_13_17_CRC_17_k_4.mat';
+% [hist_udists, nontrivial_udist_instances] = Compute_hist_cond_undetected_dist(path, file_name, n);
+% 
+% figure;
+% plot(weights, sum(hist_udists, 2)','+-');
+% grid on;
+% xlabel('Noise weight $w$','interpreter', 'latex');
+% ylabel('Max. undetected distance', 'interpreter', 'latex');
+% title('k = 4, m = 3, CRC:(17), ZTCC (13, 17)');
 
-figure;
-plot(weights, sum(hist_udists, 2)','+-');
-grid on;
-xlabel('Noise weight $w$','interpreter', 'latex');
-ylabel('Max. undetected distance', 'interpreter', 'latex');
-title('k = 4, m = 3, CRC:(17), ZTCC (13, 17)');
+
+%% Compute the upper bound on # noise vectors with u(z) = w.
+
+% upper_bound_nontrivial_noise_vecs = zeros(n+1, 1);
+% threshold = floor((d_crc-1)/2);
+% for w = floor((d_crc+1)/2):rho
+%     temp = 0;
+%     for r = 0:threshold
+%         for t = (w-r):min(w+r, 2*n-w-r)
+%             if mod(t+r-w, 2) == 0
+%                 a = (t+r-w)/2;
+%                 temp = temp + weight_spectrum_low_rate(t+1)*nchoosek(t,a)*nchoosek(n-t, r-a);
+%             end
+%         end
+%     end
+%     upper_bound_nontrivial_noise_vecs(w+1) = nchoosek(n, w) - temp;
+% end
+
+% Remark (11/16/20): turns out this is much loose than only taking one ball
 
 
 %% Compute the optimal theoretical upper bound on E[L|W = w] using optimal \rho
@@ -175,7 +269,7 @@ title('k = 4, m = 3, CRC:(17), ZTCC (13, 17)');
 % end
 
 
-%% plot curves
+%% plot curves on conditional expected list sizes
 
 path = './Simulation_results/';
 load([path, '110420_220611_cond_exp_list_sizes_ZTCC_13_17_CRC_17_k_4.mat'],...
@@ -191,15 +285,24 @@ end
 
 % plot comparison curves
 figure;
-plot(weights, sphere_packing_bound_cond_exp_list_size, '+-'); hold on
-plot(weights, Max_list_sizes, '^-'); hold on
-plot(weights, covering_sphere_bound_cond_exp_list_size, '+-'); hold on
+semilogy(weights, Max_list_sizes, '^-'); hold on
+semilogy(weights, sphere_packing_bound_cond_exp_list_size, '+-'); hold on
+semilogy(weights, covering_sphere_bound_cond_exp_list_size, '+-'); hold on
+semilogy(weights, hybrid_bound_cond_exp_list_size, '+-'); hold on
 % plot(weights, optimal_bound_cond_exp_list_size, '+-'); hold on
-plot(weights, Conditional_upper_bounds, '+-'); hold on
-plot(weights, Conditional_expected_list_sizes, 'o-');hold on
-plot(weights, Min_list_sizes, 'v-'); hold on
+semilogy(weights, brute_force_bound_cond_exp_list_size, '+-'); hold on
+semilogy(weights, rand_brute_force_bound_cond_exp_list_size, '+-'); hold on
+semilogy(weights, Conditional_expected_list_sizes, 'o-');hold on
+semilogy(weights, Min_list_sizes, 'v-'); hold on
 grid on
-legend('Sphere-packing upper bound','Max list size','Covering-sphere upper bound, $\rho = 9$','Brute-force upper bound', 'Expected list size','Min list size');
+legend('Max list size',...
+    'Sphere-packing upper bound, $\rho = 9$',...
+    'Covering-sphere upper bound, $\rho = 9$',...
+    'Hybrid upper bound, $\rho = 9$',...
+    'Brute-force upper bound',...
+    'Randomized brute-force upper bound',...
+    'Expected list size',...
+    'Min list size');
 xlabel('Noise weight $w$','interpreter', 'latex');
 ylabel('List size', 'interpreter', 'latex');
 title('k = 4, m = 3, CRC:(17), ZTCC (13, 17)');
@@ -215,10 +318,13 @@ load([path, '110420_180539_sim_list_sizes_ZTCC_13_17_CRC_17_k_4.mat'], 'Ave_list
 snrs = 10.^(snr_dBs./10);
 alphas = qfunc(sqrt(snrs));
 
+
 Covering_sphere_bound_exp_list_sizes = zeros(1, size(snrs, 2)); % covering-sphere upper bound on E[L]
 Sphere_packing_bound_exp_list_sizes = zeros(1, size(snrs, 2)); % sphere-packing upper bound on E[L]
+Hybrid_bound_exp_list_sizes = zeros(1, size(snrs, 2)); % sphere-packing upper bound on E[L]
 % Optimal_bound_exp_list_sizes = zeros(1, size(snrs, 2)); % optimal possible bound, not a bound on E[L]
-Upper_bound_exp_list_sizes = zeros(1, size(snrs, 2)); % brute-force bound
+Brute_force_bound_exp_list_sizes = zeros(1, size(snrs, 2)); % brute-force bound
+Rand_brute_force_bound_exp_list_sizes = zeros(1, size(snrs, 2)); % randomization-based brute-force bound
 Theoretical_exp_list_sizes = zeros(1, size(snrs, 2)); % true E[L]
 
 % pre-compute each type
@@ -238,13 +344,16 @@ for iter = 1:size(snrs, 2)
         H = Entropy(P(w+1, :));
         Theoretical_exp_list_sizes(iter) = Theoretical_exp_list_sizes(iter)+...
             nchoosek(n, w)*2^(-n*(D+H))*Conditional_expected_list_sizes(w+1);
-        Upper_bound_exp_list_sizes(iter) = Upper_bound_exp_list_sizes(iter)+...
-            nchoosek(n, w)*2^(-n*(D+H))*Conditional_upper_bounds(w+1);
+        Rand_brute_force_bound_exp_list_sizes(iter) = Rand_brute_force_bound_exp_list_sizes(iter)+...
+            nchoosek(n, w)*2^(-n*(D+H))*rand_brute_force_bound_cond_exp_list_size(w+1);
+        Brute_force_bound_exp_list_sizes(iter) = Brute_force_bound_exp_list_sizes(iter)+...
+            nchoosek(n, w)*2^(-n*(D+H))*brute_force_bound_cond_exp_list_size(w+1);
+        Hybrid_bound_exp_list_sizes(iter) = Hybrid_bound_exp_list_sizes(iter)+...
+            nchoosek(n, w)*2^(-n*(D+H))*hybrid_bound_cond_exp_list_size(w+1);
         Covering_sphere_bound_exp_list_sizes(iter) = Covering_sphere_bound_exp_list_sizes(iter)+...
             nchoosek(n, w)*2^(-n*(D+H))*covering_sphere_bound_cond_exp_list_size(w+1);
         Sphere_packing_bound_exp_list_sizes(iter) = Sphere_packing_bound_exp_list_sizes(iter)+...
-            nchoosek(n, w)*2^(-n*(D+H))*sphere_packing_bound_cond_exp_list_size(w+1);
-        
+            nchoosek(n, w)*2^(-n*(D+H))*sphere_packing_bound_cond_exp_list_size(w+1);       
 %         Optimal_bound_exp_list_sizes(iter) = Optimal_bound_exp_list_sizes(iter)+...
 %             nchoosek(n, w)*2^(-n*(D+H))*optimal_bound_cond_exp_list_size(w+1);
     end
@@ -255,11 +364,19 @@ end
 figure;
 plot(snr_dBs, Sphere_packing_bound_exp_list_sizes, '--'); hold on
 plot(snr_dBs, Covering_sphere_bound_exp_list_sizes, '--'); hold on
+plot(snr_dBs, Hybrid_bound_exp_list_sizes, '--'); hold on
 % plot(snr_dBs, Optimal_bound_exp_list_sizes, '--'); hold on
-plot(snr_dBs, Upper_bound_exp_list_sizes, '--'); hold on
+plot(snr_dBs, Brute_force_bound_exp_list_sizes, '--'); hold on
+plot(snr_dBs, Rand_brute_force_bound_exp_list_sizes, '--'); hold on
 plot(snr_dBs, Theoretical_exp_list_sizes, '--'); hold on
 plot(snr_dBs, Ave_list_sizes, '+-'); hold on
-legend('Sphere-packing upper bound','Covering-sphere upper bound, $\rho = 9$','Brute-force upper bound','Theoretical $\mathrm{E}[L]$', 'Simulation');
+legend('Sphere-packing upper bound, $\rho = 9$',...
+    'Covering-sphere upper bound, $\rho = 9$',...
+    'Hybrid upper bound, $\rho = 9$',...
+    'Brute-force upper bound',...
+    'Randomized brute-force upper bound',...
+    'Theoretical $\mathrm{E}[L]$',...
+    'Simulation');
 grid on
 xlabel('$E_s/N_0$ (dB)', 'interpreter', 'latex');
 ylabel('Expected list size', 'interpreter', 'latex');

@@ -10,7 +10,7 @@ clc;
 
 % System parameters
 k = 4;
-crc_gen_poly = '17';
+crc_gen_poly = '11';
 constraint_length = 4;
 code_generator = [13, 17];
 v = constraint_length - 1;
@@ -21,8 +21,8 @@ poly = dec2base(base2dec(crc_gen_poly, 8), 2) - '0';
 poly = fliplr(poly);
 m = length(poly)-1; % CRC degree
 
-% snr_dBs = -10:0.5:5;
-snr_dBs = 3;
+snr_dBs = -10:0.5:5;
+% snr_dBs = 3;
 
 Max_list_size = 2^(k+m) - 2^k + 1;
 List_size_instances = cell(size(snr_dBs, 2), 1);
@@ -36,7 +36,7 @@ parfor iter = 1:size(snr_dBs, 2)
     num_error = 0;
     num_erasure = 0;
     num_trial = 0;
-    while num_error < 2 || num_trial < 1e2
+    while num_error < 50 || num_trial < 1e4
         num_trial = num_trial + 1;
         info_sequence = randi([0, 1], 1, k);
         

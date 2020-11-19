@@ -12,7 +12,7 @@ function Compute_brute_force_bound(constraint_length, code_generator, crc_gen_po
 %   4) k: the information length before CRC coding.
 %
 % Outputs:
-%   1) Upper_bound_instances: a column vector of length (n+1) in which the i-th entrty
+%   1) Upper_bound_instances: a cell vector of length (n+1) in which the i-th entrty
 %   stores a vector of upper bounds on each s^*(z) where z has weight equal to i.
 %   2) Relative_distance_spectra: a cell vector of length 2^n in which the i-th entry
 %   stores the partial relative distance spectrum up to undetected
