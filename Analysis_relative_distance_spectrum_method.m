@@ -11,6 +11,7 @@
 %       2) Randomized brute-force upper bound: similar to bound (1) except
 %       that the \# codewords at smallest undetected distance is only taken
 %       half assuming they are all randomized.
+%       3) Vanila covering-sphere upper bound: see 11-06-20, Page, 9, Eq. (13).
 %       3) Covering-sphere upper bound: see 11-13-20 slides, Page 9, Eq. (10).
 %       4) Sphere-packing upper bound: see 11-20-20 slides, Page 19, Eq. (21).
 %       5) Hybrid upper bound: minimum between bound (3) and (4).
@@ -100,13 +101,16 @@ end
 
 
 
+
+
+
 %% Compute the covering-sphere upper bound on E[L|W = w]
 
 weight_node = Compute_relative_distance_spectrum_brute_force(constraint_len, code_generator, k+m, poly, zeros(1,n));
 weight_spectrum_high_rate = weight_node.distance_spectrum_high_rate;
-weight_spectrum_low_rate = weight_node.distance_spectrum_low_rate;
+% weight_spectrum_low_rate = weight_node.distance_spectrum_low_rate;
 covering_sphere_bound_cond_exp_list_size = zeros(n+1, 1);
-half_dist = floor((d_crc - 1)/2);
+% half_dist = floor((d_crc - 1)/2);
 
 
 for w = 0:n
@@ -129,81 +133,87 @@ for w = 0:n
 end
 
 
-%% Compute the sphere-packing upper bound on E[L|W = w]
+%% Vanila covering-sphere upper bound on E[L| W =w]
 
-% weight_node = Compute_relative_distance_spectrum_brute_force(constraint_len, code_generator, k+m, poly, zeros(1,n));
-% weight_spectrum_high_rate = weight_node.distance_spectrum_high_rate;
-% weight_spectrum_low_rate = weight_node.distance_spectrum_low_rate;
-% 
-% sphere_packing_bound_cond_exp_list_size = zeros(n+1, 1);
-% half_dist = floor((d_crc - 1)/2);
-% 
-% for w = 0:n
-%     threshold = min([w, rho]);
-%     for d = 0:threshold
-%         for t = w-d: min(w+d, 2*n-(w+d))
-%             if (mod(d+t-w, 2) == 0)
-%                 a = floor((d+t-w)/2);
-%                 temp = (weight_spectrum_high_rate(t+1) - weight_spectrum_low_rate(t+1))...
-%                     *nchoosek(t, a)*nchoosek(n-t, d-a);
-%                 sphere_packing_bound_cond_exp_list_size(w+1) =...
-%                     sphere_packing_bound_cond_exp_list_size(w+1)+temp;
-%             end
-%         end
-%     end
-%     
-%     for t = 0:min(threshold+w, n)
-%         if t < w
-%             temp = weight_spectrum_low_rate(t+1)*nchoosek(n-t, w-t);
-%         else
-%             temp = weight_spectrum_low_rate(t+1)*nchoosek(t, t-w);
-%         end
-%         sphere_packing_bound_cond_exp_list_size(w+1) =...
-%                     sphere_packing_bound_cond_exp_list_size(w+1)+temp;
-%     end
-%     N = nchoosek(n, w);
-%     sphere_packing_bound_cond_exp_list_size(w+1) =...
-%         sphere_packing_bound_cond_exp_list_size(w+1) / N;
-% end
+vanila_covering_sphere_bound_cond_exp_list_size = zeros(n+1, 1);
+
+for w = 0:n
+    threshold = min(w, rho);
+    vanila_covering_sphere_bound_cond_exp_list_size(w+1) = sum(weight_spectrum_high_rate(1:2*threshold+1));
+end
 
 
-%% Compute the new sphere-packing upper bound for the triangle-based decoder
+%% Compute the improved covering-sphere upper bound on E[L|W = w]
 
 weight_node = Compute_relative_distance_spectrum_brute_force(constraint_len, code_generator, k+m, poly, zeros(1,n));
 weight_spectrum_high_rate = weight_node.distance_spectrum_high_rate;
 weight_spectrum_low_rate = weight_node.distance_spectrum_low_rate;
 
-sphere_packing_bound_cond_exp_list_size = zeros(n+1, 1);
-hybrid_bound_cond_exp_list_size = zeros(n+1, 1);
+improved_covering_sphere_bound_cond_exp_list_size = zeros(n+1, 1);
+% hybrid_bound_cond_exp_list_size = zeros(n+1, 1);
 
 for w = 0:n
-    threshold = min(w, rho);
-    for t = 0:min(w+threshold, n)
-        temp = weight_spectrum_low_rate(t+1) +...
-            (weight_spectrum_high_rate(t+1) - weight_spectrum_low_rate(t+1))*...
-            (1+sum(weight_spectrum_high_rate(1:min(2*threshold, n)+1))-sum(weight_spectrum_low_rate(1:min(2*threshold, n)+1)));
-        
-        if t < w
-            temp = temp*nchoosek(n-t, w-t);
-        else
-            temp = temp*nchoosek(t, t-w);
+    threshold = min([w, rho]);
+    for d = 0:threshold
+        for t = w-d: min(w+d, 2*n-(w+d))
+            if (mod(d+t-w, 2) == 0)
+                a = floor((d+t-w)/2);
+                temp = (weight_spectrum_high_rate(t+1) - weight_spectrum_low_rate(t+1))...
+                    *nchoosek(t, a)*nchoosek(n-t, d-a);
+                improved_covering_sphere_bound_cond_exp_list_size(w+1) =...
+                    improved_covering_sphere_bound_cond_exp_list_size(w+1)+temp;
+            end
         end
-        sphere_packing_bound_cond_exp_list_size(w+1) = ...
-            sphere_packing_bound_cond_exp_list_size(w+1) + temp;
     end
+    improved_covering_sphere_bound_cond_exp_list_size(w+1) =...
+                    improved_covering_sphere_bound_cond_exp_list_size(w+1)+nchoosek(n, w);
     N = nchoosek(n, w);
-    sphere_packing_bound_cond_exp_list_size(w+1) = ...
-        sphere_packing_bound_cond_exp_list_size(w+1)  / N;
+    improved_covering_sphere_bound_cond_exp_list_size(w+1) =...
+        improved_covering_sphere_bound_cond_exp_list_size(w+1) / N;
     
-    hybrid_bound_cond_exp_list_size(w+1) = ...
-        min(sphere_packing_bound_cond_exp_list_size(w+1), covering_sphere_bound_cond_exp_list_size(w+1));
-    
+%     hybrid_bound_cond_exp_list_size(w+1) = ...
+%         min(improved_covering_sphere_bound_cond_exp_list_size(w+1), covering_sphere_bound_cond_exp_list_size(w+1));
+end
+
+
+%% Compute the sphere-packing upper bound
+
+% weight_node = Compute_relative_distance_spectrum_brute_force(constraint_len, code_generator, k+m, poly, zeros(1,n));
+% weight_spectrum_high_rate = weight_node.distance_spectrum_high_rate;
+% weight_spectrum_low_rate = weight_node.distance_spectrum_low_rate;
+% 
+% improved_covering_sphere_bound_cond_exp_list_size = zeros(n+1, 1);
+% hybrid_bound_cond_exp_list_size = zeros(n+1, 1);
+% 
+% for w = 0:n
+%     threshold = min(w, rho);
+%     for t = 0:min(w+threshold, n)
+% %         temp = weight_spectrum_low_rate(t+1) +...
+% %             (weight_spectrum_high_rate(t+1) - weight_spectrum_low_rate(t+1))*...
+% %             (sum(weight_spectrum_high_rate(1:min(2*threshold, n)+1))-sum(weight_spectrum_low_rate(1:min(2*threshold, n)+1)));
+%         temp = 1 + ...
+%             (weight_spectrum_high_rate(t+1) - weight_spectrum_low_rate(t+1))*...
+%             (sum(weight_spectrum_high_rate(1:min(2*threshold, n)+1))-sum(weight_spectrum_low_rate(1:min(2*threshold, n)+1)));
+%         if t < w
+%             temp = temp*nchoosek(n-t, w-t);
+%         else
+%             temp = temp*nchoosek(t, t-w);
+%         end
+%         improved_covering_sphere_bound_cond_exp_list_size(w+1) = ...
+%             improved_covering_sphere_bound_cond_exp_list_size(w+1) + temp;
+%     end
+%     N = nchoosek(n, w);
+%     improved_covering_sphere_bound_cond_exp_list_size(w+1) = ...
+%         improved_covering_sphere_bound_cond_exp_list_size(w+1)  / N;
+%     
+%     hybrid_bound_cond_exp_list_size(w+1) = ...
+%         min(improved_covering_sphere_bound_cond_exp_list_size(w+1), covering_sphere_bound_cond_exp_list_size(w+1));
+%     
 %     sphere_packing_bound_cond_exp_list_size(w+1) = ...
 %         min(sphere_packing_bound_cond_exp_list_size(w+1), covering_sphere_bound_cond_exp_list_size(w+1)); % take the min between both
-end
-    
+% end
 
-    
+
 
 
 
@@ -285,27 +295,27 @@ end
 
 % plot comparison curves
 figure;
-semilogy(weights, Max_list_sizes, '^-'); hold on
-semilogy(weights, sphere_packing_bound_cond_exp_list_size, '+-'); hold on
-semilogy(weights, covering_sphere_bound_cond_exp_list_size, '+-'); hold on
-semilogy(weights, hybrid_bound_cond_exp_list_size, '+-'); hold on
-% plot(weights, optimal_bound_cond_exp_list_size, '+-'); hold on
-semilogy(weights, brute_force_bound_cond_exp_list_size, '+-'); hold on
-semilogy(weights, rand_brute_force_bound_cond_exp_list_size, '+-'); hold on
-semilogy(weights, Conditional_expected_list_sizes, 'o-');hold on
-semilogy(weights, Min_list_sizes, 'v-'); hold on
+plot(weights, vanila_covering_sphere_bound_cond_exp_list_size, '+-'); hold on
+plot(weights, covering_sphere_bound_cond_exp_list_size, '+-'); hold on
+plot(weights, improved_covering_sphere_bound_cond_exp_list_size, '+-'); hold on
+plot(weights, Max_list_sizes, '^-'); hold on
+% plot(weights, hybrid_bound_cond_exp_list_size, '+-'); hold on
+plot(weights, brute_force_bound_cond_exp_list_size, '+-'); hold on
+plot(weights, rand_brute_force_bound_cond_exp_list_size, '+-'); hold on
+plot(weights, Conditional_expected_list_sizes, 'o-');hold on
+plot(weights, Min_list_sizes, 'v-'); hold on
 grid on
-legend('Max list size',...
-    'Sphere-packing upper bound, $\rho = 9$',...
-    'Covering-sphere upper bound, $\rho = 9$',...
-    'Hybrid upper bound, $\rho = 9$',...
+legend('Vanila covering-sphere upper bound',...
+    'Covering-sphere upper bound',...
+    'Improved covering-sphere upper bound',...
+    'Max list size',...
     'Brute-force upper bound',...
     'Randomized brute-force upper bound',...
     'Expected list size',...
     'Min list size');
 xlabel('Noise weight $w$','interpreter', 'latex');
 ylabel('List size', 'interpreter', 'latex');
-title('k = 4, m = 3, CRC:(17), ZTCC (13, 17)');
+title('k = 4, m = 3, \rho = 9, CRC:(17), ZTCC (13, 17)');
 
 
 %% Plot the final upper bound
@@ -318,10 +328,10 @@ load([path, '110420_180539_sim_list_sizes_ZTCC_13_17_CRC_17_k_4.mat'], 'Ave_list
 snrs = 10.^(snr_dBs./10);
 alphas = qfunc(sqrt(snrs));
 
-
+Vanila_covering_sphere_bound_exp_list_sizes = zeros(1, size(snrs, 2)); % the vanila covering-sphere upper bound on E[L]
 Covering_sphere_bound_exp_list_sizes = zeros(1, size(snrs, 2)); % covering-sphere upper bound on E[L]
-Sphere_packing_bound_exp_list_sizes = zeros(1, size(snrs, 2)); % sphere-packing upper bound on E[L]
-Hybrid_bound_exp_list_sizes = zeros(1, size(snrs, 2)); % sphere-packing upper bound on E[L]
+Improved_covering_sphere_bound_exp_list_sizes = zeros(1, size(snrs, 2)); % sphere-packing upper bound on E[L]
+% Hybrid_bound_exp_list_sizes = zeros(1, size(snrs, 2)); % sphere-packing upper bound on E[L]
 % Optimal_bound_exp_list_sizes = zeros(1, size(snrs, 2)); % optimal possible bound, not a bound on E[L]
 Brute_force_bound_exp_list_sizes = zeros(1, size(snrs, 2)); % brute-force bound
 Rand_brute_force_bound_exp_list_sizes = zeros(1, size(snrs, 2)); % randomization-based brute-force bound
@@ -348,31 +358,33 @@ for iter = 1:size(snrs, 2)
             nchoosek(n, w)*2^(-n*(D+H))*rand_brute_force_bound_cond_exp_list_size(w+1);
         Brute_force_bound_exp_list_sizes(iter) = Brute_force_bound_exp_list_sizes(iter)+...
             nchoosek(n, w)*2^(-n*(D+H))*brute_force_bound_cond_exp_list_size(w+1);
-        Hybrid_bound_exp_list_sizes(iter) = Hybrid_bound_exp_list_sizes(iter)+...
-            nchoosek(n, w)*2^(-n*(D+H))*hybrid_bound_cond_exp_list_size(w+1);
+%         Hybrid_bound_exp_list_sizes(iter) = Hybrid_bound_exp_list_sizes(iter)+...
+%             nchoosek(n, w)*2^(-n*(D+H))*hybrid_bound_cond_exp_list_size(w+1);
         Covering_sphere_bound_exp_list_sizes(iter) = Covering_sphere_bound_exp_list_sizes(iter)+...
             nchoosek(n, w)*2^(-n*(D+H))*covering_sphere_bound_cond_exp_list_size(w+1);
-        Sphere_packing_bound_exp_list_sizes(iter) = Sphere_packing_bound_exp_list_sizes(iter)+...
-            nchoosek(n, w)*2^(-n*(D+H))*sphere_packing_bound_cond_exp_list_size(w+1);       
+        Improved_covering_sphere_bound_exp_list_sizes(iter) = Improved_covering_sphere_bound_exp_list_sizes(iter)+...
+            nchoosek(n, w)*2^(-n*(D+H))*improved_covering_sphere_bound_cond_exp_list_size(w+1);  
+        Vanila_covering_sphere_bound_exp_list_sizes(iter) = Vanila_covering_sphere_bound_exp_list_sizes(iter)+...
+            nchoosek(n, w)*2^(-n*(D+H))*vanila_covering_sphere_bound_cond_exp_list_size(w+1);
 %         Optimal_bound_exp_list_sizes(iter) = Optimal_bound_exp_list_sizes(iter)+...
 %             nchoosek(n, w)*2^(-n*(D+H))*optimal_bound_cond_exp_list_size(w+1);
     end
 end
 
 
-% Plot both curves
+%% Plot both curves
 figure;
-plot(snr_dBs, Sphere_packing_bound_exp_list_sizes, '--'); hold on
+% plot(snr_dBs, Vanila_covering_sphere_bound_exp_list_sizes, '--'); hold on
 plot(snr_dBs, Covering_sphere_bound_exp_list_sizes, '--'); hold on
-plot(snr_dBs, Hybrid_bound_exp_list_sizes, '--'); hold on
+plot(snr_dBs, Improved_covering_sphere_bound_exp_list_sizes, '--'); hold on
+% plot(snr_dBs, Hybrid_bound_exp_list_sizes, '--'); hold on
 % plot(snr_dBs, Optimal_bound_exp_list_sizes, '--'); hold on
 plot(snr_dBs, Brute_force_bound_exp_list_sizes, '--'); hold on
 plot(snr_dBs, Rand_brute_force_bound_exp_list_sizes, '--'); hold on
 plot(snr_dBs, Theoretical_exp_list_sizes, '--'); hold on
 plot(snr_dBs, Ave_list_sizes, '+-'); hold on
-legend('Sphere-packing upper bound, $\rho = 9$',...
-    'Covering-sphere upper bound, $\rho = 9$',...
-    'Hybrid upper bound, $\rho = 9$',...
+legend('Covering-sphere upper bound',...
+    'Improved covering-sphere upper bound',...
     'Brute-force upper bound',...
     'Randomized brute-force upper bound',...
     'Theoretical $\mathrm{E}[L]$',...
@@ -381,7 +393,7 @@ grid on
 xlabel('$E_s/N_0$ (dB)', 'interpreter', 'latex');
 ylabel('Expected list size', 'interpreter', 'latex');
 
-title('k = 4, m = 3, CRC: (17), ZTCC: (13, 17)');
+title('k = 4, m = 3, \rho = 9, CRC: (17), ZTCC: (13, 17)');
 
 
 
