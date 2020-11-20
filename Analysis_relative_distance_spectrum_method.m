@@ -11,7 +11,7 @@
 %       2) Randomized brute-force upper bound: similar to bound (1) except
 %       that the \# codewords at smallest undetected distance is only taken
 %       half assuming they are all randomized.
-%       3) Vanila covering-sphere upper bound: see 11-20-20, Page, 8, Eq. (6).
+%       3) Vanilla covering-sphere upper bound: see 11-20-20, Page, 8, Eq. (6).
 %       3) Covering-sphere upper bound: see 11-13-20 slides, Page 9, Eq. (10).
 %       4) Improved covering-sphere upper bound: see 11-20-20 slides, Page 19, Eq. (21).
 %       5) Hybrid upper bound: minimum between bound (3) and (4).
@@ -135,11 +135,11 @@ end
 
 %% Vanila covering-sphere upper bound on E[L| W =w]
 
-vanila_covering_sphere_bound_cond_exp_list_size = zeros(n+1, 1);
+vanilla_covering_sphere_bound_cond_exp_list_size = zeros(n+1, 1);
 
 for w = 0:n
     threshold = min(w, rho);
-    vanila_covering_sphere_bound_cond_exp_list_size(w+1) = ...
+    vanilla_covering_sphere_bound_cond_exp_list_size(w+1) = ...
         1+sum(weight_spectrum_high_rate(max(0,w-rho)+1:min(w+threshold, n)+1)) - sum(weight_spectrum_low_rate(max(0,w-rho)+1:min(w+threshold, n)+1));
 end
 
@@ -289,7 +289,7 @@ end
 % plot comparison curves
 figure;
 plot(weights, sphere_packing_bound_cond_exp_list_size, '+-'); hold on
-plot(weights, vanila_covering_sphere_bound_cond_exp_list_size, '+-'); hold on
+plot(weights, vanilla_covering_sphere_bound_cond_exp_list_size, '+-'); hold on
 plot(weights, covering_sphere_bound_cond_exp_list_size, '+-'); hold on
 plot(weights, improved_covering_sphere_bound_cond_exp_list_size, '+-'); hold on
 plot(weights, Max_list_sizes, '^-'); hold on
@@ -323,7 +323,7 @@ snrs = 10.^(snr_dBs./10);
 alphas = qfunc(sqrt(snrs));
 
 Sphere_packing_bound_exp_list_sizes = zeros(1, size(snrs, 2)); % the sphere-packing lower bound on E[L].
-Vanila_covering_sphere_bound_exp_list_sizes = zeros(1, size(snrs, 2)); % the vanila covering-sphere upper bound on E[L]
+Vanilla_covering_sphere_bound_exp_list_sizes = zeros(1, size(snrs, 2)); % the vanila covering-sphere upper bound on E[L]
 Covering_sphere_bound_exp_list_sizes = zeros(1, size(snrs, 2)); % covering-sphere upper bound on E[L]
 Improved_covering_sphere_bound_exp_list_sizes = zeros(1, size(snrs, 2)); % improved covering-sphere upper bound on E[L]
 Brute_force_bound_exp_list_sizes = zeros(1, size(snrs, 2)); % brute-force bound
@@ -357,8 +357,8 @@ for iter = 1:size(snrs, 2)
             nchoosek(n, w)*2^(-n*(D+H))*covering_sphere_bound_cond_exp_list_size(w+1);
         Improved_covering_sphere_bound_exp_list_sizes(iter) = Improved_covering_sphere_bound_exp_list_sizes(iter)+...
             nchoosek(n, w)*2^(-n*(D+H))*improved_covering_sphere_bound_cond_exp_list_size(w+1);  
-        Vanila_covering_sphere_bound_exp_list_sizes(iter) = Vanila_covering_sphere_bound_exp_list_sizes(iter)+...
-            nchoosek(n, w)*2^(-n*(D+H))*vanila_covering_sphere_bound_cond_exp_list_size(w+1);
+        Vanilla_covering_sphere_bound_exp_list_sizes(iter) = Vanilla_covering_sphere_bound_exp_list_sizes(iter)+...
+            nchoosek(n, w)*2^(-n*(D+H))*vanilla_covering_sphere_bound_cond_exp_list_size(w+1);
         Sphere_packing_bound_exp_list_sizes(iter) = Sphere_packing_bound_exp_list_sizes(iter)+...
             nchoosek(n, w)*2^(-n*(D+H))*sphere_packing_bound_cond_exp_list_size(w+1);
 %         Optimal_bound_exp_list_sizes(iter) = Optimal_bound_exp_list_sizes(iter)+...
@@ -369,7 +369,7 @@ end
 
 %% Plot both curves
 figure;
-% plot(snr_dBs, Vanila_covering_sphere_bound_exp_list_sizes, '--'); hold on
+% plot(snr_dBs, Vanilla_covering_sphere_bound_exp_list_sizes, '--'); hold on
 plot(snr_dBs, Sphere_packing_bound_exp_list_sizes, '--'); hold on
 plot(snr_dBs, Covering_sphere_bound_exp_list_sizes, '--'); hold on
 plot(snr_dBs, Improved_covering_sphere_bound_exp_list_sizes, '--'); hold on
