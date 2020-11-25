@@ -222,16 +222,16 @@ end
 
 %% Compute the actual maximum undetected distance at each noise weight W = w
 
-% path = './Simulation_results/';
-% file_name = '111320_200955_brute_force_bound_ZTCC_13_17_CRC_17_k_4.mat';
-% [hist_udists, nontrivial_udist_instances] = Compute_hist_cond_undetected_dist(path, file_name, n);
-% 
-% figure;
-% plot(weights, sum(hist_udists, 2)','+-');
-% grid on;
-% xlabel('Noise weight $w$','interpreter', 'latex');
-% ylabel('Max. undetected distance', 'interpreter', 'latex');
-% title('k = 4, m = 3, CRC:(17), ZTCC (13, 17)');
+path = './Simulation_results/';
+file_name = '111320_201103_brute_force_bound_ZTCC_13_17_CRC_11_k_4.mat';
+[hist_udists, nontrivial_udist_instances] = Compute_hist_cond_undetected_dist(path, file_name, n);
+
+figure;
+plot(weights, sum(hist_udists, 2)','+-');
+grid on;
+xlabel('Noise weight $w$','interpreter', 'latex');
+ylabel('Max. undetected distance', 'interpreter', 'latex');
+title('k = 4, m = 3, CRC:(11), ZTCC (13, 17)');
 
 
 %% Compute the upper bound on # noise vectors with u(z) = w.

@@ -133,7 +133,7 @@ for w = 0:n
 end
 
 
-%% Vanila covering-sphere upper bound on E[L| W =w]
+%% Vanilla covering-sphere upper bound on E[L| W =w]
 
 vanilla_covering_sphere_bound_cond_exp_list_size = zeros(n+1, 1);
 
@@ -141,6 +141,8 @@ for w = 0:n
     threshold = min(w, rho);
     vanilla_covering_sphere_bound_cond_exp_list_size(w+1) = ...
         1+sum(weight_spectrum_high_rate(max(0,w-rho)+1:min(w+threshold, n)+1)) - sum(weight_spectrum_low_rate(max(0,w-rho)+1:min(w+threshold, n)+1));
+% vanilla_covering_sphere_bound_cond_exp_list_size(w+1) = ...
+%         1+sum(weight_spectrum_high_rate(1:min(w+threshold, d_crc)+1)) - sum(weight_spectrum_low_rate(1:min(w+threshold, d_crc)+1));
 end
 
 
