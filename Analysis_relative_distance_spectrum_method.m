@@ -16,6 +16,10 @@
 %       4) Improved covering-sphere upper bound: see 11-20-20 slides, Page 19, Eq. (21).
 %       5) Hybrid upper bound: minimum between bound (3) and (4).
 %
+%   12/04/20 Update: 
+%       1) Minghao suggested a tighter upper bound on u(z) when w is close
+%       to blocklength n. See 12-11-20 slides.
+%
 %   Written by Hengjie Yang (hengjie.yang@ucla.edu) 11/05/20.
 %
 
@@ -154,11 +158,14 @@ weight_node = Compute_relative_distance_spectrum_brute_force(constraint_len, cod
 weight_spectrum_high_rate = weight_node.distance_spectrum_high_rate;
 weight_spectrum_low_rate = weight_node.distance_spectrum_low_rate;
 
+w_max = find(weight_spectrum_low_rate > 0);
+w_max = w_max(end)-1;
+
 improved_covering_sphere_bound_cond_exp_list_size = zeros(n+1, 1);
 % hybrid_bound_cond_exp_list_size = zeros(n+1, 1);
 
 for w = 0:n
-    threshold = min([w, rho]);
+    threshold = min([w, rho, 2*n-w-w_max]);
     for d = 0:threshold
         for t = w-d: min(w+d, 2*n-(w+d))
             if (mod(d+t-w, 2) == 0)
@@ -170,11 +177,9 @@ for w = 0:n
             end
         end
     end
-    improved_covering_sphere_bound_cond_exp_list_size(w+1) =...
-                    improved_covering_sphere_bound_cond_exp_list_size(w+1)+nchoosek(n, w);
     N = nchoosek(n, w);
     improved_covering_sphere_bound_cond_exp_list_size(w+1) =...
-        improved_covering_sphere_bound_cond_exp_list_size(w+1) / N;
+        1 + improved_covering_sphere_bound_cond_exp_list_size(w+1) / N;
     
 %     hybrid_bound_cond_exp_list_size(w+1) = ...
 %         min(improved_covering_sphere_bound_cond_exp_list_size(w+1), covering_sphere_bound_cond_exp_list_size(w+1));
