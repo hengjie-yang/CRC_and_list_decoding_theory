@@ -20,7 +20,7 @@ elseif R <= Rcrit
 else
    fprintf('SNR: %.2f: Operating above MI = %.2f (Rcrit = %.2f).\n', 10*log10(1/sigma2), Rmi, Rcrit);
    mode = 2;
-   rhop = fzero(@(x) find_rho(x), [-0.99 0.1]);
+   rhop = fzero(@(x) find_rho(x), [-1.99 0.1]);
 end
 
 
