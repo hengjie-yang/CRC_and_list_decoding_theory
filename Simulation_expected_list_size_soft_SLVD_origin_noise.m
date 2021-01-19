@@ -1,8 +1,11 @@
 % This script is to simulate the expected list size of CRC-aided list
-% decoding of conv. code under soft S-LVD. 
+% decoding of conv. code under soft S-LVD assuming that the noise ball is
+% center at the origin, rather than the transmitted point.
+%
+% We would like to see if this will yield a constant value roughly 2^m.
 %
 %
-% Written by Hengjie Yang (hengjie.yang@ucla.edu)   11/16/20.
+% Written by Hengjie Yang (hengjie.yang@ucla.edu)   01/19/21.
 %
 
 clear all;
@@ -21,8 +24,8 @@ poly = dec2base(base2dec(crc_gen_poly, 8), 2) - '0';
 poly = fliplr(poly);
 m = length(poly)-1; % CRC degree
 
-snr_dBs = -10:0.5:5;
-
+snr_dBs = -8:0.5:3;
+% snr_dBs = 3;
 
 Max_list_size = 2^(k+m) - 2^k + 1;
 List_size_instances = cell(size(snr_dBs, 2), 1);
@@ -36,7 +39,7 @@ parfor iter = 1:size(snr_dBs, 2)
     num_error = 0;
     num_erasure = 0;
     num_trial = 0;
-    while num_error < 50 || num_trial < 1e4
+    while num_error < 50 || num_trial < 5e3
         num_trial = num_trial + 1;
         info_sequence = randi([0, 1], 1, k);
         
@@ -58,12 +61,13 @@ parfor iter = 1:size(snr_dBs, 2)
         
         % Send txSig over the AWGN channel
         rxSig = awgn(txSig, snr_dBs(iter), 'measured');
-        noise_norm = sum((rxSig - txSig).^2);
+        noise_vec = rxSig - txSig;
+        noise_norm = sum(noise_vec.^2);
         
         
-        % hard S-LVD
+        % soft S-LVD of the noise vector
         [check_flag, correct_flag, path_rank, dec] = ...
-            DBS_LVA_Euclidean(trellis, rxSig, poly, crc_coded_sequence, Max_list_size);
+            DBS_LVA_Euclidean(trellis, noise_vec, poly, crc_coded_sequence, Max_list_size);
         
         disp(['SNR (dB): ', num2str(snr_dBs(iter)), ' # trials: ',num2str(num_trial),...
             ' # errors: ', num2str(num_error), ' check: ',num2str(check_flag)...
@@ -81,7 +85,7 @@ parfor iter = 1:size(snr_dBs, 2)
 end
 
 
-%% process the average list size
+% process the average list size
 for ii = 1:size(snr_dBs, 2)
     num_trials = size(List_size_instances{ii}, 1);
     temp = zeros(num_trials, 1);
@@ -95,7 +99,7 @@ end
 % save the results
 timestamp = datestr(now, 'mmddyy_HHMMSS');
 path = './Simulation_results/';
-save([path, timestamp, '_sim_list_sizes_soft_ZTCC_13_17_CRC_17_k_4.mat'],'snr_dBs','List_size_instances','Ave_list_sizes');
+save([path, timestamp, '_sim_list_sizes_soft_origin_noise_ZTCC_13_17_CRC_17_k_4.mat'],'snr_dBs','List_size_instances','Ave_list_sizes');
 
 
 

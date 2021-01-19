@@ -99,7 +99,7 @@ end
 % save the results
 timestamp = datestr(now, 'mmddyy_HHMMSS');
 path = './Simulation_results/';
-save([path, timestamp, '_sim_list_sizes_ZTCC_13_17_CRC_17_k_4.mat'],'snr_dBs','List_size_instances','Ave_list_sizes');
+save([path, timestamp, '_sim_list_sizes_hard_ZTCC_13_17_CRC_17_k_4.mat'],'snr_dBs','List_size_instances','Ave_list_sizes');
 
 
 

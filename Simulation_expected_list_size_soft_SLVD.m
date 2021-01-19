@@ -61,7 +61,7 @@ parfor iter = 1:size(snr_dBs, 2)
         noise_norm = sum((rxSig - txSig).^2);
         
         
-        % hard S-LVD
+        % soft S-LVD
         [check_flag, correct_flag, path_rank, dec] = ...
             DBS_LVA_Euclidean(trellis, rxSig, poly, crc_coded_sequence, Max_list_size);
         

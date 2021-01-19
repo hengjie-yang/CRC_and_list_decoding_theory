@@ -323,7 +323,7 @@ title('k = 4, m = 3, \rho = 9, CRC:(17), ZTCC (13, 17)');
 %% Plot the final upper bound
 
 path = './Simulation_results/';
-load([path, '110420_180539_sim_list_sizes_ZTCC_13_17_CRC_17_k_4.mat'], 'Ave_list_sizes', 'snr_dBs');
+load([path, '110420_180539_sim_list_sizes_hard_ZTCC_13_17_CRC_17_k_4.mat'], 'Ave_list_sizes', 'snr_dBs');
 
 
 
