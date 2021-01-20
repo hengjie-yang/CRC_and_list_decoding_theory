@@ -39,7 +39,7 @@ parfor iter = 1:size(snr_dBs, 2)
     num_error = 0;
     num_erasure = 0;
     num_trial = 0;
-    while num_error < 5e4 || num_trial < 5e4
+    while num_error < 1e5 || num_trial < 1e5
         num_trial = num_trial + 1;
         info_sequence = randi([0, 1], 1, k);
         
