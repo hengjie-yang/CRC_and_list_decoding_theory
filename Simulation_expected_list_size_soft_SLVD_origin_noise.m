@@ -13,7 +13,7 @@ clc;
 
 % System parameters
 k = 4;
-crc_gen_poly = '11';
+crc_gen_poly = '17';
 constraint_length = 4;
 code_generator = [13, 17];
 v = constraint_length - 1;
