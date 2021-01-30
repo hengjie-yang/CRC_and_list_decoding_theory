@@ -36,8 +36,8 @@ n = omega*(k+m+v); % the blocklength
 % SNR = [-3, 10, 30]; % The 2*E_s/N_0 in dB, this will affect the scalar A
 Max_norm = 400;
 delta = 0.5;
-etas = delta:delta:Max_norm; % the norm range of interest
-% etas = 4.5;
+% etas = delta:delta:Max_norm; % the norm range of interest
+etas = 4.5;
 
 
 
@@ -91,7 +91,7 @@ for ii = 1:size(etas, 2)
         a1 = sqrt(4*dmin^2-4*d+eta^2)+sqrt(n)-2*dmin/sqrt(n);
         a2 = (a1/eta)^(n-2);
         a3 = 1+(sqrt(n)-2*d/sqrt(n))/sqrt(4*d^2/n-4*d+eta^2);
-        temp = a2*a3*(2^m);
+        temp = a2*a3;
         new_bound_cond_exp_list_size(1, ii) = min(new_bound_cond_exp_list_size(1, ii), temp);
     end
 end
