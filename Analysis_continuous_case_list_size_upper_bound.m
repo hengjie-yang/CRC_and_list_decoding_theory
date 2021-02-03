@@ -117,17 +117,59 @@ title('k = 4, m = 3, \rho = 9, CRC:(17), ZTCC (13, 17)');
 %% Plot the simulated E[L|W = w]
 
 path = './Simulation_results/';
-load([path, '020321_113451_cond_ave_list_sizes_soft_ZTCC_13_17_CRC_17_k_64.mat'],'etas','Ave_cond_list_sizes');
+load([path, '020321_113451_cond_exp_list_sizes_soft_ZTCC_13_17_CRC_17_k_64.mat'],'etas','Ave_cond_list_sizes');
+
+
 
 figure;
 plot(etas, Ave_cond_list_sizes,'-+'); hold on
 grid on
 xlabel('Normalized factor $\eta$','interpreter', 'latex');
-ylabel('List rank', 'interpreter', 'latex');
+ylabel('Average list rank', 'interpreter', 'latex');
 title('k = 64, m = 3, CRC:(17), ZTCC (13, 17)');
 
 
 
+% Compute the overall E[L] from the simulated conditional expected list
+% size vs. normalized factor \eta.
 
+SNR_dBs = -5:0.2:5;
+overall_exp_list_size = zeros(size(SNR_dBs));
+
+
+
+k = 64;
+m = 3;
+v = 3;
+omega = 2;
+n = omega*(k+m+v);
+
+density_fun = @(w, dim) w.^(dim-1).*exp(-w.^2./2)./(2^(dim/2-1)*gamma(dim/2));
+
+% figure;
+% ws = 0:0.01:50;
+% plot(ws, density_fun(ws, n));
+% grid on
+
+
+for iter = 1:size(SNR_dBs,2)
+    snr = 10^(SNR_dBs(iter)/10);
+    A = sqrt(snr);
+    Delta = A*(etas(2) - etas(1)); % the gap between two consecutive discrete norms
+    for ii = 1:size(etas, 2)
+        norm_w = A*etas(ii);
+        prior_prob = integral(@(w) density_fun(w, n), norm_w-Delta/2, norm_w+Delta/2);
+        overall_exp_list_size(iter) = overall_exp_list_size(iter) + prior_prob*Ave_cond_list_sizes(ii);
+%         overall_exp_list_size(iter) = overall_exp_list_size(iter) + prior_prob*1;
+    end
+end
+
+
+figure;
+plot(SNR_dBs, overall_exp_list_size, '-+');
+grid on
+xlabel('$\gamma_s$ (dB)','interpreter', 'latex');
+ylabel('Average list rank', 'interpreter', 'latex');
+title('k = 64, m = 3, CRC:(17), ZTCC (13, 17)');
 
 
