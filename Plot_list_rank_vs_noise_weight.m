@@ -24,7 +24,7 @@ v = 3;
 
 path = './Simulation_results/';
 % load([path, '110320_104420_list_sizes_ZTCC_13_17_CRC_103_k_64.mat'], 'List_size_instances', 'snr_dBs');
-load([path, '110320_023555_list_sizes_ZTCC_13_17_CRC_177_k_64.mat'], 'List_size_instances', 'snr_dBs');
+load([path, '110320_023555_sim_list_sizes_hard_ZTCC_13_17_CRC_177_k_64.mat'], 'List_size_instances', 'snr_dBs');
 
 list_sizes = [];
 noise_weights = [];

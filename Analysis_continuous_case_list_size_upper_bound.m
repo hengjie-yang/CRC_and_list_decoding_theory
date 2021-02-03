@@ -3,9 +3,10 @@
 %   not been generated earlier.
 %       1) "Simulation_expected_list_size_soft_SLVD.m"
 %
-%   The proposed upper bounds so far:
+%   The proposed upper bounds on E[L|W = w] so far:
 %       1) Improved covering-sphere upper bound: see 12-18-20 slides.
-%       2) Projection based approximation: see 01-28-21 slides.
+%       2) Projection based approximation: see 01-29-21 slides.
+%       3) The normalized hybrid upper bound: see 02-05-21 slides.
 %
 %   Remarks:
 %       1) 01-29-21: The bound is in fact a function of w/A, and is
@@ -113,7 +114,17 @@ title('k = 4, m = 3, \rho = 9, CRC:(17), ZTCC (13, 17)');
 
 
 
+%% Plot the simulated E[L|W = w]
 
+path = './Simulation_results/';
+load([path, '020321_113451_cond_ave_list_sizes_soft_ZTCC_13_17_CRC_17_k_64.mat'],'etas','Ave_cond_list_sizes');
+
+figure;
+plot(etas, Ave_cond_list_sizes,'-+'); hold on
+grid on
+xlabel('Normalized factor $\eta$','interpreter', 'latex');
+ylabel('List rank', 'interpreter', 'latex');
+title('k = 64, m = 3, CRC:(17), ZTCC (13, 17)');
 
 
 
