@@ -12,10 +12,10 @@ clear all;
 clc;
 
 % System parameters
-k = 4;
-crc_gen_poly = '17';
-constraint_length = 4;
-code_generator = [13, 17];
+k = 64;
+crc_gen_poly = '1317';
+constraint_length = 9;
+code_generator = [561, 753];
 v = constraint_length - 1;
 trellis = poly2trellis(constraint_length, code_generator);
 
@@ -24,8 +24,8 @@ poly = dec2base(base2dec(crc_gen_poly, 8), 2) - '0';
 poly = fliplr(poly);
 m = length(poly)-1; % CRC degree
 
-delta = 0.5;
-etas = delta:delta:100; % the normalized factor w/A
+delta = 0.1;
+etas = [11.5 14 17]; % the normalized factor w/A
 snr_dB = 1;
 
 Max_list_size = 2^(k+m) - 2^k + 1;
@@ -33,7 +33,7 @@ Cond_list_size_instances = cell(size(etas, 2), 1);
 Ave_cond_list_sizes = zeros(size(etas, 2), 1);
 
 % Simulation part
-parfor iter = 1:size(etas, 2)
+for iter = 1:size(etas, 2)
     w = etas(iter)*1; % the target noise vector norm, where A = 1
 %     alpha = qfunc(sqrt(snr)); % the crossover probability
     
@@ -105,8 +105,8 @@ end
 % save the results
 timestamp = datestr(now, 'mmddyy_HHMMSS');
 path = './Simulation_results/';
-save([path, timestamp, '_sim_cond_list_sizes_soft_ZTCC_13_17_CRC_17_k_4.mat'],'etas','Cond_list_size_instances','Ave_cond_list_sizes');
-
+save([path, timestamp, '_sim_cond_list_sizes_soft_ZTCC_561_753_CRC_1317_k_64.mat'],'etas','Cond_list_size_instances','Ave_cond_list_sizes');
+% save([path, timestamp, '_cond_exp_list_sizes_soft_ZTCC_13_17_CRC_17_k_4.mat'],'etas','Ave_cond_list_sizes'); % Only store the simulated conditional expected list size
 
 %% Plot the curve
 
