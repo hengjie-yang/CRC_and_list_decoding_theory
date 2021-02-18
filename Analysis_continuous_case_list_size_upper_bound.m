@@ -26,7 +26,9 @@ set(groot, 'defaultAxesTickLabelInterpreter','latex');
 set(groot, 'defaultLegendInterpreter','latex');
 
 
-% Input parameters
+
+
+%% Input parameters
 
 k = 64; % the information length
 m = 3; % the CRC degree
