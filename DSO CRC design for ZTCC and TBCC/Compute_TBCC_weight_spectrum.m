@@ -77,7 +77,9 @@ for iter = 1:size(code_generator,2)
     end
 end
 
-file_name = ['weight_node_TBCC_',code_string,'_N_',num2str(N),'.mat'];
+path = './Data/';
+
+file_name = [path, 'weight_node_TBCC_',code_string,'_N_',num2str(N),'.mat'];
 
 save(file_name,'weight_node','-v7.3');
 

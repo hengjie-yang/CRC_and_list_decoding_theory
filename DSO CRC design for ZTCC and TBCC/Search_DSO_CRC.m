@@ -52,7 +52,9 @@ for iter = 1:size(code_generator,2)
     code_string = [code_string, num2str(code_generator(iter)), '_'];
 end
 
-file_name = ['TBP_node_TBCC_',code_string,'d_',num2str(d_tilde),'_N_',num2str(N),'.mat'];
+path = './Data/';
+
+file_name = [path, 'TBP_node_TBCC_',code_string,'d_',num2str(d_tilde),'_N_',num2str(N),'.mat'];
 if ~exist(file_name, 'file')
     disp(['Error: the file ',file_name, ' does not exist!']);
     return
@@ -165,7 +167,7 @@ Poly_node.crc_gen_polys = crc_gen_polys;
 Poly_node.stopped_distance = stopped_distance;
 Poly_node.crc_distance = min_dist;
 
-file_name = ['Poly_node_TBCC_',code_string,'d_',num2str(d_tilde),'_N_',num2str(N),'_m_',num2str(m),'.mat'];
+file_name = [path, 'Poly_node_TBCC_',code_string,'d_',num2str(d_tilde),'_N_',num2str(N),'_m_',num2str(m),'.mat'];
 save(file_name,'Poly_node','-v7.3');
 
 timing = toc;

@@ -38,14 +38,16 @@ for iter = 1:size(code_generator,2)
     code_string = [code_string, num2str(code_generator(iter)), '_'];
 end
 
+path = './Data/';
+
 % write status messages in a .txt file
-file_name = ['status_log_udist_spec_crc_',code_string,'d_',num2str(d_tilde),...
+file_name = [path, 'status_log_udist_spec_crc_',code_string,'d_',num2str(d_tilde),...
     '_N_',num2str(N),'_CRC_',num2str(crc_poly),'.txt'];
 StateFileID = fopen(file_name,'w');
 
 
 
-file_name = ['TBP_node_TBCC_',code_string,'d_',num2str(d_tilde),...
+file_name = [path, 'TBP_node_TBCC_',code_string,'d_',num2str(d_tilde),...
     '_N_',num2str(N),'.mat'];
 if ~exist(file_name, 'file')
     msg = ['Error: the file ',file_name, ' does not exist!'];
@@ -84,7 +86,7 @@ fprintf(StateFileID, '%s\n', msg);
 
 
 % Save results
-file_name = ['Udist_spec_TBCC_',code_string,'d_',num2str(d_tilde),'_N_',num2str(N),...
+file_name = [path, 'Udist_spec_TBCC_',code_string,'d_',num2str(d_tilde),'_N_',num2str(N),...
     '_CRC_',num2str(crc_poly),'.mat'];
 save(file_name,'dist_spec','-v7.3');
 
@@ -109,6 +111,7 @@ poly_vec = fliplr(poly_vec); % flip degree order from lowest to highest
 
 for i = 1:size(error_events,1)
     temp = double(error_events(i,:));
+    temp = fliplr(temp); % flip input sequence degree to "lowest to highest"
     [~, remd] = gfdeconv(temp,poly_vec, 2);
     if remd == 0
         weight = weight + 1;

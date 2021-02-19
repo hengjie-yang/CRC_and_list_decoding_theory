@@ -26,7 +26,9 @@ for iter = 1:size(code_generator,2)
     code_string = [code_string, num2str(code_generator(iter)), '_'];
 end
 
-file_name = ['IEEs_TBCC_',code_string,'d_',num2str(d_tilde),'.mat'];
+path = './Data/';
+
+file_name = [path, 'IEEs_TBCC_',code_string,'d_',num2str(d_tilde),'.mat'];
 if ~exist(file_name, 'file')
     disp(['Error: the file ',file_name, ' does not exist!']);
     return
@@ -153,6 +155,25 @@ for dist = 2:d_tilde
 end
 
 
+end
 
+
+function weight = Check_divisible_by_distance(poly_vec,error_events)
+
+% This function computes the undetected weight for "poly_vec" based on "error_events".
+
+weight = 0;
+poly_vec = fliplr(poly_vec); % flip degree order to "lowest to highest"
+
+for i = 1:size(error_events,1)
+    temp = double(error_events(i,:));
+    temp = fliplr(temp); % flip input sequence degree to "lowest to highest"
+    [~, remd] = gfdeconv(temp,poly_vec, 2);
+    if remd == 0
+        weight = weight + 1;
+    end
+end
+
+end
 
 

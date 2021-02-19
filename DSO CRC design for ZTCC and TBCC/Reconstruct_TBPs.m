@@ -37,14 +37,16 @@ for iter = 1:size(code_generator,2)
     code_string = [code_string, num2str(code_generator(iter)), '_'];
 end
 
+path = './Data/';
+
 % write status messages in a .txt file
-file_name = ['status_log_recon_TBPs_TBCC_',code_string,'d_',num2str(d_tilde),...
+file_name = [path, 'status_log_recon_TBPs_TBCC_',code_string,'d_',num2str(d_tilde),...
     '_N_',num2str(N),'.txt'];
 StateFileID = fopen(file_name,'w');
 
 
 
-file_name = ['IEEs_TBCC_',code_string,'d_',num2str(d_tilde),'.mat'];
+file_name = [path, 'IEEs_TBCC_',code_string,'d_',num2str(d_tilde),'.mat'];
 if ~exist(file_name, 'file')
     msg = ['Error: the file ',file_name, ' does not exist!'];
     disp(msg);
@@ -55,7 +57,7 @@ load(file_name, 'IEE');
 
 
 
-file_name2 = ['weight_node_TBCC_',code_string,'N_',num2str(N),'.mat'];
+file_name2 = [path, 'weight_node_TBCC_',code_string,'N_',num2str(N),'.mat'];
 if ~exist(file_name2, 'file')
     msg = ['Error: the file ',file_name2, ' does not exist!'];
     disp(msg);
@@ -162,7 +164,7 @@ fclose(StateFileID);
 
 
 parfor iter = 1:d_tilde
-    file_name = ['status_log_recon_TBPs_TBCC_',code_string,'d_',num2str(d_tilde),...
+    file_name = [path, 'status_log_recon_TBPs_TBCC_',code_string,'d_',num2str(d_tilde),...
     '_N_',num2str(N),'.txt'];
     StateFileID = fopen(file_name,'a');
     [row, ~] = size(Valid_TBPs{iter});
@@ -224,7 +226,7 @@ TBP_node.aggregate = aggregate;
 
 
 % Save results
-file_name = ['status_log_recon_TBPs_TBCC_',code_string,'d_',num2str(d_tilde),...
+file_name = [path, 'status_log_recon_TBPs_TBCC_',code_string,'d_',num2str(d_tilde),...
     '_N_',num2str(N),'.txt'];
 StateFileID = fopen(file_name,'a');
 msg = 'Completed and save results!';
@@ -232,7 +234,7 @@ disp(msg);
 fprintf(StateFileID, '%s\n', msg);
 
 
-file_name = ['TBP_node_TBCC_',code_string,'d_',num2str(d_tilde),'_N_',num2str(N),'.mat'];
+file_name = [path, 'TBP_node_TBCC_',code_string,'d_',num2str(d_tilde),'_N_',num2str(N),'.mat'];
 save(file_name,'TBP_node','-v7.3');
 
 timing = toc;
