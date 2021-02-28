@@ -57,24 +57,24 @@ load(file_name, 'IEE');
 
 
 
-% file_name2 = [path, 'weight_node_TBCC_',code_string,'N_',num2str(N),'.mat'];
-% if ~exist(file_name2, 'file')
-%     msg = ['Error: the file ',file_name2, ' does not exist!'];
-%     disp(msg);
-%     fprintf(StateFileID, '%s\n', msg);
-%     return
-% end
-% load(file_name2, 'weight_node');
-% 
-% 
-% full_spectrum = weight_node.weight_spectrum;
-% d_max = size(full_spectrum, 1);
-% if d_tilde > d_max
-%     msg = 'Error: (d_tilde-1) exceeds the maximum possible distance!';
-%     disp(msg);
-%     fprintf(StateFileID, '%s\n', msg);
-%     return
-% end
+file_name2 = [path, 'weight_node_TBCC_',code_string,'N_',num2str(N),'.mat'];
+if ~exist(file_name2, 'file')
+    msg = ['Error: the file ',file_name2, ' does not exist!'];
+    disp(msg);
+    fprintf(StateFileID, '%s\n', msg);
+    return
+end
+load(file_name2, 'weight_node');
+
+
+full_spectrum = weight_node.weight_spectrum;
+d_max = size(full_spectrum, 1);
+if d_tilde > d_max
+    msg = 'Error: (d_tilde-1) exceeds the maximum possible distance!';
+    disp(msg);
+    fprintf(StateFileID, '%s\n', msg);
+    return
+end
 
 V = IEE.state_ordering;
 NumStates = length(V);
@@ -196,18 +196,16 @@ parfor iter = 1:d_tilde
 %                 State_spectrum(start_state) = State_spectrum(start_state)+1;
             end
         end
-%         msg = ['Step 2 Progress: ','dist = ',num2str(iter-1),...
-%             '   # of found TBPs: ',num2str(size(Valid_TBPs{iter},1)),...
-%             ' out of total: ',num2str(full_spectrum(iter)),...
-%             '    completed: ',num2str(size(Valid_TBPs{iter},1)/full_spectrum(iter)*100),'%'];
         msg = ['Step 2 Progress: ','dist = ',num2str(iter-1),...
-            '   # of found TBPs: ',num2str(size(Valid_TBPs{iter},1))];
+            '   # of found TBPs: ',num2str(size(Valid_TBPs{iter},1)),...
+            ' out of total: ',num2str(full_spectrum(iter)),...
+            '    completed: ',num2str(size(Valid_TBPs{iter},1)/full_spectrum(iter)*100),'%'];
         disp(msg);
         fprintf(StateFileID, '%s\n', msg);
         
-%         if size(Valid_TBPs{iter},1) == full_spectrum(iter) % termination condition
-%             break
-%         end     
+        if size(Valid_TBPs{iter},1) == full_spectrum(iter) % termination condition
+            break
+        end     
     end
 end
 
@@ -261,6 +259,5 @@ for i=Len:-4:1
 end
 str = fliplr(str);
 end
-
 
 
