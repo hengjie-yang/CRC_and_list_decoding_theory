@@ -372,8 +372,8 @@ title('m = 3, ZTCC (13, 17), CRC (11)');
 %% Compute the overall E[L] for k = 64, ZTCC (13, 17), CRC (17)
 % size vs. normalized factor \eta.
 
-% path = './Simulation_results/';
-% load([path, '020421_113711_exp_list_sizes_soft_ZTCC_13_17_CRC_17_k_64.mat'],'snr_dBs','Ave_list_sizes');
+path = './Simulation_results/';
+load([path, '020421_113711_exp_list_sizes_soft_ZTCC_13_17_CRC_17_k_64.mat'],'snr_dBs','Ave_list_sizes');
 
 
 SNR_dBs = -3:0.5:8;
@@ -435,9 +435,9 @@ Dominant_exp_list_sizes = interp1(etas, Ave_cond_list_sizes', opt_etas);
 
 
 figure;
-% plot(snr_dBs, Ave_list_sizes', '-+'); hold on
-% plot(SNR_dBs, overall_exp_list_size, '-o'); hold on
-plot(SNR_dBs, approx_overall_exp_list_size, '-.'); hold on
+plot(snr_dBs, Ave_list_sizes', '-+'); hold on
+plot(SNR_dBs, overall_exp_list_size, '-o'); hold on
+% plot(SNR_dBs, approx_overall_exp_list_size, '-.'); hold on
 % plot(SNR_dBs, Dominant_exp_list_sizes', '-+'); hold on
 
 
@@ -575,13 +575,15 @@ convergence_val = 536.853;
 % simulation data for ZTCC (13, 17), CRC (11)
 path = './Simulation_results/';
 
+
+load([path, '021121_152838_cond_exp_list_sizes_soft_ZTCC_13_17_CRC_11_k_128.mat'],'etas','Ave_cond_list_sizes');
+Ave_cond_list_sizes_CRC_11_k_128 = Ave_cond_list_sizes;
+
 load([path, '020621_090538_cond_exp_list_sizes_soft_ZTCC_13_17_CRC_11_k_64.mat'],'etas','Ave_cond_list_sizes');
 Ave_cond_list_sizes_CRC_11_k_64 = Ave_cond_list_sizes;
 
-
 load([path, '020721_034345_cond_exp_list_sizes_soft_ZTCC_13_17_CRC_11_k_32.mat'],'etas','Ave_cond_list_sizes');
 Ave_cond_list_sizes_CRC_11_k_32 = Ave_cond_list_sizes;
-
 
 load([path, '020721_190558_cond_exp_list_sizes_soft_ZTCC_13_17_CRC_11_k_16.mat'],'etas','Ave_cond_list_sizes');
 Ave_cond_list_sizes_CRC_11_k_16 = Ave_cond_list_sizes;
