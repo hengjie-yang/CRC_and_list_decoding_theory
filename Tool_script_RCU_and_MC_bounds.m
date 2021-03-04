@@ -23,7 +23,7 @@ gamma_s = 1:0.1:5;  % the definition aligns with the journal manuscript
 
 % CRC-TBCC setup
 k = 64;
-m = 3;
+m = 10;
 v = 8;
 omega = 2;
 n = omega*(k + m);
