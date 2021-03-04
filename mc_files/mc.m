@@ -46,7 +46,7 @@ Pe = -Pe;
     function val = fun(rho)
         [E0, E0p, E0pp] = E0funs(pX, X, sigma2, rho);       
         U = -(1+rho)*E0pp; % after simplifying Eq. (43) in Reference [1].
-        val = -2^(-n*(E0/log(2) - rho*E0p/log(2)))*(Psi(sqrt(n*U))+Psi(rho*sqrt(n*U))-2^(-n*(R-E0p/log(2))));
+        val = -exp(-n*(E0 - rho*E0p))*(Psi(sqrt(n*U))+Psi(rho*sqrt(n*U))-exp(-n*(R*log(2)-E0p)));
     end
     
     function val = Psi(x)
