@@ -44,21 +44,28 @@ B = eye(NumStates);
 B = sym(B);
 
 
-% We use binary exponentiation to accelarate the computation
-A = T;
-b = N;
+% % We use binary exponentiation to accelarate the computation
+% A = T;
+% b = N;
+% 
+% while b>0
+%     if bitand(b,1) == 1
+%         disp(['Current value of b: ',num2str(b)]);
+%         B = B * A;
+%     end
+%     A = A*A;
+%     b = floor(b/2);
+% end
 
 
-
-while b>0
-    if bitand(b,1) == 1
-        disp(['Current value of b: ',num2str(b)]);
-        B = B * A;
-    end
-    A = A*A;
-    b = floor(b/2);
+for iter = 1:N
+    disp(['Current depths: ',num2str(iter)]);
+    B = B*T;
+    B = expand(B);
 end
-B = expand(B);
+
+
+
 Poly = B(1,1); 
 % For ZTCC, we only need state 0 to state 0 paths.
 

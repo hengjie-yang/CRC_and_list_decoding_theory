@@ -450,16 +450,24 @@ title('k = 64, m = 3, CRC:(11), ZTCC (13, 17)');
 
 
 
-%% First-order pproximation for k = 64, ZTCC (561, 753), degree-10 CRC (1317)
+%% First-order pproximation for k = 64, ZTCC (561, 753), degree-10 CRC (2317)
 
 
 % Compute the critical values and the approximation curve
 ks = [64];
 ms = [10];
 vs = [8];
-convergence_vals = [536.853];
+convergence_vals = [1020];
 omega = 2;
-etas = 0.5:0.5:80;
+% etas = 0.5:0.5:80;
+
+% simulation data for ZTCC (561, 751), CRC (2317)
+% discrete_etas = [11.5, 12.5, 14, 17, 80];
+% Ave_cond_list_sizes_CRC_1317_k_64 = [1.869, 15.176, 138.81, 456.746, 536.853];
+path = './Simulation_results/';
+load([path, '030321_120230_cond_exp_list_sizes_soft_ZTCC_561_753_CRC_2317_k_64.mat'],'etas','Cond_exp_list_sizes');
+Ave_cond_list_sizes_CRC_2317_k_64 = Cond_exp_list_sizes;
+
 
 Approx_cond_list_sizes = zeros(length(ks), length(etas));
 eta_lows = zeros(length(ks), 1);
@@ -473,9 +481,6 @@ thetas = 0:delta:pi/2;
 dfree = 6;
 
 
-% simulation data for ZTCC (561, 751), CRC (1317)
-discrete_etas = [11.5, 12.5, 14, 17, 80];
-Ave_cond_list_sizes_CRC_1317_k_64 = [1.869, 15.176, 138.81, 456.746, 536.853];
 
 
 for ii = 1:size(ks, 1)
@@ -536,9 +541,9 @@ end
 
 
 figure;
-Max_points = 70; % maximum number: 160
-plot(etas(1:Max_points), Approx_cond_list_sizes(1, 1:Max_points),'-.', 'Color', '#0072BD'); hold on
-% plot(discrete_etas(1:4), Ave_cond_list_sizes_CRC_1317_k_64(1:4), 'o');
+Max_points = 29; % maximum number: 160
+plot(etas, Approx_cond_list_sizes,'-.', 'Color', '#0072BD'); hold on
+plot(etas, Ave_cond_list_sizes_CRC_2317_k_64, '-+');
 % plot(etas, Approx_cond_list_sizes, '-.'); hold on
 % xline(eta_low,'--r');
 % txt = '$\leftarrow \eta_l$';
@@ -555,7 +560,7 @@ legend('1st-order Approx.',...
     'Location','southeast');
 xlabel('Normalized factor $\eta$','interpreter', 'latex');
 ylabel('Average list rank', 'interpreter', 'latex');
-title('k = 64, m = 3, ZTCC (13, 17), CRC (11)');
+title('k = 64, m = 10, ZTCC (561, 753), CRC (2317)');
 
 
 
@@ -570,28 +575,31 @@ n = omega*(k+m+v);
 
 t = 100;
 alphas = zeros(1, t);
-convergence_val = 536.853;
+convergence_val = 1020;
 
 % simulation data for ZTCC (13, 17), CRC (11)
 path = './Simulation_results/';
 
 
-load([path, '021121_152838_cond_exp_list_sizes_soft_ZTCC_13_17_CRC_11_k_128.mat'],'etas','Ave_cond_list_sizes');
-Ave_cond_list_sizes_CRC_11_k_128 = Ave_cond_list_sizes;
+% load([path, '021121_152838_cond_exp_list_sizes_soft_ZTCC_13_17_CRC_11_k_128.mat'],'etas','Ave_cond_list_sizes');
+% Ave_cond_list_sizes_CRC_11_k_128 = Ave_cond_list_sizes;
+% 
+% load([path, '020621_090538_cond_exp_list_sizes_soft_ZTCC_13_17_CRC_11_k_64.mat'],'etas','Ave_cond_list_sizes');
+% Ave_cond_list_sizes_CRC_11_k_64 = Ave_cond_list_sizes;
+% 
+% load([path, '020721_034345_cond_exp_list_sizes_soft_ZTCC_13_17_CRC_11_k_32.mat'],'etas','Ave_cond_list_sizes');
+% Ave_cond_list_sizes_CRC_11_k_32 = Ave_cond_list_sizes;
+% 
+% load([path, '020721_190558_cond_exp_list_sizes_soft_ZTCC_13_17_CRC_11_k_16.mat'],'etas','Ave_cond_list_sizes');
+% Ave_cond_list_sizes_CRC_11_k_16 = Ave_cond_list_sizes;
 
-load([path, '020621_090538_cond_exp_list_sizes_soft_ZTCC_13_17_CRC_11_k_64.mat'],'etas','Ave_cond_list_sizes');
-Ave_cond_list_sizes_CRC_11_k_64 = Ave_cond_list_sizes;
-
-load([path, '020721_034345_cond_exp_list_sizes_soft_ZTCC_13_17_CRC_11_k_32.mat'],'etas','Ave_cond_list_sizes');
-Ave_cond_list_sizes_CRC_11_k_32 = Ave_cond_list_sizes;
-
-load([path, '020721_190558_cond_exp_list_sizes_soft_ZTCC_13_17_CRC_11_k_16.mat'],'etas','Ave_cond_list_sizes');
-Ave_cond_list_sizes_CRC_11_k_16 = Ave_cond_list_sizes;
+load([path, '030321_120230_cond_exp_list_sizes_soft_ZTCC_561_753_CRC_2317_k_64.mat'],'etas','Cond_exp_list_sizes');
+Ave_cond_list_sizes_CRC_2317_k_64 = Cond_exp_list_sizes;
 
 
 % simulation data for ZTCC (561, 751), CRC (1317)
-discrete_etas = [11.5, 12.5, 14, 17, 80];
-Ave_cond_list_sizes_CRC_1317_k_64 = [1.869, 15.176, 138.81, 456.746, 536.853];
+% discrete_etas = [11.5, 12.5, 14, 17, 80];
+% Ave_cond_list_sizes_CRC_1317_k_64 = [1.869, 15.176, 138.81, 456.746, 536.853];
 
 
 % Pre-compute all half angles \alpha
@@ -609,7 +617,6 @@ thresholds = [thresholds, sqrt(n), Inf];
 
 
 % Compute the higher-order approximation
-etas = 0.5:0.5:80;
 Approx_cond_list_sizes = zeros(1, length(etas));
 
 for iter = 1:length(etas)
@@ -660,20 +667,20 @@ for iter = 1:length(etas)
 end
 
 
-figure;
-Max_points = 70; % maximum number: 160
-plot(etas(1:Max_points), Approx_cond_list_sizes(1, 1:Max_points),'-.', 'Color', '#0072BD'); hold on
-plot(discrete_etas(1:4), Ave_cond_list_sizes_CRC_1317_k_64(1:4), 'o');
+% figure;
+% Max_points = 70; % maximum number: 160
+plot(etas, Approx_cond_list_sizes,'-.', 'Color', '#0072BD'); hold on
+% plot(etas, Ave_cond_list_sizes_CRC_2317_k_64, 'o');
 % plot(etas(1:Max_points), Ave_cond_list_sizes_CRC_11_k_64(1:Max_points),'-+', 'Color', '#0072BD'); hold on
 % plot(etas(1:Max_points), Ave_cond_list_sizes_CRC_11_k_32(1:Max_points),'-+', 'Color', '#D95319'); hold on
 % plot(etas(1:Max_points), Ave_cond_list_sizes_CRC_11_k_16(1:Max_points),'-+', 'Color', '#EDB120'); hold on
 grid on
-legend('100th-order Approx.',...
+legend('$t$-th order Approx.',...
     'Simulated',...
     'Location','southeast');
 xlabel('Normalized factor $\eta$','interpreter', 'latex');
 ylabel('Average list rank', 'interpreter', 'latex');
-title('k = 64, m = 10, ZTCC (561, 753), CRC (1317)');
+title('k = 64, m = 10, ZTCC (561, 753), CRC (2317), t = 100');
 
         
     
