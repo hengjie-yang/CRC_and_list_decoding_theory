@@ -30,10 +30,27 @@ n = omega*(k + m);
 
 % load file
 path = './TCOM_sim_data/';
+
+fileName = '030421_114533_sim_data_probs_and_exp_list_sizes_vs_SNR_TBCC_13_17_CRC_17_k_64';
+load([path, fileName, '.mat'], 'P_UE_maxs', 'SNRs');
+P_UE_TBCC_13_17_CRC_17 = P_UE_maxs;
+
+fileName = '030421_115833_sim_data_probs_and_exp_list_sizes_vs_SNR_TBCC_27_31_CRC_17_k_64';
+load([path, fileName, '.mat'], 'P_UE_maxs', 'SNRs');
+P_UE_TBCC_27_31_CRC_17 = P_UE_maxs;
+
+fileName = '030421_125256_sim_data_probs_and_exp_list_sizes_vs_SNR_TBCC_53_75_CRC_11_k_64';
+load([path, fileName, '.mat'], 'P_UE_maxs', 'SNRs');
+P_UE_TBCC_53_75_CRC_11 = P_UE_maxs;
+
+fileName = '030421_130051_sim_data_probs_and_exp_list_sizes_vs_SNR_TBCC_247_371_CRC_17_k_64';
+load([path, fileName, '.mat'], 'P_UE_maxs', 'SNRs');
+P_UE_TBCC_247_371_CRC_17 = P_UE_maxs;
+
 fileName = '030421_085810_sim_data_probs_and_exp_list_sizes_vs_SNR_TBCC_561_753_CRC_17_k_64';
 load([path, fileName, '.mat'], 'P_UE_maxs', 'SNRs');
-
 P_UE_TBCC_561_753_CRC_17 = P_UE_maxs;
+
 
 fileName = ['RCU_and_MC_bound_n_',num2str(n),'_k_',num2str(k)];
 load([path, fileName, '.mat'],'gamma_s', 'rcu_bounds','mc_bounds');
@@ -42,14 +59,22 @@ load([path, fileName, '.mat'],'gamma_s', 'rcu_bounds','mc_bounds');
 
 % plot curves
 figure;
+semilogy(SNRs, P_UE_TBCC_13_17_CRC_17, '-+'); hold on
+semilogy(SNRs, P_UE_TBCC_27_31_CRC_17, '-+'); hold on
+semilogy(SNRs, P_UE_TBCC_53_75_CRC_11, '-+'); hold on
+semilogy(SNRs, P_UE_TBCC_247_371_CRC_17, '-+'); hold on
 semilogy(SNRs, P_UE_TBCC_561_753_CRC_17, '-+'); hold on
-semilogy(gamma_s, rcu_bounds, '-'); hold on
-semilogy(gamma_s, mc_bounds, '-'); hold on
+semilogy(gamma_s, rcu_bounds, '-.'); hold on
+semilogy(gamma_s, mc_bounds, '-.'); hold on
 grid on
 ylim([10^(-8), 1]);
-legend('$m=3, \nu=8$ CRC-TBCC',...
+legend('$m=3, \nu=3$ CRC-TBCC',...
+    '$m=3, \nu=4$ CRC-TBCC',...
+    '$m=3, \nu=5$ CRC-TBCC',...
+    '$m=3, \nu=7$ CRC-TBCC',...
+    '$m=3, \nu=8$ CRC-TBCC',...
     'RCU bound',...
-    'MC bound');
+    'MC bound','Location','southwest');
 
 xlabel('SNR $\gamma_s$ (dB)', 'interpreter', 'latex');
 ylabel('Probability of error', 'interpreter', 'latex');
