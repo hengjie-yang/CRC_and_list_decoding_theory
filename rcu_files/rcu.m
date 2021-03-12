@@ -10,15 +10,15 @@ Rmi = Rmi/log(2);
 
 % operating between Rcrit and MI
 if (R >= Rcrit) && (R <= Rmi)
-   fprintf('SNR: %.2f: Operating within Rcrit = %.2f and MI = %.2f.\n', 10*log10(1/sigma2), Rcrit, Rmi);
+%    fprintf('SNR: %.2f: Operating within Rcrit = %.2f and MI = %.2f.\n', 10*log10(1/sigma2), Rcrit, Rmi);
    mode = 0;
    rhop = fzero(@(x) find_rho(x), [0 1]);
 elseif R <= Rcrit
-   fprintf('SNR: %.2f: Operating below Rcrit = %.2f (MI = %.2f).\n', 10*log10(1/sigma2), Rcrit, Rmi);
+%    fprintf('SNR: %.2f: Operating below Rcrit = %.2f (MI = %.2f).\n', 10*log10(1/sigma2), Rcrit, Rmi);
    mode = 1;
    rhop = fzero(@(x) find_rho(x), [1 100]);
 else
-   fprintf('SNR: %.2f: Operating above MI = %.2f (Rcrit = %.2f).\n', 10*log10(1/sigma2), Rmi, Rcrit);
+%    fprintf('SNR: %.2f: Operating above MI = %.2f (Rcrit = %.2f).\n', 10*log10(1/sigma2), Rmi, Rcrit);
    mode = 2;
    rhop = fzero(@(x) find_rho(x), [-0.98 0.1]); % original [-1.99 0.1]
 end
@@ -33,7 +33,7 @@ omegapp = integral(@(y) fun(y,rhop), -20, 20);
 
 if mode == 0 % medium SNR region
     
-    theta_n = 1/sqrt(1+rhop) * ((1+rhop)/(sqrt(2*pi*n*omegapp)))^rhop
+    theta_n = 1/sqrt(1+rhop) * ((1+rhop)/(sqrt(2*pi*n*omegapp)))^rhop;
     Pe = theta_n * (Psi(rhop*sqrt(n*V)) + Psi((1-rhop) * sqrt(n*V))) * 2^(-n*(E0_integral(pX,X,sigma2,rhop)/log(2) - rhop * R));
 elseif mode == 1 % high SNR region
     
@@ -44,7 +44,7 @@ elseif mode == 1 % high SNR region
     Pe =  exp(-n*(E01-R*log(2))) * theta_n1 + theta_n * (Psi(rhop*sqrt(n*V)) + Psi((1-rhop) * sqrt(n*V))) * 2^(-n*(E0_integral(pX,X,sigma2,rhop)/log(2) - rhop * R));
 else
     
-    theta_n = 1/sqrt(1+rhop) * ((1+rhop)/(sqrt(2*pi*n*omegapp)))^rhop
+    theta_n = 1/sqrt(1+rhop) * ((1+rhop)/(sqrt(2*pi*n*omegapp)))^rhop;
     Pe = 1 + theta_n * (Psi(rhop*sqrt(n*V)) + Psi((1-rhop) * sqrt(n*V))) * 2^(-n*(E0_integral(pX,X,sigma2,rhop)/log(2) - rhop * R));
 end
 

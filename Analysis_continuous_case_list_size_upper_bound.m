@@ -335,14 +335,14 @@ end
 
 figure;
 Max_points = 80; % maximum number: 160
-plot(etas(1:Max_points), Ave_cond_list_sizes_CRC_11_k_128(1:Max_points),'-+', 'Color', '#77AC30'); hold on
-plot(etas(1:Max_points), Approx_cond_list_sizes(1, 1:Max_points),'-.', 'Color', '#77AC30'); hold on
-plot(etas(1:Max_points), Ave_cond_list_sizes_CRC_11_k_64(1:Max_points),'-+', 'Color', '#0072BD'); hold on
-plot(etas(1:Max_points), Approx_cond_list_sizes(2, 1:Max_points),'-.', 'Color', '#0072BD'); hold on
-plot(etas(1:Max_points), Ave_cond_list_sizes_CRC_11_k_32(1:Max_points),'-+', 'Color', '#D95319'); hold on
-plot(etas(1:Max_points), Approx_cond_list_sizes(3, 1:Max_points),'-.', 'Color', '#D95319'); hold on
-plot(etas(1:Max_points), Ave_cond_list_sizes_CRC_11_k_16(1:Max_points),'-+', 'Color', '#EDB120'); hold on
-plot(etas(1:Max_points), Approx_cond_list_sizes(4, 1:Max_points),'-.', 'Color', '#EDB120'); hold on
+plot(etas(1:Max_points), Ave_cond_list_sizes_CRC_11_k_128(1:Max_points),'-+', 'Color', '#77AC30','MarkerSize',5); hold on
+% plot(etas(1:Max_points), Approx_cond_list_sizes(1, 1:Max_points),'-.', 'Color', '#77AC30'); hold on
+plot(etas(1:Max_points), Ave_cond_list_sizes_CRC_11_k_64(1:Max_points),'-+', 'Color', '#0072BD','MarkerSize',5); hold on
+% plot(etas(1:Max_points), Approx_cond_list_sizes(2, 1:Max_points),'-.', 'Color', '#0072BD'); hold on
+plot(etas(1:Max_points), Ave_cond_list_sizes_CRC_11_k_32(1:Max_points),'-+', 'Color', '#D95319','MarkerSize',5); hold on
+% plot(etas(1:Max_points), Approx_cond_list_sizes(3, 1:Max_points),'-.', 'Color', '#D95319'); hold on
+plot(etas(1:Max_points), Ave_cond_list_sizes_CRC_11_k_16(1:Max_points),'-+', 'Color', '#EDB120','MarkerSize',5); hold on
+% plot(etas(1:Max_points), Approx_cond_list_sizes(4, 1:Max_points),'-.', 'Color', '#EDB120'); hold on
 % plot(etas, Approx_cond_list_sizes, '-.'); hold on
 % xline(eta_low,'--r');
 % txt = '$\leftarrow \eta_l$';
@@ -354,18 +354,14 @@ plot(etas(1:Max_points), Approx_cond_list_sizes(4, 1:Max_points),'-.', 'Color', 
 % txt = '$\leftarrow \eta_h$';
 % text(eta_high,2^m-1,txt,'interpreter','latex','HorizontalAlignment','left');
 grid on
-legend('$k = 128$, Simulated',...
-    '$k = 128$, 1st-order Approx.',...
-    '$k = 64$, Simulated',...
-    '$k = 64$, 1st-order Approx.',...
-    '$k = 32$, Simulated',...
-    '$k = 32$, 1st-order Approx.',...
-    '$k = 16$, Simulated',...
-    '$k = 16$, 1st-order Approx.',...
+legend('$k = 128$',...
+    '$k = 64$',...
+    '$k = 32$',...
+    '$k = 16$',...
     'Location','southeast');
 xlabel('Normalized factor $\eta$','interpreter', 'latex');
-ylabel('Average list rank', 'interpreter', 'latex');
-title('m = 3, ZTCC (13, 17), CRC (11)');
+ylabel('$\mathrm{E}[L|W = \eta, \mathbf{X}=\bar{\mathbf{x}}_e]$', 'interpreter', 'latex');
+% title('m = 3, ZTCC (13, 17), CRC (11)');
 
 
 
@@ -573,7 +569,7 @@ v = 8;
 omega = 2;
 n = omega*(k+m+v);
 
-t = 100;
+t = 3;
 alphas = zeros(1, t);
 convergence_val = 1020;
 
@@ -669,18 +665,27 @@ end
 
 % figure;
 % Max_points = 70; % maximum number: 160
-plot(etas, Approx_cond_list_sizes,'-.', 'Color', '#0072BD'); hold on
-% plot(etas, Ave_cond_list_sizes_CRC_2317_k_64, 'o');
+semilogy(etas, Approx_cond_list_sizes,'-.', 'Color', '#0072BD'); hold on
+semilogy(etas, Ave_cond_list_sizes_CRC_2317_k_64, 'o','MarkerSize',6);
 % plot(etas(1:Max_points), Ave_cond_list_sizes_CRC_11_k_64(1:Max_points),'-+', 'Color', '#0072BD'); hold on
 % plot(etas(1:Max_points), Ave_cond_list_sizes_CRC_11_k_32(1:Max_points),'-+', 'Color', '#D95319'); hold on
 % plot(etas(1:Max_points), Ave_cond_list_sizes_CRC_11_k_16(1:Max_points),'-+', 'Color', '#EDB120'); hold on
+
+yline(1,'--k','LineWidth',1); hold on
+yline(2^10,'--k','LineWidth',1); hold on
+
 grid on
-legend('$t$-th order Approx.',...
+ylim([0, 1100]);
+legend('$\mu$-th order Approx.',...
     'Simulated',...
     'Location','southeast');
-xlabel('Normalized factor $\eta$','interpreter', 'latex');
-ylabel('Average list rank', 'interpreter', 'latex');
-title('k = 64, m = 10, ZTCC (561, 753), CRC (2317), t = 100');
+
+yticks([1, 2^1,2^2,2^3,2^4, 2^5,2^6,2^7,2^8,2^9, 2^10]);
+yticklabels({'$1$','$2^1$','$2^2$','$2^3$','$2^4$','$2^5$','$2^6$','$2^7$','$2^8$','$2^9$','$2^{10}$'});
+
+xlabel('Normalized norm $\eta$','interpreter', 'latex');
+ylabel('Conditional expected list rank', 'interpreter', 'latex');
+% title('k = 64, m = 10, ZTCC (561, 753), CRC (2317), t = 100');
 
         
     

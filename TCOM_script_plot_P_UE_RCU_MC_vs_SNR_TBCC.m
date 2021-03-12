@@ -29,7 +29,7 @@ n = omega*(k + m);
 % load file 
 path = './TCOM_sim_data/';
 
-fileName = '030421_114533_sim_data_probs_and_exp_list_sizes_vs_SNR_TBCC_13_17_CRC_17_k_64';
+fileName = '030821_231648_sim_data_probs_and_exp_list_sizes_vs_SNR_TBCC_13_17_CRC_17_k_64';
 load([path, fileName, '.mat'], 'P_UE_maxs', 'SNRs');
 P_UE_TBCC_13_17_CRC_17 = P_UE_maxs;
 SNRs_TBCC_13_17_CRC_17 = SNRs;
@@ -117,12 +117,12 @@ n = omega*(k + m);
 % load file 
 path = './TCOM_sim_data/';
 
-fileName = '030421_142642_sim_data_probs_and_exp_list_sizes_vs_SNR_TBCC_13_17_CRC_37_k_64';
+fileName = '030821_224936_sim_data_probs_and_exp_list_sizes_vs_SNR_TBCC_13_17_CRC_37_k_64';
 load([path, fileName, '.mat'], 'P_UE_maxs', 'SNRs');
 P_UE_TBCC_13_17_CRC_37 = P_UE_maxs;
 SNRs_TBCC_13_17_CRC_37 = SNRs;
 
-fileName = '030421_174248_sim_data_probs_and_exp_list_sizes_vs_SNR_TBCC_27_31_CRC_21_k_64';
+fileName = '030821_225400_sim_data_probs_and_exp_list_sizes_vs_SNR_TBCC_27_31_CRC_21_k_64';
 load([path, fileName, '.mat'], 'P_UE_maxs', 'SNRs');
 P_UE_TBCC_27_31_CRC_21 = P_UE_maxs;
 SNRs_TBCC_27_31_CRC_21 = SNRs;
@@ -204,7 +204,7 @@ n = omega*(k + m);
 % load file 
 path = './TCOM_sim_data/';
 
-fileName = '030521_150630_sim_data_probs_and_exp_list_sizes_vs_SNR_TBCC_13_17_CRC_55_k_64';
+fileName = '030821_225951_sim_data_probs_and_exp_list_sizes_vs_SNR_TBCC_13_17_CRC_55_k_64';
 load([path, fileName, '.mat'], 'P_UE_maxs', 'SNRs');
 P_UE_TBCC_13_17_CRC_55 = P_UE_maxs;
 SNRs_TBCC_13_17_CRC_55 = SNRs;
@@ -414,6 +414,11 @@ load([path, fileName, '.mat'], 'P_UE_maxs', 'SNRs');
 P_UE_TBCC_1131_1537_CRC_305 = P_UE_maxs;
 SNRs_TBCC_1131_1537_CRC_305 = SNRs;
 
+fileName = '030921_100949_sim_data_probs_and_exp_list_sizes_vs_SNR_TBCC_2473_3217_CRC_273_k_64';
+load([path, fileName, '.mat'], 'P_UE_maxs', 'SNRs');
+P_UE_TBCC_2473_3217_CRC_273 = P_UE_maxs;
+SNRs_TBCC_2473_3217_CRC_273 = SNRs;
+
 fileName = ['RCU_and_MC_bound_n_',num2str(n),'_k_',num2str(k)];
 load([path, fileName, '.mat'],'gamma_s', 'rcu_bounds','mc_bounds');
 
@@ -428,6 +433,7 @@ semilogy(SNRs_TBCC_133_171_CRC_377, P_UE_TBCC_133_171_CRC_377, '-+'); hold on
 semilogy(SNRs_TBCC_247_371_CRC_357, P_UE_TBCC_247_371_CRC_357, '-+'); hold on
 semilogy(SNRs_TBCC_561_753_CRC_377, P_UE_TBCC_561_753_CRC_377, '-+'); hold on
 semilogy(SNRs_TBCC_1131_1537_CRC_305, P_UE_TBCC_1131_1537_CRC_305, '-+'); hold on
+semilogy(SNRs_TBCC_2473_3217_CRC_273, P_UE_TBCC_2473_3217_CRC_273, '-+'); hold on
 semilogy(gamma_s, rcu_bounds, '-.'); hold on
 semilogy(gamma_s, mc_bounds, '-.'); hold on
 grid on
@@ -439,6 +445,7 @@ legend('$m=7, \nu=3$ CRC-TBCC',...
     '$m=7, \nu=7$ CRC-TBCC',...
     '$m=7, \nu=8$ CRC-TBCC',...
     '$m=7, \nu=9$ CRC-TBCC',...
+    '$m=7, \nu=10$ CRC-TBCC',...
     'RCU bound',...
     'MC bound','Location','southwest');
 
@@ -488,6 +495,16 @@ load([path, fileName, '.mat'], 'P_UE_maxs', 'SNRs');
 P_UE_TBCC_561_753_CRC_653 = P_UE_maxs;
 SNRs_TBCC_561_753_CRC_653 = SNRs;
 
+fileName = '030921_101125_sim_data_probs_and_exp_list_sizes_vs_SNR_TBCC_1131_1537_CRC_777_k_64';
+load([path, fileName, '.mat'], 'P_UE_maxs', 'SNRs');
+P_UE_TBCC_1131_1537_CRC_777 = P_UE_maxs;
+SNRs_TBCC_1131_1537_CRC_777 = SNRs;
+
+fileName = '031121_163302_sim_data_probs_and_exp_list_sizes_vs_SNR_TBCC_2473_3217_CRC_631_k_64';
+load([path, fileName, '.mat'], 'P_UE_maxs', 'SNRs');
+P_UE_TBCC_2473_3217_CRC_631 = P_UE_maxs;
+SNRs_TBCC_2473_3217_CRC_631 = SNRs;
+
 fileName = ['RCU_and_MC_bound_n_',num2str(n),'_k_',num2str(k)];
 load([path, fileName, '.mat'],'gamma_s', 'rcu_bounds','mc_bounds');
 
@@ -501,6 +518,8 @@ semilogy(SNRs_TBCC_53_75_CRC_555, P_UE_TBCC_53_75_CRC_555, '-+'); hold on
 semilogy(SNRs_TBCC_133_171_CRC_505, P_UE_TBCC_133_171_CRC_505, '-+'); hold on
 semilogy(SNRs_TBCC_247_371_CRC_505, P_UE_TBCC_247_371_CRC_505, '-+'); hold on
 semilogy(SNRs_TBCC_561_753_CRC_653, P_UE_TBCC_561_753_CRC_653, '-+'); hold on
+semilogy(SNRs_TBCC_1131_1537_CRC_777, P_UE_TBCC_1131_1537_CRC_777, '-+'); hold on
+semilogy(SNRs_TBCC_2473_3217_CRC_631, P_UE_TBCC_2473_3217_CRC_631, '-+'); hold on
 semilogy(gamma_s, rcu_bounds, '-.'); hold on
 semilogy(gamma_s, mc_bounds, '-.'); hold on
 grid on
@@ -511,6 +530,8 @@ legend('$m=8, \nu=3$ CRC-TBCC',...
     '$m=8, \nu=6$ CRC-TBCC',...
     '$m=8, \nu=7$ CRC-TBCC',...
     '$m=8, \nu=8$ CRC-TBCC',...
+    '$m=8, \nu=9$ CRC-TBCC',...
+    '$m=8, \nu=10$ CRC-TBCC',...
     'RCU bound',...
     'MC bound','Location','southwest');
 
@@ -533,24 +554,37 @@ path = './TCOM_sim_data/';
 fileName = '030621_232102_sim_data_probs_and_exp_list_sizes_vs_SNR_TBCC_13_17_CRC_1511_k_64';
 load([path, fileName, '.mat'], 'P_UE_maxs', 'SNRs');
 P_UE_TBCC_13_17_CRC_1511 = P_UE_maxs;
-SNRs_regular = SNRs;
+SNRs_TBCC_13_17_CRC_1511 = SNRs;
 
 fileName = '030621_232149_sim_data_probs_and_exp_list_sizes_vs_SNR_TBCC_27_31_CRC_1145_k_64';
 load([path, fileName, '.mat'], 'P_UE_maxs', 'SNRs');
 P_UE_TBCC_27_31_CRC_1145 = P_UE_maxs;
+SNRs_TBCC_27_31_CRC_1145 = SNRs;
 
 fileName = '030621_232232_sim_data_probs_and_exp_list_sizes_vs_SNR_TBCC_53_75_CRC_1511_k_64';
 load([path, fileName, '.mat'], 'P_UE_maxs', 'SNRs');
 P_UE_TBCC_53_75_CRC_1511 = P_UE_maxs;
+SNRs_TBCC_53_75_CRC_1511 = SNRs;
 
 fileName = '030621_232312_sim_data_probs_and_exp_list_sizes_vs_SNR_TBCC_133_171_CRC_1275_k_64';
 load([path, fileName, '.mat'], 'P_UE_maxs', 'SNRs');
 P_UE_TBCC_133_171_CRC_1275 = P_UE_maxs;
+SNRs_TBCC_133_171_CRC_1275 = SNRs;
 
 fileName = '030721_134920_sim_data_probs_and_exp_list_sizes_vs_SNR_TBCC_247_371_CRC_1641_k_64';
 load([path, fileName, '.mat'], 'P_UE_maxs', 'SNRs');
 P_UE_TBCC_247_371_CRC_1641 = P_UE_maxs;
-SNRs_temporary = SNRs;
+SNRs_TBCC_247_371_CRC_1641 = SNRs;
+
+fileName = '030921_102214_sim_data_probs_and_exp_list_sizes_vs_SNR_TBCC_561_753_CRC_1401_k_64';
+load([path, fileName, '.mat'], 'P_UE_maxs', 'SNRs');
+P_UE_TBCC_561_753_CRC_1401 = P_UE_maxs;
+SNRs_TBCC_561_753_CRC_1401 = SNRs;
+
+fileName = '031121_163630_sim_data_probs_and_exp_list_sizes_vs_SNR_TBCC_1131_1537_CRC_1511_k_64';
+load([path, fileName, '.mat'], 'P_UE_maxs', 'SNRs');
+P_UE_TBCC_1131_1537_CRC_1511 = P_UE_maxs;
+SNRs_TBCC_1131_1537_CRC_1511 = SNRs;
 
 fileName = ['RCU_and_MC_bound_n_',num2str(n),'_k_',num2str(k)];
 load([path, fileName, '.mat'],'gamma_s', 'rcu_bounds','mc_bounds');
@@ -559,11 +593,13 @@ load([path, fileName, '.mat'],'gamma_s', 'rcu_bounds','mc_bounds');
 
 % plot curves
 figure;
-semilogy(SNRs_regular, P_UE_TBCC_13_17_CRC_1511, '-+'); hold on
-semilogy(SNRs_regular, P_UE_TBCC_27_31_CRC_1145, '-+'); hold on
-semilogy(SNRs_regular, P_UE_TBCC_53_75_CRC_1511, '-+'); hold on
-semilogy(SNRs_regular, P_UE_TBCC_133_171_CRC_1275, '-+'); hold on
-semilogy(SNRs_temporary, P_UE_TBCC_247_371_CRC_1641, '-+'); hold on
+semilogy(SNRs_TBCC_13_17_CRC_1511, P_UE_TBCC_13_17_CRC_1511, '-+'); hold on
+semilogy(SNRs_TBCC_27_31_CRC_1145, P_UE_TBCC_27_31_CRC_1145, '-+'); hold on
+semilogy(SNRs_TBCC_53_75_CRC_1511, P_UE_TBCC_53_75_CRC_1511, '-+'); hold on
+semilogy(SNRs_TBCC_133_171_CRC_1275, P_UE_TBCC_133_171_CRC_1275, '-+'); hold on
+semilogy(SNRs_TBCC_247_371_CRC_1641, P_UE_TBCC_247_371_CRC_1641, '-+'); hold on
+semilogy(SNRs_TBCC_561_753_CRC_1401, P_UE_TBCC_561_753_CRC_1401, '-+'); hold on
+semilogy(SNRs_TBCC_1131_1537_CRC_1511, P_UE_TBCC_1131_1537_CRC_1511, '-+'); hold on
 semilogy(gamma_s, rcu_bounds, '-.'); hold on
 semilogy(gamma_s, mc_bounds, '-.'); hold on
 grid on
@@ -573,6 +609,8 @@ legend('$m=9, \nu=3$ CRC-TBCC',...
     '$m=9, \nu=5$ CRC-TBCC',...
     '$m=9, \nu=6$ CRC-TBCC',...
     '$m=9, \nu=7$ CRC-TBCC',...
+    '$m=9, \nu=8$ CRC-TBCC',...
+    '$m=9, \nu=9$ CRC-TBCC',...
     'RCU bound',...
     'MC bound','Location','southwest');
 
@@ -610,6 +648,10 @@ fileName = '030721_142240_sim_data_probs_and_exp_list_sizes_vs_SNR_TBCC_133_171_
 load([path, fileName, '.mat'], 'P_UE_maxs', 'SNRs');
 P_UE_TBCC_133_171_CRC_2561 = P_UE_maxs;
 
+fileName = '031121_174953_sim_data_probs_and_exp_list_sizes_vs_SNR_TBCC_247_371_CRC_2727_k_64';
+load([path, fileName, '.mat'], 'P_UE_maxs', 'SNRs');
+P_UE_TBCC_247_371_CRC_2727 = P_UE_maxs;
+
 fileName = '030521_093946_sim_data_probs_and_exp_list_sizes_vs_SNR_TBCC_561_753_CRC_2365_k_64';
 load([path, fileName, '.mat'], 'P_UE_maxs', 'SNRs');
 P_UE_TBCC_561_753_CRC_2365 = P_UE_maxs;
@@ -626,6 +668,7 @@ semilogy(SNRs_regular, P_UE_TBCC_13_17_CRC_2235, '-+'); hold on
 semilogy(SNRs_regular, P_UE_TBCC_27_31_CRC_2321, '-+'); hold on
 semilogy(SNRs_regular, P_UE_TBCC_53_75_CRC_2033, '-+'); hold on
 semilogy(SNRs_regular, P_UE_TBCC_133_171_CRC_2561, '-+'); hold on
+semilogy(SNRs_regular, P_UE_TBCC_247_371_CRC_2727, '-+'); hold on
 semilogy(SNRs_temporary, P_UE_TBCC_561_753_CRC_2365, '-+'); hold on
 semilogy(gamma_s, rcu_bounds, '-.'); hold on
 semilogy(gamma_s, mc_bounds, '-.'); hold on
@@ -635,6 +678,7 @@ legend('$m=10, \nu=3$ CRC-TBCC',...
     '$m=10, \nu=4$ CRC-TBCC',...
     '$m=10, \nu=5$ CRC-TBCC',...
     '$m=10, \nu=6$ CRC-TBCC',...
+    '$m=10, \nu=7$ CRC-TBCC',...
     '$m=10, \nu=8$ CRC-TBCC',...
     'RCU bound',...
     'MC bound','Location','southwest');
