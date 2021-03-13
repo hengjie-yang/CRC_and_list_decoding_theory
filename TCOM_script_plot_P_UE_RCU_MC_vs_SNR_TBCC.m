@@ -586,6 +586,11 @@ load([path, fileName, '.mat'], 'P_UE_maxs', 'SNRs');
 P_UE_TBCC_1131_1537_CRC_1511 = P_UE_maxs;
 SNRs_TBCC_1131_1537_CRC_1511 = SNRs;
 
+fileName = '031221_101821_sim_data_probs_and_exp_list_sizes_vs_SNR_TBCC_2473_3217_CRC_1027_k_64';
+load([path, fileName, '.mat'], 'P_UE_maxs', 'SNRs');
+P_UE_TBCC_2473_3217_CRC_1027 = P_UE_maxs;
+SNRs_TBCC_2473_3217_CRC_1027 = SNRs;
+
 fileName = ['RCU_and_MC_bound_n_',num2str(n),'_k_',num2str(k)];
 load([path, fileName, '.mat'],'gamma_s', 'rcu_bounds','mc_bounds');
 
@@ -600,6 +605,7 @@ semilogy(SNRs_TBCC_133_171_CRC_1275, P_UE_TBCC_133_171_CRC_1275, '-+'); hold on
 semilogy(SNRs_TBCC_247_371_CRC_1641, P_UE_TBCC_247_371_CRC_1641, '-+'); hold on
 semilogy(SNRs_TBCC_561_753_CRC_1401, P_UE_TBCC_561_753_CRC_1401, '-+'); hold on
 semilogy(SNRs_TBCC_1131_1537_CRC_1511, P_UE_TBCC_1131_1537_CRC_1511, '-+'); hold on
+semilogy(SNRs_TBCC_2473_3217_CRC_1027, P_UE_TBCC_2473_3217_CRC_1027, '-+'); hold on
 semilogy(gamma_s, rcu_bounds, '-.'); hold on
 semilogy(gamma_s, mc_bounds, '-.'); hold on
 grid on
@@ -611,6 +617,7 @@ legend('$m=9, \nu=3$ CRC-TBCC',...
     '$m=9, \nu=7$ CRC-TBCC',...
     '$m=9, \nu=8$ CRC-TBCC',...
     '$m=9, \nu=9$ CRC-TBCC',...
+    '$m=9, \nu=10$ CRC-TBCC',...
     'RCU bound',...
     'MC bound','Location','southwest');
 
