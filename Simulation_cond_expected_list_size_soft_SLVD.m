@@ -4,6 +4,13 @@
 %
 % We would like to see the actual E[L|W = w].
 %
+% Updates:
+%   03-15-21: Changed "Cond_list_size_instances" to "DistTable"
+%   The DistTable has the following format: for 1<=i<= Psi
+%      1) (i, 1) denotes # total instances at list rank 'i'.
+%      2) (i, 2) denotes # correct decoding at list rank 'i'.
+%      3) (i, 3) denotes # undetected errors at list rank 'i'.
+%   (Psi+1, 1) denotes # NACKs for list ranks [1, Psi].
 %
 % Written by Hengjie Yang (hengjie.yang@ucla.edu)   01/29/21.
 %
@@ -13,9 +20,9 @@ clc;
 
 % System parameters
 k = 64;
-crc_gen_poly = '1317';
-constraint_length = 9;
-code_generator = [561, 753];
+crc_gen_poly = '103';
+constraint_length = 4;
+code_generator = [13, 17];
 v = constraint_length - 1;
 trellis = poly2trellis(constraint_length, code_generator);
 
@@ -24,23 +31,30 @@ poly = dec2base(base2dec(crc_gen_poly, 8), 2) - '0';
 poly = fliplr(poly);
 m = length(poly)-1; % CRC degree
 
-delta = 0.1;
-etas = [11.5 14 17]; % the normalized factor w/A
+delta = 1;
+etas = [1:delta:30]; % the normalized factor w/A
 snr_dB = 1;
 
 Max_list_size = 2^(k+m) - 2^k + 1;
-Cond_list_size_instances = cell(size(etas, 2), 1);
+% Cond_list_size_instances = cell(size(etas, 2), 1);
 Ave_cond_list_sizes = zeros(size(etas, 2), 1);
 
+Psi = 10^4; % \Psi should be large enough s.t. no NACK occurs
+DistTable = cell(length(etas), 1);
+
+for iter = 1:size(DistTable, 1)
+    DistTable{iter} = zeros(Psi+1, 3);
+end
+
 % Simulation part
-for iter = 1:size(etas, 2)
+parfor iter = 1:length(etas)
     w = etas(iter)*1; % the target noise vector norm, where A = 1
 %     alpha = qfunc(sqrt(snr)); % the crossover probability
     
     num_error = 0;
     num_erasure = 0;
     num_trial = 0;
-    while num_trial < 1e3
+    while num_trial < 1e2
         num_trial = num_trial + 1;
         info_sequence = randi([0, 1], 1, k);
         
@@ -84,29 +98,43 @@ for iter = 1:size(etas, 2)
         elseif check_flag == 1 && correct_flag == 0
             num_error = num_error + 1;
         end
-        node = struct('eta', etas(iter), 'list_rank', path_rank,...
-            'check_flag',check_flag, 'correct_flag', correct_flag);
-        Cond_list_size_instances{iter} = [Cond_list_size_instances{iter}; node];
+        
+        if check_flag == 1 
+            if correct_flag == 1 && path_rank <= Psi
+                DistTable{iter}(path_rank, 2) = DistTable{iter}(path_rank, 2) + 1;
+            else
+                DistTable{iter}(path_rank, 3) = DistTable{iter}(path_rank, 3) + 1;
+            end
+            DistTable{iter}(path_rank, 1) = DistTable{iter}(path_rank, 1) + 1;
+        else
+            DistTable{iter}(Psi+1, 1) = DistTable{iter}(Psi+1, 1) + 1;
+        end   
+        
+%         node = struct('eta', etas(iter), 'list_rank', path_rank,...
+%             'check_flag',check_flag, 'correct_flag', correct_flag);
+%         Cond_list_size_instances{iter} = [Cond_list_size_instances{iter}; node];
     end
 end
 
 
 % process the average list size
+
+list_ranks = 1:Psi;
 for ii = 1:size(etas, 2)
-    num_trials = size(Cond_list_size_instances{ii}, 1);
-    temp = zeros(num_trials, 1);
-    for jj = 1:num_trials
-        temp(jj) = Cond_list_size_instances{ii}(jj).list_rank;
-    end
-    Ave_cond_list_sizes(ii) = mean(temp);
+    tot = sum(DistTable{iter}(1:Psi, 1));
+    overall_distribution = DistTable{iter}(1:Psi, 1);
+    overall_distribution = overall_distribution/tot;
+    overall_distribution = overall_distribution';
+    Ave_cond_list_sizes(iter) = sum(list_ranks.*overall_distribution);
 end
 
 
 % save the results
 timestamp = datestr(now, 'mmddyy_HHMMSS');
 path = './Simulation_results/';
-save([path, timestamp, '_sim_cond_list_sizes_soft_ZTCC_561_753_CRC_1317_k_64.mat'],'etas','Cond_list_size_instances','Ave_cond_list_sizes');
-% save([path, timestamp, '_cond_exp_list_sizes_soft_ZTCC_13_17_CRC_17_k_4.mat'],'etas','Ave_cond_list_sizes'); % Only store the simulated conditional expected list size
+save([path, timestamp, '_list_rank_table_cond_exp_list_rank_vs_eta_ZTCC_',...
+    num2str(code_generator(1)),'_',num2str(code_generator(2)),'_CRC_',crc_gen_poly,...
+    '_k_',num2str(k),'.mat'],'etas','DistTable','Ave_cond_list_sizes');
 
 %% Plot the curve
 

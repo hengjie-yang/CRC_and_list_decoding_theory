@@ -141,8 +141,8 @@ opt_theta = -1;
 delta = 0.01;
 thetas = 0:delta:pi/2;
 
-for s = 1:size(thetas, 2)  % compute \eta_low
-    theta = thetas(s);
+for iter = 1:size(thetas, 2)  % compute \eta_low
+    theta = thetas(iter);
     val = integral(@(x) sin(x).^(n-2), 0, theta);
     ratio = gamma(n/2)*val/sqrt(pi)/gamma((n-1)/2);
     cur_gap = abs(ratio - target_prob);
@@ -161,10 +161,10 @@ convergence_val = 2^m;
 alpha = opt_theta;
 Approx_cond_list_sizes = zeros(size(etas));
 
-for s = 1: size(etas, 2)
-    eta = etas(s);
+for iter = 1: size(etas, 2)
+    eta = etas(iter);
     if eta < sqrt(n)*sin(alpha)
-        Approx_cond_list_sizes(s) = 1;
+        Approx_cond_list_sizes(iter) = 1;
     elseif eta >= sqrt(n)*sin(alpha) && eta < sqrt(n)
         beta_1 = pi/2 + alpha - asin(sqrt(eta^2 - n*sin(alpha)^2)/eta);
         beta_2 = beta_1 - 2*alpha;
@@ -172,12 +172,12 @@ for s = 1: size(etas, 2)
         prob_1 = gamma(n/2)*val/sqrt(pi)/gamma((n-1)/2);
         val = integral(@(x) sin(x).^(n-2), 0, beta_2);
         prob_2 = gamma(n/2)*val/sqrt(pi)/gamma((n-1)/2);
-        Approx_cond_list_sizes(s) = convergence_val - (convergence_val - 1)*(prob_1 + prob_2);
+        Approx_cond_list_sizes(iter) = convergence_val - (convergence_val - 1)*(prob_1 + prob_2);
     else
         beta = pi/2 + alpha - asin(sqrt(eta^2 - n*sin(alpha)^2)/eta);
         val = integral(@(x) sin(x).^(n-2), 0, beta);
         prob = gamma(n/2)*val/sqrt(pi)/gamma((n-1)/2);
-        Approx_cond_list_sizes(s) = convergence_val - (convergence_val - 1)*prob;
+        Approx_cond_list_sizes(iter) = convergence_val - (convergence_val - 1)*prob;
     end
 end
 
@@ -214,135 +214,126 @@ title('k = 64, m = 3, ZTCC (13, 17)');
 
 path = './Simulation_results/';
 
-load([path, '020621_090538_cond_exp_list_sizes_soft_ZTCC_13_17_CRC_11_k_64.mat'],'etas','Ave_cond_list_sizes');
-Ave_cond_list_sizes_CRC_11_k_64 = Ave_cond_list_sizes;
-
-
-load([path, '020721_034345_cond_exp_list_sizes_soft_ZTCC_13_17_CRC_11_k_32.mat'],'etas','Ave_cond_list_sizes');
-Ave_cond_list_sizes_CRC_11_k_32 = Ave_cond_list_sizes;
-
-
-load([path, '020721_190558_cond_exp_list_sizes_soft_ZTCC_13_17_CRC_11_k_16.mat'],'etas','Ave_cond_list_sizes');
-Ave_cond_list_sizes_CRC_11_k_16 = Ave_cond_list_sizes;
-
-
-load([path, '021121_152838_cond_exp_list_sizes_soft_ZTCC_13_17_CRC_11_k_128.mat'],'etas','Ave_cond_list_sizes');
+load([path, '031521_123709_cond_exp_list_sizes_soft_ZTCC_13_17_CRC_11_k_128.mat'],'etas','Ave_cond_list_sizes','P_UE_maxs');
 Ave_cond_list_sizes_CRC_11_k_128 = Ave_cond_list_sizes;
+P_UE_maxs_CRC_11_k_128 = P_UE_maxs;
+
+load([path, '031521_121912_cond_exp_list_sizes_soft_ZTCC_13_17_CRC_11_k_64.mat'],'etas','Ave_cond_list_sizes','P_UE_maxs');
+Ave_cond_list_sizes_CRC_11_k_64 = Ave_cond_list_sizes;
+P_UE_maxs_CRC_11_k_64 = P_UE_maxs;
+convergent_val = Ave_cond_list_sizes(end);
+
+load([path, '031521_121901_cond_exp_list_sizes_soft_ZTCC_13_17_CRC_11_k_32.mat'],'etas','Ave_cond_list_sizes','P_UE_maxs');
+Ave_cond_list_sizes_CRC_11_k_32 = Ave_cond_list_sizes;
+P_UE_maxs_CRC_11_k_32 = P_UE_maxs;
 
 
-% Compute the critical values of normalized factor \eta
-% 
-% k = 16; % the information length
-% m = 3; % the CRC degree
-% v = 3; % the # memory elements
+load([path, '031521_121705_cond_exp_list_sizes_soft_ZTCC_13_17_CRC_11_k_16.mat'],'etas','Ave_cond_list_sizes','P_UE_maxs');
+Ave_cond_list_sizes_CRC_11_k_16 = Ave_cond_list_sizes;
+P_UE_maxs_CRC_11_k_16 = P_UE_maxs;
+
+
+
+% Compute genie approximations
+
+Approx_cond_list_sizes = cell(4, 1);
+convergent_vals = zeros(4, 1);
+num_points = 10;
+
+convergent_vals(1) = mean(Ave_cond_list_sizes_CRC_11_k_128(end-num_points:end));
+Approx_cond_list_sizes{1} = 1 - P_UE_maxs_CRC_11_k_128 + P_UE_maxs_CRC_11_k_128*convergent_vals(1);
+
+convergent_vals(2) = mean(Ave_cond_list_sizes_CRC_11_k_64(end-num_points:end));
+Approx_cond_list_sizes{2} = 1 - P_UE_maxs_CRC_11_k_64 + P_UE_maxs_CRC_11_k_64*convergent_vals(2);
+
+convergent_vals(3) = mean(Ave_cond_list_sizes_CRC_11_k_32(end-num_points:end));
+Approx_cond_list_sizes{3} = 1 - P_UE_maxs_CRC_11_k_32 + P_UE_maxs_CRC_11_k_32*convergent_vals(3);
+
+convergent_vals(4) = mean(Ave_cond_list_sizes_CRC_11_k_16(end-num_points:end));
+Approx_cond_list_sizes{4} = 1 - P_UE_maxs_CRC_11_k_16 + P_UE_maxs_CRC_11_k_16*convergent_vals(4);
+
+
+
+% % Compute the critical values and the approximation curve
+% ks = [128; 64; 32; 16];
+% ms = [3; 3; 3; 3];
+% vs = [3; 3; 3; 3];
+% convergence_vals = [7.7; 7.5; 7.3; 7];
 % omega = 2;
-% n = omega*(k+m+v); % the blocklength
+% Approx_cond_list_sizes = zeros(length(ks), length(etas));
+% eta_lows = zeros(length(ks), 1);
+% eta_middles = zeros(length(ks), 1);
+% eta_highs = zeros(length(ks), 1);
 % 
-% eta_middle = sqrt(n);
-% 
-% min_gap = 1;
-% target_prob = 1/2^(k+m);
-% opt_theta = -1;
 % 
 % delta = 0.01;
 % thetas = 0:delta:pi/2;
 % 
-% for iter = 1:size(thetas, 2)  % compute \eta_low
-%     theta = thetas(iter);
-%     val = integral(@(x) sin(x).^(n-2), 0, theta);
-%     ratio = gamma(n/2)*val/sqrt(pi)/gamma((n-1)/2);
-%     cur_gap = abs(ratio - target_prob);
-%     if cur_gap < min_gap
-%         min_gap = cur_gap;
-%         opt_theta = theta;
-%     end
-% end
-% 
-% eta_low = sqrt(n)*sin(opt_theta);
 
-
-
-
-% Compute the critical values and the approximation curve
-ks = [128; 64; 32; 16];
-ms = [3; 3; 3; 3];
-vs = [3; 3; 3; 3];
-convergence_vals = [7.7; 7.5; 7.3; 7];
-omega = 2;
-Approx_cond_list_sizes = zeros(length(ks), length(etas));
-eta_lows = zeros(length(ks), 1);
-eta_middles = zeros(length(ks), 1);
-eta_highs = zeros(length(ks), 1);
-
-
-delta = 0.01;
-thetas = 0:delta:pi/2;
-
-
-for ii = 1:size(ks, 1)
-    n = omega*(ks(ii)+ms(ii)+vs(ii));
-    target_value = convergence_vals(ii) - 1;
-    min_gap = 100;
-    alpha = -1;
-    target_prob = 1/2^(ks(ii)+ms(ii));
-    
-    
-    % Compute alpha 
-    constant = gamma(n/2)/sqrt(pi)/gamma((n-1)/2);
-    int_fun = @(x) constant*integral(@(t) sin(t).^(n-2), 0, x) - target_prob;
-    alpha = fzero(int_fun, [0, pi/2]);
-%     for s = 1:size(thetas, 2)  % compute \eta_low
-%         theta = thetas(s);
-%         val = integral(@(x) sin(x).^(n-2), 0, theta);
-%         ratio = gamma(n/2)*val/sqrt(pi)/gamma((n-1)/2);
-%         cur_gap = abs(ratio - target_prob);
+% for ii = 1:size(ks, 1)
+%     n = omega*(ks(ii)+ms(ii)+vs(ii));
+%     target_value = convergence_vals(ii) - 1;
+%     min_gap = 100;
+%     alpha = -1;
+%     target_prob = 1/2^(ks(ii)+ms(ii));
+%     
+%     
+%     % Compute alpha 
+%     constant = gamma(n/2)/sqrt(pi)/gamma((n-1)/2);
+%     int_fun = @(x) constant*integral(@(t) sin(t).^(n-2), 0, x) - target_prob;
+%     alpha = fzero(int_fun, [0, pi/2]);
+% %     for s = 1:size(thetas, 2)  % compute \eta_low
+% %         theta = thetas(s);
+% %         val = integral(@(x) sin(x).^(n-2), 0, theta);
+% %         ratio = gamma(n/2)*val/sqrt(pi)/gamma((n-1)/2);
+% %         cur_gap = abs(ratio - target_prob);
+% %         if cur_gap < min_gap
+% %             min_gap = cur_gap;
+% %             alpha = theta;
+% %         end
+% %     end
+%     eta_lows(ii) = sqrt(n)*sin(alpha);
+%     min_gap = 100;  % reset min_gap to compute \eta_high
+%     
+%     for s = 1: size(etas, 2)
+%         eta = etas(s);
+%         if eta < sqrt(n)*sin(alpha)
+%             Approx_cond_list_sizes(ii, s) = 1;
+%         elseif eta >= sqrt(n)*sin(alpha) && eta < sqrt(n)
+%             beta_1 = pi/2 + alpha - asin(sqrt(eta^2 - n*sin(alpha)^2)/eta);
+%             beta_2 = beta_1 - 2*alpha;
+%             val = integral(@(x) sin(x).^(n-2), 0, beta_1);
+%             prob_1 = gamma(n/2)*val/sqrt(pi)/gamma((n-1)/2);
+%             val = integral(@(x) sin(x).^(n-2), 0, beta_2);
+%             prob_2 = gamma(n/2)*val/sqrt(pi)/gamma((n-1)/2);
+%             Approx_cond_list_sizes(ii, s) = convergence_vals(ii) - (convergence_vals(ii) - 1)*(prob_1 + prob_2);
+%         else
+%             beta = pi/2 + alpha - asin(sqrt(eta^2 - n*sin(alpha)^2)/eta);
+%             val = integral(@(x) sin(x).^(n-2), 0, beta);
+%             prob = gamma(n/2)*val/sqrt(pi)/gamma((n-1)/2);
+%             Approx_cond_list_sizes(ii, s) = convergence_vals(ii) - (convergence_vals(ii) - 1)*prob;
+%         end
+%         
+%         cur_gap = abs(Approx_cond_list_sizes(ii, s) - target_value);
 %         if cur_gap < min_gap
 %             min_gap = cur_gap;
-%             alpha = theta;
+%             eta_highs(ii) = eta;
 %         end
 %     end
-    eta_lows(ii) = sqrt(n)*sin(alpha);
-    min_gap = 100;  % reset min_gap to compute \eta_high
-    
-    for s = 1: size(etas, 2)
-        eta = etas(s);
-        if eta < sqrt(n)*sin(alpha)
-            Approx_cond_list_sizes(ii, s) = 1;
-        elseif eta >= sqrt(n)*sin(alpha) && eta < sqrt(n)
-            beta_1 = pi/2 + alpha - asin(sqrt(eta^2 - n*sin(alpha)^2)/eta);
-            beta_2 = beta_1 - 2*alpha;
-            val = integral(@(x) sin(x).^(n-2), 0, beta_1);
-            prob_1 = gamma(n/2)*val/sqrt(pi)/gamma((n-1)/2);
-            val = integral(@(x) sin(x).^(n-2), 0, beta_2);
-            prob_2 = gamma(n/2)*val/sqrt(pi)/gamma((n-1)/2);
-            Approx_cond_list_sizes(ii, s) = convergence_vals(ii) - (convergence_vals(ii) - 1)*(prob_1 + prob_2);
-        else
-            beta = pi/2 + alpha - asin(sqrt(eta^2 - n*sin(alpha)^2)/eta);
-            val = integral(@(x) sin(x).^(n-2), 0, beta);
-            prob = gamma(n/2)*val/sqrt(pi)/gamma((n-1)/2);
-            Approx_cond_list_sizes(ii, s) = convergence_vals(ii) - (convergence_vals(ii) - 1)*prob;
-        end
-        
-        cur_gap = abs(Approx_cond_list_sizes(ii, s) - target_value);
-        if cur_gap < min_gap
-            min_gap = cur_gap;
-            eta_highs(ii) = eta;
-        end
-    end
-    eta_middles(ii) = (eta_lows(ii) + eta_highs(ii))/2;
-end
+%     eta_middles(ii) = (eta_lows(ii) + eta_highs(ii))/2;
+% end
 
 
 figure;
-Max_points = 80; % maximum number: 160
+Max_points = 60; % maximum number: 160
 plot(etas(1:Max_points), Ave_cond_list_sizes_CRC_11_k_128(1:Max_points),'-+', 'Color', '#77AC30','MarkerSize',5); hold on
-% plot(etas(1:Max_points), Approx_cond_list_sizes(1, 1:Max_points),'-.', 'Color', '#77AC30'); hold on
+plot(etas(1:Max_points), Approx_cond_list_sizes{1}(1:Max_points),'-.', 'Color', '#77AC30'); hold on
 plot(etas(1:Max_points), Ave_cond_list_sizes_CRC_11_k_64(1:Max_points),'-+', 'Color', '#0072BD','MarkerSize',5); hold on
-% plot(etas(1:Max_points), Approx_cond_list_sizes(2, 1:Max_points),'-.', 'Color', '#0072BD'); hold on
+plot(etas(1:Max_points), Approx_cond_list_sizes{2}(1:Max_points),'-.', 'Color', '#0072BD'); hold on
 plot(etas(1:Max_points), Ave_cond_list_sizes_CRC_11_k_32(1:Max_points),'-+', 'Color', '#D95319','MarkerSize',5); hold on
-% plot(etas(1:Max_points), Approx_cond_list_sizes(3, 1:Max_points),'-.', 'Color', '#D95319'); hold on
+plot(etas(1:Max_points), Approx_cond_list_sizes{3}(1:Max_points),'-.', 'Color', '#D95319'); hold on
 plot(etas(1:Max_points), Ave_cond_list_sizes_CRC_11_k_16(1:Max_points),'-+', 'Color', '#EDB120','MarkerSize',5); hold on
-% plot(etas(1:Max_points), Approx_cond_list_sizes(4, 1:Max_points),'-.', 'Color', '#EDB120'); hold on
+plot(etas(1:Max_points), Approx_cond_list_sizes{4}(1:Max_points),'-.', 'Color', '#EDB120'); hold on
 % plot(etas, Approx_cond_list_sizes, '-.'); hold on
 % xline(eta_low,'--r');
 % txt = '$\leftarrow \eta_l$';
@@ -354,10 +345,14 @@ plot(etas(1:Max_points), Ave_cond_list_sizes_CRC_11_k_16(1:Max_points),'-+', 'Co
 % txt = '$\leftarrow \eta_h$';
 % text(eta_high,2^m-1,txt,'interpreter','latex','HorizontalAlignment','left');
 grid on
-legend('$k = 128$',...
-    '$k = 64$',...
-    '$k = 32$',...
-    '$k = 16$',...
+legend('$k = 128$, Simulated',...
+    '$k = 128$, Genie Approx.',...
+    '$k = 64$, Simulated',...
+    '$k = 64$, Genie Approx.',...
+    '$k = 32$, Simulated',...
+    '$k = 32$, Genie Approx.',...
+    '$k = 16$, Simulated',...
+    '$k = 16$, Genie Approx.',...
     'Location','southeast');
 xlabel('Normalized factor $\eta$','interpreter', 'latex');
 ylabel('$\mathrm{E}[L|W = \eta, \mathbf{X}=\bar{\mathbf{x}}_e]$', 'interpreter', 'latex');
@@ -372,7 +367,7 @@ path = './Simulation_results/';
 load([path, '020421_113711_exp_list_sizes_soft_ZTCC_13_17_CRC_17_k_64.mat'],'snr_dBs','Ave_list_sizes');
 
 
-SNR_dBs = -3:0.5:8;
+SNR_dBs = -5:0.5:8;
 overall_exp_list_size = zeros(1, length(SNR_dBs));
 approx_overall_exp_list_size = zeros(1, length(SNR_dBs));
 
@@ -398,16 +393,16 @@ density_fun = @(w, dim) w.^(dim-1).*exp(-w.^2./2)./(2^(dim/2-1)*gamma(dim/2));
 
 Ave_cond_list_sizes = Ave_cond_list_sizes_CRC_11_k_64;
 
-for s = 1:size(SNR_dBs,2)
-    snr = 10^(SNR_dBs(s)/10);
+for iter = 1:size(SNR_dBs,2)
+    snr = 10^(SNR_dBs(iter)/10);
     A = sqrt(snr);
     Delta = A*(etas(2) - etas(1)); % the gap between two consecutive discrete norms
     for ii = 1:size(etas, 2)
         norm_w = A*etas(ii);
         prior_prob = integral(@(w) density_fun(w, n), norm_w-Delta/2, norm_w+Delta/2);
-        overall_exp_list_size(s) = overall_exp_list_size(s) + prior_prob*Ave_cond_list_sizes(ii);
+        overall_exp_list_size(iter) = overall_exp_list_size(iter) + prior_prob*Ave_cond_list_sizes(ii);
 %         overall_exp_list_size(iter) = overall_exp_list_size(iter) + prior_prob*1;
-        approx_overall_exp_list_size(s) = approx_overall_exp_list_size(s) + prior_prob*Approx_cond_list_sizes(1, ii);
+%         approx_overall_exp_list_size(s) = approx_overall_exp_list_size(s) + prior_prob*Approx_cond_list_sizes(1, ii);
     end
 end
 
@@ -507,10 +502,10 @@ for ii = 1:size(ks, 1)
 %     alpha = asin(eta_lows(ii)/sqrt(n));
     min_gap_v2 = 100;  % reset min_gap to compute \eta_high
     
-    for s = 1: size(etas, 2)
-        eta = etas(s);
+    for iter = 1: size(etas, 2)
+        eta = etas(iter);
         if eta < sqrt(n)*sin(alpha)
-            Approx_cond_list_sizes(ii, s) = 1;
+            Approx_cond_list_sizes(ii, iter) = 1;
         elseif eta >= sqrt(n)*sin(alpha) && eta < sqrt(n)
             beta_1 = pi/2 + alpha - asin(sqrt(eta^2 - n*sin(alpha)^2)/eta);
             beta_2 = beta_1 - 2*alpha;
@@ -518,15 +513,15 @@ for ii = 1:size(ks, 1)
             prob_1 = gamma(n/2)*val/sqrt(pi)/gamma((n-1)/2);
             val = integral(@(x) sin(x).^(n-2), 0, beta_2);
             prob_2 = gamma(n/2)*val/sqrt(pi)/gamma((n-1)/2);
-            Approx_cond_list_sizes(ii, s) = convergence_vals(ii) - (convergence_vals(ii) - 1)*(prob_1 + prob_2);
+            Approx_cond_list_sizes(ii, iter) = convergence_vals(ii) - (convergence_vals(ii) - 1)*(prob_1 + prob_2);
         else
             beta = pi/2 + alpha - asin(sqrt(eta^2 - n*sin(alpha)^2)/eta);
             val = integral(@(x) sin(x).^(n-2), 0, beta);
             prob = gamma(n/2)*val/sqrt(pi)/gamma((n-1)/2);
-            Approx_cond_list_sizes(ii, s) = convergence_vals(ii) - (convergence_vals(ii) - 1)*prob;
+            Approx_cond_list_sizes(ii, iter) = convergence_vals(ii) - (convergence_vals(ii) - 1)*prob;
         end
         
-        cur_gap = abs(Approx_cond_list_sizes(ii, s) - target_value);
+        cur_gap = abs(Approx_cond_list_sizes(ii, iter) - target_value);
         if cur_gap < min_gap_v2
             min_gap_v2 = cur_gap;
             eta_highs(ii) = eta;
@@ -601,10 +596,10 @@ Ave_cond_list_sizes_CRC_2317_k_64 = Cond_exp_list_sizes;
 % Pre-compute all half angles \alpha
 constant = gamma(n/2)/sqrt(pi)/gamma((n-1)/2);
 
-for s = 1:t
-    target_prob = s/2^(k+m);
+for iter = 1:t
+    target_prob = iter/2^(k+m);
     int_fun = @(x) constant*integral(@(t) sin(t).^(n-2), 0, x) - target_prob;
-    alphas(s) = fzero(int_fun, [0, pi/2]);
+    alphas(iter) = fzero(int_fun, [0, pi/2]);
 end
 thresholds = sqrt(n)*sin(alphas);
 thresholds = [thresholds, sqrt(n), Inf];
@@ -624,10 +619,10 @@ for iter = 1:length(etas)
     if idx == 1
         Approx_cond_list_sizes(iter) = 1;
     elseif idx > 1 && idx <= t
-        Approx_cond_list_sizes(iter) = s;
-        for s = 1:idx-1
-            beta1 = pi/2 + alphas(s) - asin(sqrt(eta^2 - n*sin(alphas(s))^2)/eta);
-            beta2 = pi/2 - alphas(s) - asin(sqrt(eta^2 - n*sin(alphas(s))^2)/eta);
+        Approx_cond_list_sizes(iter) = iter;
+        for iter = 1:idx-1
+            beta1 = pi/2 + alphas(iter) - asin(sqrt(eta^2 - n*sin(alphas(iter))^2)/eta);
+            beta2 = pi/2 - alphas(iter) - asin(sqrt(eta^2 - n*sin(alphas(iter))^2)/eta);
             int_val1 = integral(@(t) sin(t).^(n-2), 0, beta1);
             int_val2 = integral(@(t) sin(t).^(n-2), 0, beta2);
             F_s = constant*(int_val1 + int_val2);
@@ -635,13 +630,13 @@ for iter = 1:length(etas)
         end
     elseif idx == t + 1
         Approx_cond_list_sizes(iter) = convergence_val;
-        for s = 1:t
-            beta1 = pi/2 + alphas(s) - asin(sqrt(eta^2 - n*sin(alphas(s))^2)/eta);
-            beta2 = pi/2 - alphas(s) - asin(sqrt(eta^2 - n*sin(alphas(s))^2)/eta);
+        for iter = 1:t
+            beta1 = pi/2 + alphas(iter) - asin(sqrt(eta^2 - n*sin(alphas(iter))^2)/eta);
+            beta2 = pi/2 - alphas(iter) - asin(sqrt(eta^2 - n*sin(alphas(iter))^2)/eta);
             int_val1 = integral(@(t) sin(t).^(n-2), 0, beta1);
             int_val2 = integral(@(t) sin(t).^(n-2), 0, beta2);
             F_s = constant*(int_val1 + int_val2);
-            if s < t
+            if iter < t
                 Approx_cond_list_sizes(iter) = Approx_cond_list_sizes(iter) - F_s;
             else
                 Approx_cond_list_sizes(iter) = Approx_cond_list_sizes(iter) - (convergence_val - t)*F_s;
@@ -649,11 +644,11 @@ for iter = 1:length(etas)
         end
     else
         Approx_cond_list_sizes(iter) = convergence_val;
-        for s = 1:t
-            beta1 = pi/2 + alphas(s) - asin(sqrt(eta^2 - n*sin(alphas(s))^2)/eta);
+        for iter = 1:t
+            beta1 = pi/2 + alphas(iter) - asin(sqrt(eta^2 - n*sin(alphas(iter))^2)/eta);
             int_val1 = integral(@(t) sin(t).^(n-2), 0, beta1);
             F_s = constant*int_val1;
-            if s < t
+            if iter < t
                 Approx_cond_list_sizes(iter) = Approx_cond_list_sizes(iter) - F_s;
             else
                 Approx_cond_list_sizes(iter) = Approx_cond_list_sizes(iter) - (convergence_val - t)*F_s;

@@ -1,7 +1,6 @@
-% This script is to study the relationship between E[L|W = \eta] and 
-% P_{e,\lambda}(\eta). 
-%
-% Case study: k = 4, ZTCC (13, 11), degree-3 CRC poly. (17)
+% This script is compress the previous massive dataset into a table
+% according to list ranks. This table can be seen as a sufficient statistic
+% to study the probabilities and conditional expectation E[L|W = \eta].
 %
 % Written by Hengjie Yang (hengjie.yang@ucla.edu)   03/13/21
 %
