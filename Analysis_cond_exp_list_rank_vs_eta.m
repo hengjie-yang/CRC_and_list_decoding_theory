@@ -8,6 +8,15 @@
 % Written by Hengjie Yang (hengjie.yang@ucla.edu)   03/14/21
 %
 
+clear all;
+clc;
+
+
+set(0,'DefaultTextFontName','Times','DefaultTextFontSize',16,...
+    'DefaultAxesFontName','Times','DefaultAxesFontSize',16,...
+    'DefaultLineLineWidth',1,'DefaultLineMarkerSize',7.75);
+set(groot, 'defaultAxesTickLabelInterpreter','latex'); 
+set(groot, 'defaultLegendInterpreter','latex');
 
 
 % Load dataset
@@ -26,6 +35,9 @@ Cond_exp_list_ranks = zeros(length(etas), 1);
 Cond_UE_probs = zeros(length(etas), 1);
 Lower_bounds = zeros(length(etas), 1);
 Approximations = zeros(length(etas), 1);
+
+Cond_exp_list_ranks_correct = zeros(length(etas), 1);
+Cond_exp_list_ranks_UE = zeros(length(etas), 1);
 
 for iter = 1:length(etas)
     dem = sum(DistTable{iter}(:, 3));
@@ -121,5 +133,91 @@ legend('Simulated',....
 xlabel('Normalized norm $\eta$', 'interpreter', 'latex');
 xlabel('Conditional expected list rank', 'interpreter', 'latex');
 title ('k=64, ZTCC (13, 17), degree-6 CRC (103)');
+
+
+
+%% Case study 2: ZTCC (561. 753) and degree-10 CRC polynomial (2317)
+
+
+
+path = './Simulation_results/';
+fileName = '031521_111148_cond_exp_list_sizes_soft_ZTCC_561_753_CRC_2317_k_64';
+
+load([path, fileName, '.mat'],'etas', 'DistTables');
+% DistTable format: (s, 1): # simulations at L=s, (s, 2): # UE at L = s.
+
+
+Cond_exp_list_sizes_correct = zeros(1, length(etas));
+Cond_exp_list_sizes_UE = zeros(1, length(etas));
+prior_probs_correct = zeros(1, length(etas));
+prior_probs_UE = zeros(1, length(etas));
+
+Psi = size(DistTables{1}, 1);
+list_ranks = 1:Psi;
+
+Renormalized_distributions = cell(length(etas), 1);
+
+for iter = 1:length(etas)
+    num_UE = sum(DistTables{iter}(1:Psi, 2));
+    num_tot = sum(DistTables{iter}(1:Psi, 1));
+    num_correct = num_tot - num_UE;
+    prior_probs_correct(iter) = num_correct / num_tot;
+    prior_probs_UE(iter) = num_UE / num_tot;
+    if num_correct > 0
+        distribution = DistTables{iter}(1:Psi, 1) - DistTables{iter}(1:Psi, 2);
+        distribution = distribution/num_correct;
+        Cond_exp_list_sizes_correct(iter) = sum(list_ranks*distribution);
+    else
+        Cond_exp_list_sizes_correct(iter) = Inf;
+    end
+    
+    if num_UE > 0
+        Renormalized_distributions{iter} = DistTables{iter}(1:Psi, 2);
+        Renormalized_distributions{iter} = Renormalized_distributions{iter} / num_UE;
+        Cond_exp_list_sizes_UE(iter) = sum(list_ranks*Renormalized_distributions{iter});
+    else
+        Cond_exp_list_sizes_UE(iter) = Inf;
+    end
+end
+
+
+figure;
+semilogy(etas, Cond_exp_list_sizes_UE, '-o'); hold on
+semilogy(etas, Cond_exp_list_sizes_correct, '-+'); hold on
+
+
+yline(2^0,'--k','LineWidth',1); hold on
+yline(2^10,'--k','LineWidth',1); hold on
+
+grid on
+
+yticks([1, 2^1,2^2,2^3,2^4, 2^5,2^6,2^7,2^8,2^9, 2^10]);
+yticklabels({'$1$','$2^1$','$2^2$','$2^3$','$2^4$','$2^5$','$2^6$','$2^7$','$2^8$','$2^9$','$2^{10}$'});
+
+legend('$\mathrm{E}[L|W =\eta, \mathit{UE}]$',...
+    '$\mathrm{E}[L|W =\eta, \mathit{cor}]$',...
+    'Location','southeast');
+
+xlabel('Normalized norm $\eta$', 'interpreter', 'latex');
+ylabel('Conditional expected list rank', 'interpreter', 'latex');
+
+
+
+figure;
+plot(etas, prior_probs_UE, '-o'); hold on
+plot(etas, prior_probs_correct, '-+'); hold on
+grid on
+
+legend('$P(\mathit{UE})$',...
+    '$P(\mathit{cor})$');
+
+xlabel('Normalized norm $\eta$', 'interpreter', 'latex');
+ylabel('Probability', 'interpreter', 'latex');
+
+
+
+
+
+
 
 

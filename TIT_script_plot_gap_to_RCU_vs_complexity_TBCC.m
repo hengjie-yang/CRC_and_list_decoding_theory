@@ -107,8 +107,8 @@ fileNames{8} = {'031521_182013_sim_data_vs_SNR_TBCC_2473_3217_CRC_17_k_64';...
     '031521_183259_sim_data_vs_SNR_TBCC_2473_3217_CRC_1027_k_64';...
     '031521_183807_sim_data_vs_SNR_TBCC_2473_3217_CRC_2335_k_64'};
 
-c1 = 1;
-c2 = 1;
+c1 = 1.5;
+c2 = 2.2;
 
 for iter = 1:length(vs)
     v = vs(iter);
@@ -145,14 +145,14 @@ end
 
 %%
 figure;
-semilogx(Complexities{1}, SNR_gaps{1}, '+b'); hold on
-semilogx(Complexities{2}, SNR_gaps{2}, 'o'); hold on
-semilogx(Complexities{3}, SNR_gaps{3}, '*'); hold on
-semilogx(Complexities{4}, SNR_gaps{4}, 'x'); hold on
-semilogx(Complexities{5}, SNR_gaps{5}, 'v'); hold on
-semilogx(Complexities{6}, SNR_gaps{6}, 'd'); hold on
-semilogx(Complexities{7}, SNR_gaps{7}, '^'); hold on
-semilogx(Complexities{8}, SNR_gaps{8}, 's'); hold on
+semilogx(Complexities{1}, SNR_gaps{1}, '+b','MarkerSize',6); hold on
+semilogx(Complexities{2}, SNR_gaps{2}, 'o','MarkerSize',6); hold on
+semilogx(Complexities{3}, SNR_gaps{3}, '*','MarkerSize',6); hold on
+semilogx(Complexities{4}, SNR_gaps{4}, 'x','MarkerSize',6); hold on
+semilogx(Complexities{5}, SNR_gaps{5}, 'v','MarkerSize',6); hold on
+semilogx(Complexities{6}, SNR_gaps{6}, 'd','MarkerSize',6); hold on
+semilogx(Complexities{7}, SNR_gaps{7}, '^','MarkerSize',6); hold on
+semilogx(Complexities{8}, SNR_gaps{8}, 's','MarkerSize',6); hold on
 
 legend('$\nu=3\ (13, 17)$',...
     '$\nu=4\ (27, 31)$',...
@@ -166,7 +166,7 @@ legend('$\nu=3\ (13, 17)$',...
 
 grid on
 ylim([-0.5, 3]);
-xlabel('Complexity', 'interpreter', 'latex');
+xlabel('Complexity $C_{\mathrm{SLVD}}$', 'interpreter', 'latex');
 ylabel('Gap to the RCU bound (dB)', 'interpreter', 'latex');
 % title('Target probability of UE: P_{e,\lambda} = 10^{-4}');
 

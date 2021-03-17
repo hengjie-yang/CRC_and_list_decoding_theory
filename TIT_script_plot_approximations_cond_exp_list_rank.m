@@ -154,6 +154,14 @@ ylabel('$\mathrm{E}[L|W = \eta, \mathbf{X}=\bar{\mathbf{x}}_e]$', 'interpreter',
 % title('k = 64, m = 10, ZTCC (561, 753), CRC (2317), t = 100');
 
 
+%% plot the P_UE
+
+plot(etas, P_UE_maxs, '-+');
+grid on
+xlabel('Normalized norm $\eta$','interpreter', 'latex');
+ylabel('Prob. of error', 'interpreter', 'latex');
+
+
 
 %% Transform the approximations into overall E[L] vs. SNR
 

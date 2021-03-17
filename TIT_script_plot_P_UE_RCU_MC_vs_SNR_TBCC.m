@@ -29,42 +29,42 @@ n = omega*(k + m);
 % load file 
 path = './TCOM_sim_data/';
 
-fileName = '031421_122946_sim_data_probs_and_exp_list_sizes_vs_SNR_TBCC_13_17_CRC_17_k_64';
+fileName = '031521_181826_sim_data_vs_SNR_TBCC_13_17_CRC_17_k_64';
 load([path, fileName, '.mat'], 'P_UE_maxs', 'SNRs');
 P_UE_TBCC_13_17_CRC_17 = P_UE_maxs;
 SNRs_TBCC_13_17_CRC_17 = SNRs;
 
-fileName = '031421_123141_sim_data_probs_and_exp_list_sizes_vs_SNR_TBCC_27_31_CRC_17_k_64';
+fileName = '031521_181855_sim_data_vs_SNR_TBCC_27_31_CRC_17_k_64';
 load([path, fileName, '.mat'], 'P_UE_maxs', 'SNRs');
 P_UE_TBCC_27_31_CRC_17 = P_UE_maxs;
 SNRs_TBCC_27_31_CRC_17 = SNRs;
 
-fileName = '031421_123245_sim_data_probs_and_exp_list_sizes_vs_SNR_TBCC_53_75_CRC_11_k_64';
+fileName = '031521_181907_sim_data_vs_SNR_TBCC_53_75_CRC_11_k_64';
 load([path, fileName, '.mat'], 'P_UE_maxs', 'SNRs');
 P_UE_TBCC_53_75_CRC_11 = P_UE_maxs;
 SNRs_TBCC_53_75_CRC_11 = SNRs;
 
-fileName = '030421_132529_sim_data_probs_and_exp_list_sizes_vs_SNR_TBCC_133_171_CRC_17_k_64';
+fileName = '031521_181918_sim_data_vs_SNR_TBCC_133_171_CRC_17_k_64';
 load([path, fileName, '.mat'], 'P_UE_maxs', 'SNRs');
 P_UE_TBCC_133_171_CRC_17 = P_UE_maxs;
 SNRs_TBCC_133_171_CRC_17 = SNRs;
 
-fileName = '030421_171402_sim_data_probs_and_exp_list_sizes_vs_SNR_TBCC_247_371_CRC_17_k_64';
+fileName = '031521_181930_sim_data_vs_SNR_TBCC_247_371_CRC_17_k_64';
 load([path, fileName, '.mat'], 'P_UE_maxs', 'SNRs');
 P_UE_TBCC_247_371_CRC_17 = P_UE_maxs;
 SNRs_TBCC_247_371_CRC_17 = SNRs;
 
-fileName = '030521_094115_sim_data_probs_and_exp_list_sizes_vs_SNR_TBCC_561_753_CRC_17_k_64';
+fileName = '031521_181942_sim_data_vs_SNR_TBCC_561_753_CRC_17_k_64';
 load([path, fileName, '.mat'], 'P_UE_maxs', 'SNRs');
 P_UE_TBCC_561_753_CRC_17 = P_UE_maxs;
 SNRs_TBCC_561_753_CRC_17 = SNRs;
 
-fileName = '030721_134506_sim_data_probs_and_exp_list_sizes_vs_SNR_TBCC_1131_1537_CRC_15_k_64';
+fileName = '031521_181959_sim_data_vs_SNR_TBCC_1131_1537_CRC_15_k_64';
 load([path, fileName, '.mat'], 'P_UE_maxs', 'SNRs');
 P_UE_TBCC_1131_1537_CRC_15 = P_UE_maxs;
 SNRs_TBCC_1131_1537_CRC_15 = SNRs;
 
-fileName = '030821_211518_sim_data_probs_and_exp_list_sizes_vs_SNR_TBCC_2473_3217_CRC_17_k_64';
+fileName = '031521_182013_sim_data_vs_SNR_TBCC_2473_3217_CRC_17_k_64';
 load([path, fileName, '.mat'], 'P_UE_maxs', 'SNRs');
 P_UE_TBCC_2473_3217_CRC_17 = P_UE_maxs;
 SNRs_TBCC_2473_3217_CRC_17 = SNRs;
@@ -118,42 +118,42 @@ n = omega*(k + m);
 % load file 
 path = './TCOM_sim_data/';
 
-fileName = '031421_123400_sim_data_probs_and_exp_list_sizes_vs_SNR_TBCC_13_17_CRC_37_k_64';
+fileName = '031521_182025_sim_data_vs_SNR_TBCC_13_17_CRC_37_k_64';
 load([path, fileName, '.mat'], 'P_UE_maxs', 'SNRs');
 P_UE_TBCC_13_17_CRC_37 = P_UE_maxs;
 SNRs_TBCC_13_17_CRC_37 = SNRs;
 
-fileName = '031421_123431_sim_data_probs_and_exp_list_sizes_vs_SNR_TBCC_27_31_CRC_21_k_64';
+fileName = '031521_182036_sim_data_vs_SNR_TBCC_27_31_CRC_21_k_64';
 load([path, fileName, '.mat'], 'P_UE_maxs', 'SNRs');
 P_UE_TBCC_27_31_CRC_21 = P_UE_maxs;
 SNRs_TBCC_27_31_CRC_21 = SNRs;
 
-fileName = '031421_123513_sim_data_probs_and_exp_list_sizes_vs_SNR_TBCC_53_75_CRC_21_k_64';
+fileName = '031521_182048_sim_data_vs_SNR_TBCC_53_75_CRC_21_k_64';
 load([path, fileName, '.mat'], 'P_UE_maxs', 'SNRs');
 P_UE_TBCC_53_75_CRC_21 = P_UE_maxs;
 SNRs_TBCC_53_75_CRC_21 = SNRs;
 
-fileName = '031421_123547_sim_data_probs_and_exp_list_sizes_vs_SNR_TBCC_133_171_CRC_33_k_64';
+fileName = '031521_182059_sim_data_vs_SNR_TBCC_133_171_CRC_33_k_64';
 load([path, fileName, '.mat'], 'P_UE_maxs', 'SNRs');
 P_UE_TBCC_133_171_CRC_33 = P_UE_maxs;
 SNRs_TBCC_133_171_CRC_33 = SNRs;
 
-fileName = '030421_203611_sim_data_probs_and_exp_list_sizes_vs_SNR_TBCC_247_371_CRC_21_k_64';
+fileName = '031521_182111_sim_data_vs_SNR_TBCC_247_371_CRC_21_k_64';
 load([path, fileName, '.mat'], 'P_UE_maxs', 'SNRs');
 P_UE_TBCC_247_371_CRC_21 = P_UE_maxs;
 SNRs_TBCC_247_371_CRC_21 = SNRs;
 
-fileName = '030521_093846_sim_data_probs_and_exp_list_sizes_vs_SNR_TBCC_561_753_CRC_21_k_64';
+fileName = '031521_182124_sim_data_vs_SNR_TBCC_561_753_CRC_21_k_64';
 load([path, fileName, '.mat'], 'P_UE_maxs', 'SNRs');
 P_UE_TBCC_561_753_CRC_21 = P_UE_maxs;
 SNRs_TBCC_561_753_CRC_21 = SNRs;
 
-fileName = '031421_123832_sim_data_probs_and_exp_list_sizes_vs_SNR_TBCC_1131_1537_CRC_25_k_64';
+fileName = '031521_182135_sim_data_vs_SNR_TBCC_1131_1537_CRC_25_k_64';
 load([path, fileName, '.mat'], 'P_UE_maxs', 'SNRs');
 P_UE_TBCC_1131_1537_CRC_25 = P_UE_maxs;
 SNRs_TBCC_1131_1537_CRC_25 = SNRs;
 
-fileName = '031421_123906_sim_data_probs_and_exp_list_sizes_vs_SNR_TBCC_2473_3217_CRC_33_k_64';
+fileName = '031521_182147_sim_data_vs_SNR_TBCC_2473_3217_CRC_33_k_64';
 load([path, fileName, '.mat'], 'P_UE_maxs', 'SNRs');
 P_UE_TBCC_2473_3217_CRC_33 = P_UE_maxs;
 SNRs_TBCC_2473_3217_CRC_33 = SNRs;
@@ -205,42 +205,42 @@ n = omega*(k + m);
 % load file 
 path = './TCOM_sim_data/';
 
-fileName = '031421_123959_sim_data_probs_and_exp_list_sizes_vs_SNR_TBCC_13_17_CRC_55_k_64';
+fileName = '031521_182253_sim_data_vs_SNR_TBCC_13_17_CRC_55_k_64';
 load([path, fileName, '.mat'], 'P_UE_maxs', 'SNRs');
 P_UE_TBCC_13_17_CRC_55 = P_UE_maxs;
 SNRs_TBCC_13_17_CRC_55 = SNRs;
 
-fileName = '031421_124028_sim_data_probs_and_exp_list_sizes_vs_SNR_TBCC_27_31_CRC_63_k_64';
+fileName = '031521_182303_sim_data_vs_SNR_TBCC_27_31_CRC_63_k_64';
 load([path, fileName, '.mat'], 'P_UE_maxs', 'SNRs');
 P_UE_TBCC_27_31_CRC_63 = P_UE_maxs;
 SNRs_TBCC_27_31_CRC_63 = SNRs;
 
-fileName = '031421_124148_sim_data_probs_and_exp_list_sizes_vs_SNR_TBCC_53_75_CRC_77_k_64';
+fileName = '031521_182316_sim_data_vs_SNR_TBCC_53_75_CRC_77_k_64';
 load([path, fileName, '.mat'], 'P_UE_maxs', 'SNRs');
 P_UE_TBCC_53_75_CRC_77 = P_UE_maxs;
 SNRs_TBCC_53_75_CRC_77 = SNRs;
 
-fileName = '031421_124229_sim_data_probs_and_exp_list_sizes_vs_SNR_TBCC_133_171_CRC_75_k_64';
+fileName = '031521_182328_sim_data_vs_SNR_TBCC_133_171_CRC_75_k_64';
 load([path, fileName, '.mat'], 'P_UE_maxs', 'SNRs');
 P_UE_TBCC_133_171_CRC_75 = P_UE_maxs;
 SNRs_TBCC_133_171_CRC_75 = SNRs;
 
-fileName = '030521_163812_sim_data_probs_and_exp_list_sizes_vs_SNR_TBCC_247_371_CRC_63_k_64';
+fileName = '031521_182339_sim_data_vs_SNR_TBCC_247_371_CRC_63_k_64';
 load([path, fileName, '.mat'], 'P_UE_maxs', 'SNRs');
 P_UE_TBCC_247_371_CRC_63 = P_UE_maxs;
 SNRs_TBCC_247_371_CRC_63 = SNRs;
 
-fileName = '030821_211823_sim_data_probs_and_exp_list_sizes_vs_SNR_TBCC_561_753_CRC_63_k_64';
+fileName = '031521_182350_sim_data_vs_SNR_TBCC_561_753_CRC_63_k_64';
 load([path, fileName, '.mat'], 'P_UE_maxs', 'SNRs');
 P_UE_TBCC_561_753_CRC_63 = P_UE_maxs;
 SNRs_TBCC_561_753_CRC_63 = SNRs;
 
-fileName = '031421_124328_sim_data_probs_and_exp_list_sizes_vs_SNR_TBCC_1131_1537_CRC_63_k_64';
+fileName = '031521_182403_sim_data_vs_SNR_TBCC_1131_1537_CRC_63_k_64';
 load([path, fileName, '.mat'], 'P_UE_maxs', 'SNRs');
 P_UE_TBCC_1131_1537_CRC_63 = P_UE_maxs;
 SNRs_TBCC_1131_1537_CRC_63 = SNRs;
 
-fileName = '030821_212241_sim_data_probs_and_exp_list_sizes_vs_SNR_TBCC_2473_3217_CRC_63_k_64';
+fileName = '031621_134659_sim_data_vs_SNR_TBCC_2473_3217_CRC_63_k_64';
 load([path, fileName, '.mat'], 'P_UE_maxs', 'SNRs');
 P_UE_TBCC_2473_3217_CRC_63 = P_UE_maxs;
 SNRs_TBCC_2473_3217_CRC_63 = SNRs;
@@ -293,42 +293,42 @@ n = omega*(k + m);
 % load file 
 path = './TCOM_sim_data/';
 
-fileName = '031421_133747_sim_data_probs_and_exp_list_sizes_vs_SNR_TBCC_13_17_CRC_143_k_64';
+fileName = '031521_182426_sim_data_vs_SNR_TBCC_13_17_CRC_143_k_64';
 load([path, fileName, '.mat'], 'P_UE_maxs', 'SNRs');
 P_UE_TBCC_13_17_CRC_143 = P_UE_maxs;
 SNRs_TBCC_13_17_CRC_143 = SNRs;
 
-fileName = '031421_124511_sim_data_probs_and_exp_list_sizes_vs_SNR_TBCC_27_31_CRC_117_k_64';
+fileName = '031521_182438_sim_data_vs_SNR_TBCC_27_31_CRC_117_k_64';
 load([path, fileName, '.mat'], 'P_UE_maxs', 'SNRs');
 P_UE_TBCC_27_31_CRC_117 = P_UE_maxs;
 SNRs_TBCC_27_31_CRC_117 = SNRs;
 
-fileName = '031421_124539_sim_data_probs_and_exp_list_sizes_vs_SNR_TBCC_53_75_CRC_143_k_64';
+fileName = '031521_182449_sim_data_vs_SNR_TBCC_53_75_CRC_143_k_64';
 load([path, fileName, '.mat'], 'P_UE_maxs', 'SNRs');
 P_UE_TBCC_53_75_CRC_143 = P_UE_maxs;
 SNRs_TBCC_53_75_CRC_143 = SNRs;
 
-fileName = '030521_170021_sim_data_probs_and_exp_list_sizes_vs_SNR_TBCC_133_171_CRC_177_k_64';
+fileName = '031521_182501_sim_data_vs_SNR_TBCC_133_171_CRC_177_k_64';
 load([path, fileName, '.mat'], 'P_UE_maxs', 'SNRs');
 P_UE_TBCC_133_171_CRC_177 = P_UE_maxs;
 SNRs_TBCC_133_171_CRC_177 = SNRs;
 
-fileName = '030521_194806_sim_data_probs_and_exp_list_sizes_vs_SNR_TBCC_247_371_CRC_143_k_64';
+fileName = '031521_182515_sim_data_vs_SNR_TBCC_247_371_CRC_143_k_64';
 load([path, fileName, '.mat'], 'P_UE_maxs', 'SNRs');
 P_UE_TBCC_247_371_CRC_143 = P_UE_maxs;
 SNRs_TBCC_247_371_CRC_143 = SNRs;
 
-fileName = '030821_212438_sim_data_probs_and_exp_list_sizes_vs_SNR_TBCC_561_753_CRC_177_k_64';
+fileName = '031521_182544_sim_data_vs_SNR_TBCC_561_753_CRC_177_k_64';
 load([path, fileName, '.mat'], 'P_UE_maxs', 'SNRs');
 P_UE_TBCC_561_753_CRC_177 = P_UE_maxs;
 SNRs_TBCC_561_753_CRC_177 = SNRs;
 
-fileName = '030821_212555_sim_data_probs_and_exp_list_sizes_vs_SNR_TBCC_1131_1537_CRC_121_k_64';
+fileName = '031521_182604_sim_data_vs_SNR_TBCC_1131_1537_CRC_121_k_64';
 load([path, fileName, '.mat'], 'P_UE_maxs', 'SNRs');
 P_UE_TBCC_1131_1537_CRC_121 = P_UE_maxs;
 SNRs_TBCC_1131_1537_CRC_121 = SNRs;
 
-fileName = '030821_212713_sim_data_probs_and_exp_list_sizes_vs_SNR_TBCC_2473_3217_CRC_171_k_64';
+fileName = '031521_182616_sim_data_vs_SNR_TBCC_2473_3217_CRC_171_k_64';
 load([path, fileName, '.mat'], 'P_UE_maxs', 'SNRs');
 P_UE_TBCC_2473_3217_CRC_171 = P_UE_maxs;
 SNRs_TBCC_2473_3217_CRC_171 = SNRs;
@@ -380,42 +380,42 @@ n = omega*(k + m);
 % load file 
 path = './TCOM_sim_data/';
 
-fileName = '031421_124619_sim_data_probs_and_exp_list_sizes_vs_SNR_TBCC_13_17_CRC_355_k_64';
+fileName = '031521_182627_sim_data_vs_SNR_TBCC_13_17_CRC_355_k_64';
 load([path, fileName, '.mat'], 'P_UE_maxs', 'SNRs');
 P_UE_TBCC_13_17_CRC_355 = P_UE_maxs;
 SNRs_TBCC_13_17_CRC_355 = SNRs;
 
-fileName = '031421_124645_sim_data_probs_and_exp_list_sizes_vs_SNR_TBCC_27_31_CRC_265_k_64';
+fileName = '031521_182639_sim_data_vs_SNR_TBCC_27_31_CRC_265_k_64';
 load([path, fileName, '.mat'], 'P_UE_maxs', 'SNRs');
 P_UE_TBCC_27_31_CRC_265 = P_UE_maxs;
 SNRs_TBCC_27_31_CRC_265 = SNRs;
 
-fileName = '030521_195733_sim_data_probs_and_exp_list_sizes_vs_SNR_TBCC_53_75_CRC_275_k_64';
+fileName = '031521_182651_sim_data_vs_SNR_TBCC_53_75_CRC_275_k_64';
 load([path, fileName, '.mat'], 'P_UE_maxs', 'SNRs');
 P_UE_TBCC_53_75_CRC_275 = P_UE_maxs;
 SNRs_TBCC_53_75_CRC_275 = SNRs;
 
-fileName = '030521_204400_sim_data_probs_and_exp_list_sizes_vs_SNR_TBCC_133_171_CRC_377_k_64';
+fileName = '031521_182702_sim_data_vs_SNR_TBCC_133_171_CRC_377_k_64';
 load([path, fileName, '.mat'], 'P_UE_maxs', 'SNRs');
 P_UE_TBCC_133_171_CRC_377 = P_UE_maxs;
 SNRs_TBCC_133_171_CRC_377 = SNRs;
 
-fileName = '030621_231334_sim_data_probs_and_exp_list_sizes_vs_SNR_TBCC_247_371_CRC_357_k_64';
+fileName = '031521_182714_sim_data_vs_SNR_TBCC_247_371_CRC_357_k_64';
 load([path, fileName, '.mat'], 'P_UE_maxs', 'SNRs');
 P_UE_TBCC_247_371_CRC_357 = P_UE_maxs;
 SNRs_TBCC_247_371_CRC_357 = SNRs;
 
-fileName = '030821_212850_sim_data_probs_and_exp_list_sizes_vs_SNR_TBCC_561_753_CRC_377_k_64';
+fileName = '031521_182727_sim_data_vs_SNR_TBCC_561_753_CRC_377_k_64';
 load([path, fileName, '.mat'], 'P_UE_maxs', 'SNRs');
 P_UE_TBCC_561_753_CRC_377 = P_UE_maxs;
 SNRs_TBCC_561_753_CRC_377 = SNRs;
 
-fileName = '030821_213015_sim_data_probs_and_exp_list_sizes_vs_SNR_TBCC_1131_1537_CRC_305_k_64';
+fileName = '031521_182742_sim_data_vs_SNR_TBCC_1131_1537_CRC_305_k_64';
 load([path, fileName, '.mat'], 'P_UE_maxs', 'SNRs');
 P_UE_TBCC_1131_1537_CRC_305 = P_UE_maxs;
 SNRs_TBCC_1131_1537_CRC_305 = SNRs;
 
-fileName = '030921_100949_sim_data_probs_and_exp_list_sizes_vs_SNR_TBCC_2473_3217_CRC_273_k_64';
+fileName = '031521_182800_sim_data_vs_SNR_TBCC_2473_3217_CRC_273_k_64';
 load([path, fileName, '.mat'], 'P_UE_maxs', 'SNRs');
 P_UE_TBCC_2473_3217_CRC_273 = P_UE_maxs;
 SNRs_TBCC_2473_3217_CRC_273 = SNRs;
@@ -466,42 +466,42 @@ n = omega*(k + m);
 % load file 
 path = './TCOM_sim_data/';
 
-fileName = '031421_124722_sim_data_probs_and_exp_list_sizes_vs_SNR_TBCC_13_17_CRC_407_k_64';
+fileName = '031521_182813_sim_data_vs_SNR_TBCC_13_17_CRC_407_k_64';
 load([path, fileName, '.mat'], 'P_UE_maxs', 'SNRs');
 P_UE_TBCC_13_17_CRC_407 = P_UE_maxs;
 SNRs_TBCC_13_17_CRC_407 = SNRs;
 
-fileName = '030621_231657_sim_data_probs_and_exp_list_sizes_vs_SNR_TBCC_27_31_CRC_653_k_64';
+fileName = '031521_182827_sim_data_vs_SNR_TBCC_27_31_CRC_653_k_64';
 load([path, fileName, '.mat'], 'P_UE_maxs', 'SNRs');
 P_UE_TBCC_27_31_CRC_653 = P_UE_maxs;
 SNRs_TBCC_27_31_CRC_653 = SNRs;
 
-fileName = '030621_231749_sim_data_probs_and_exp_list_sizes_vs_SNR_TBCC_53_75_CRC_555_k_64';
+fileName = '031521_182841_sim_data_vs_SNR_TBCC_53_75_CRC_555_k_64';
 load([path, fileName, '.mat'], 'P_UE_maxs', 'SNRs');
 P_UE_TBCC_53_75_CRC_555 = P_UE_maxs;
 SNRs_TBCC_53_75_CRC_555 = SNRs;
 
-fileName = '030621_231914_sim_data_probs_and_exp_list_sizes_vs_SNR_TBCC_133_171_CRC_505_k_64';
+fileName = '031521_182854_sim_data_vs_SNR_TBCC_133_171_CRC_505_k_64';
 load([path, fileName, '.mat'], 'P_UE_maxs', 'SNRs');
 P_UE_TBCC_133_171_CRC_505 = P_UE_maxs;
 SNRs_TBCC_133_171_CRC_505 = SNRs;
 
-fileName = '030621_235756_sim_data_probs_and_exp_list_sizes_vs_SNR_TBCC_247_371_CRC_505_k_64';
+fileName = '031521_182907_sim_data_vs_SNR_TBCC_247_371_CRC_505_k_64';
 load([path, fileName, '.mat'], 'P_UE_maxs', 'SNRs');
 P_UE_TBCC_247_371_CRC_505 = P_UE_maxs;
 SNRs_TBCC_247_371_CRC_505 = SNRs;
 
-fileName = '030821_213208_sim_data_probs_and_exp_list_sizes_vs_SNR_TBCC_561_753_CRC_653_k_64';
+fileName = '031521_182924_sim_data_vs_SNR_TBCC_561_753_CRC_653_k_64';
 load([path, fileName, '.mat'], 'P_UE_maxs', 'SNRs');
 P_UE_TBCC_561_753_CRC_653 = P_UE_maxs;
 SNRs_TBCC_561_753_CRC_653 = SNRs;
 
-fileName = '030921_101125_sim_data_probs_and_exp_list_sizes_vs_SNR_TBCC_1131_1537_CRC_777_k_64';
+fileName = '031521_182939_sim_data_vs_SNR_TBCC_1131_1537_CRC_777_k_64';
 load([path, fileName, '.mat'], 'P_UE_maxs', 'SNRs');
 P_UE_TBCC_1131_1537_CRC_777 = P_UE_maxs;
 SNRs_TBCC_1131_1537_CRC_777 = SNRs;
 
-fileName = '031121_163302_sim_data_probs_and_exp_list_sizes_vs_SNR_TBCC_2473_3217_CRC_631_k_64';
+fileName = '031521_183003_sim_data_vs_SNR_TBCC_2473_3217_CRC_631_k_64';
 load([path, fileName, '.mat'], 'P_UE_maxs', 'SNRs');
 P_UE_TBCC_2473_3217_CRC_631 = P_UE_maxs;
 SNRs_TBCC_2473_3217_CRC_631 = SNRs;
@@ -552,42 +552,42 @@ n = omega*(k + m);
 % load file 
 path = './TCOM_sim_data/';
 
-fileName = '030621_232102_sim_data_probs_and_exp_list_sizes_vs_SNR_TBCC_13_17_CRC_1511_k_64';
+fileName = '031521_183029_sim_data_vs_SNR_TBCC_13_17_CRC_1511_k_64';
 load([path, fileName, '.mat'], 'P_UE_maxs', 'SNRs');
 P_UE_TBCC_13_17_CRC_1511 = P_UE_maxs;
 SNRs_TBCC_13_17_CRC_1511 = SNRs;
 
-fileName = '030621_232149_sim_data_probs_and_exp_list_sizes_vs_SNR_TBCC_27_31_CRC_1145_k_64';
+fileName = '031521_183045_sim_data_vs_SNR_TBCC_27_31_CRC_1145_k_64';
 load([path, fileName, '.mat'], 'P_UE_maxs', 'SNRs');
 P_UE_TBCC_27_31_CRC_1145 = P_UE_maxs;
 SNRs_TBCC_27_31_CRC_1145 = SNRs;
 
-fileName = '030621_232232_sim_data_probs_and_exp_list_sizes_vs_SNR_TBCC_53_75_CRC_1511_k_64';
+fileName = '031521_183058_sim_data_vs_SNR_TBCC_53_75_CRC_1511_k_64';
 load([path, fileName, '.mat'], 'P_UE_maxs', 'SNRs');
 P_UE_TBCC_53_75_CRC_1511 = P_UE_maxs;
 SNRs_TBCC_53_75_CRC_1511 = SNRs;
 
-fileName = '030621_232312_sim_data_probs_and_exp_list_sizes_vs_SNR_TBCC_133_171_CRC_1275_k_64';
+fileName = '031521_183113_sim_data_vs_SNR_TBCC_133_171_CRC_1275_k_64';
 load([path, fileName, '.mat'], 'P_UE_maxs', 'SNRs');
 P_UE_TBCC_133_171_CRC_1275 = P_UE_maxs;
 SNRs_TBCC_133_171_CRC_1275 = SNRs;
 
-fileName = '030721_134920_sim_data_probs_and_exp_list_sizes_vs_SNR_TBCC_247_371_CRC_1641_k_64';
+fileName = '031521_183126_sim_data_vs_SNR_TBCC_247_371_CRC_1641_k_64';
 load([path, fileName, '.mat'], 'P_UE_maxs', 'SNRs');
 P_UE_TBCC_247_371_CRC_1641 = P_UE_maxs;
 SNRs_TBCC_247_371_CRC_1641 = SNRs;
 
-fileName = '030921_102214_sim_data_probs_and_exp_list_sizes_vs_SNR_TBCC_561_753_CRC_1401_k_64';
+fileName = '031521_183150_sim_data_vs_SNR_TBCC_561_753_CRC_1401_k_64';
 load([path, fileName, '.mat'], 'P_UE_maxs', 'SNRs');
 P_UE_TBCC_561_753_CRC_1401 = P_UE_maxs;
 SNRs_TBCC_561_753_CRC_1401 = SNRs;
 
-fileName = '031121_163630_sim_data_probs_and_exp_list_sizes_vs_SNR_TBCC_1131_1537_CRC_1511_k_64';
+fileName = '031521_183224_sim_data_vs_SNR_TBCC_1131_1537_CRC_1511_k_64';
 load([path, fileName, '.mat'], 'P_UE_maxs', 'SNRs');
 P_UE_TBCC_1131_1537_CRC_1511 = P_UE_maxs;
 SNRs_TBCC_1131_1537_CRC_1511 = SNRs;
 
-fileName = '031221_101821_sim_data_probs_and_exp_list_sizes_vs_SNR_TBCC_2473_3217_CRC_1027_k_64';
+fileName = '031521_183259_sim_data_vs_SNR_TBCC_2473_3217_CRC_1027_k_64';
 load([path, fileName, '.mat'], 'P_UE_maxs', 'SNRs');
 P_UE_TBCC_2473_3217_CRC_1027 = P_UE_maxs;
 SNRs_TBCC_2473_3217_CRC_1027 = SNRs;
@@ -639,42 +639,42 @@ n = omega*(k + m);
 % load file 
 path = './TCOM_sim_data/';
 
-fileName = '031421_124821_sim_data_probs_and_exp_list_sizes_vs_SNR_TBCC_13_17_CRC_2235_k_64';
+fileName = '031521_183317_sim_data_vs_SNR_TBCC_13_17_CRC_2235_k_64';
 load([path, fileName, '.mat'], 'P_UE_maxs', 'SNRs');
 P_UE_TBCC_13_17_CRC_2235 = P_UE_maxs;
 SNRs_TBCC_13_17_CRC_2235 = SNRs;
 
-fileName = '031421_124852_sim_data_probs_and_exp_list_sizes_vs_SNR_TBCC_27_31_CRC_2321_k_64';
+fileName = '031521_183330_sim_data_vs_SNR_TBCC_27_31_CRC_2321_k_64';
 load([path, fileName, '.mat'], 'P_UE_maxs', 'SNRs');
 P_UE_TBCC_27_31_CRC_2321 = P_UE_maxs;
 SNRs_TBCC_27_31_CRC_2321 = SNRs;
 
-fileName = '030721_135503_sim_data_probs_and_exp_list_sizes_vs_SNR_TBCC_53_75_CRC_2033_k_64';
+fileName = '031521_183348_sim_data_vs_SNR_TBCC_53_75_CRC_2033_k_64';
 load([path, fileName, '.mat'], 'P_UE_maxs', 'SNRs');
 P_UE_TBCC_53_75_CRC_2033 = P_UE_maxs;
 SNRs_TBCC_53_75_CRC_2033 = SNRs;
 
-fileName = '030721_142240_sim_data_probs_and_exp_list_sizes_vs_SNR_TBCC_133_171_CRC_2561_k_64';
+fileName = '031521_183401_sim_data_vs_SNR_TBCC_133_171_CRC_2561_k_64';
 load([path, fileName, '.mat'], 'P_UE_maxs', 'SNRs');
 P_UE_TBCC_133_171_CRC_2561 = P_UE_maxs;
 SNRs_TBCC_133_171_CRC_2561 = SNRs;
 
-fileName = '031121_174953_sim_data_probs_and_exp_list_sizes_vs_SNR_TBCC_247_371_CRC_2727_k_64';
+fileName = '031521_183524_sim_data_vs_SNR_TBCC_247_371_CRC_2727_k_64';
 load([path, fileName, '.mat'], 'P_UE_maxs', 'SNRs');
 P_UE_TBCC_247_371_CRC_2727 = P_UE_maxs;
 SNRs_TBCC_247_371_CRC_2727 = SNRs;
 
-fileName = '030521_093946_sim_data_probs_and_exp_list_sizes_vs_SNR_TBCC_561_753_CRC_2365_k_64';
+fileName = '031521_183540_sim_data_vs_SNR_TBCC_561_753_CRC_2365_k_64';
 load([path, fileName, '.mat'], 'P_UE_maxs', 'SNRs');
 P_UE_TBCC_561_753_CRC_2365 = P_UE_maxs;
 SNRs_TBCC_561_753_CRC_2365 = SNRs;
 
-fileName = '031421_115130_sim_data_probs_and_exp_list_sizes_vs_SNR_TBCC_1131_1537_CRC_2603_k_64';
+fileName = '031521_183642_sim_data_vs_SNR_TBCC_1131_1537_CRC_2603_k_64';
 load([path, fileName, '.mat'], 'P_UE_maxs', 'SNRs');
 P_UE_TBCC_1131_1537_CRC_2603 = P_UE_maxs;
 SNRs_TBCC_1131_1537_CRC_2603 = SNRs;
 
-fileName = '031421_115420_sim_data_probs_and_exp_list_sizes_vs_SNR_TBCC_2473_3217_CRC_2335_k_64';
+fileName = '031521_183807_sim_data_vs_SNR_TBCC_2473_3217_CRC_2335_k_64';
 load([path, fileName, '.mat'], 'P_UE_maxs', 'SNRs');
 P_UE_TBCC_2473_3217_CRC_2335 = P_UE_maxs;
 SNRs_TBCC_2473_3217_CRC_2335 = SNRs;
