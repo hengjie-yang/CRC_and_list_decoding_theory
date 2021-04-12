@@ -120,9 +120,10 @@ end
 % process the average list size
 
 list_ranks = 1:Psi;
-for ii = 1:size(etas, 2)
-    tot = sum(DistTable{iter}(1:Psi, 1));
+for iter = 1:size(etas, 2)
+    tot = sum(DistTable{iter}(1:Psi+1, 1));
     overall_distribution = DistTable{iter}(1:Psi, 1);
+    overall_distribution(Psi) = overall_distribution(Psi) + DistTable{iter}(Psi+1, 1);
     overall_distribution = overall_distribution/tot;
     overall_distribution = overall_distribution';
     Ave_cond_list_sizes(iter) = sum(list_ranks.*overall_distribution);
