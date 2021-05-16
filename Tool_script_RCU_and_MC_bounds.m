@@ -10,7 +10,7 @@ set(groot, 'defaultAxesTickLabelInterpreter','latex');
 set(groot, 'defaultLegendInterpreter','latex');
 
 
-gamma_s = 1:0.1:5;  % the definition aligns with the journal manuscript
+gamma_s = 1:0.1:7;  % the definition aligns with the journal manuscript
 
 % % CRC-ZTCC setup
 % k = 64;
@@ -22,13 +22,16 @@ gamma_s = 1:0.1:5;  % the definition aligns with the journal manuscript
 
 
 % CRC-TBCC setup
-k = 64;
-m = 9;
-v = 3; % a useless variable
-omega = 2;
-n = omega*(k + m);
-R = k / n;
+% k = 64;
+% m = 9;
+% v = 3; % a useless variable
+% omega = 2;
+% n = omega*(k + m);
+% R = k / n;
 
+k = 60;
+n = 82;
+R = k/n;
 
 pX = [.5; .5];
 X = [-1; 1];
@@ -53,15 +56,16 @@ path = './TCOM_sim_data/';
 fileName = ['RCU_and_MC_bound_n_',num2str(n),'_k_',num2str(k),'.mat'];
 save([path, fileName], 'gamma_s','rcu_bounds','mc_bounds');
 
-
+%%
 figure;
 semilogy(gamma_s, rcu_bounds, '-'); hold on
 semilogy(gamma_s, mc_bounds, '-');hold on
 % xline(2.5, '--k');
 grid on
-ylim([10^-8, 1]);
+ylim([10^-6, 1]);
 legend('RCU bound','MC bound');
-xlabel('$\gamma_s$ (dB)', 'interpreter','latex');
+xlabel('SNR $\gamma_s$ (dB)', 'interpreter','latex');
 ylabel('Probability of error');
+title('K = 60, N = 82, BI-AWGN channel');
 
 

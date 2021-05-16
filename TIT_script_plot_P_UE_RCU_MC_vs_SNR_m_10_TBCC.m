@@ -35,32 +35,32 @@ load([path, fileName, '.mat'], 'P_UE_maxs', 'SNRs');
 P_UE_TBCC_27_31_CRC_2321 = P_UE_maxs;
 SNRs_TBCC_27_31_CRC_2321 = SNRs;
 
-fileName = '031521_183348_sim_data_vs_SNR_TBCC_53_75_CRC_2033_k_64';
+fileName = '041221_104348_sim_data_vs_SNR_TBCC_53_75_CRC_2033_k_64';
 load([path, fileName, '.mat'], 'P_UE_maxs', 'SNRs');
 P_UE_TBCC_53_75_CRC_2033 = P_UE_maxs;
 SNRs_TBCC_53_75_CRC_2033 = SNRs;
 
-fileName = '031521_183401_sim_data_vs_SNR_TBCC_133_171_CRC_2561_k_64';
+fileName = '041221_104204_sim_data_vs_SNR_TBCC_133_171_CRC_2561_k_64';
 load([path, fileName, '.mat'], 'P_UE_maxs', 'SNRs');
 P_UE_TBCC_133_171_CRC_2561 = P_UE_maxs;
 SNRs_TBCC_133_171_CRC_2561 = SNRs;
 
-fileName = '031521_183524_sim_data_vs_SNR_TBCC_247_371_CRC_2727_k_64';
+fileName = '041221_104533_sim_data_vs_SNR_TBCC_247_371_CRC_2727_k_64';
 load([path, fileName, '.mat'], 'P_UE_maxs', 'SNRs');
 P_UE_TBCC_247_371_CRC_2727 = P_UE_maxs;
 SNRs_TBCC_247_371_CRC_2727 = SNRs;
 
-fileName = '031521_183540_sim_data_vs_SNR_TBCC_561_753_CRC_2365_k_64';
+fileName = '041221_104654_sim_data_vs_SNR_TBCC_561_753_CRC_2365_k_64';
 load([path, fileName, '.mat'], 'P_UE_maxs', 'SNRs');
 P_UE_TBCC_561_753_CRC_2365 = P_UE_maxs;
 SNRs_TBCC_561_753_CRC_2365 = SNRs;
 
-fileName = '031521_183642_sim_data_vs_SNR_TBCC_1131_1537_CRC_2603_k_64';
+fileName = '051621_104807_sim_data_vs_SNR_TBCC_1131_1537_CRC_2603_k_64';
 load([path, fileName, '.mat'], 'P_UE_maxs', 'SNRs');
 P_UE_TBCC_1131_1537_CRC_2603 = P_UE_maxs;
 SNRs_TBCC_1131_1537_CRC_2603 = SNRs;
 
-fileName = '031521_183807_sim_data_vs_SNR_TBCC_2473_3217_CRC_2335_k_64';
+fileName = '051621_104531_sim_data_vs_SNR_TBCC_2473_3217_CRC_2335_k_64';
 load([path, fileName, '.mat'], 'P_UE_maxs', 'SNRs');
 P_UE_TBCC_2473_3217_CRC_2335 = P_UE_maxs;
 SNRs_TBCC_2473_3217_CRC_2335 = SNRs;
@@ -70,7 +70,7 @@ load([path, fileName, '.mat'],'gamma_s', 'rcu_bounds','mc_bounds');
 
 
 
-% plot curves
+%% plot curves
 figure;
 semilogy(SNRs_TBCC_13_17_CRC_2235, P_UE_TBCC_13_17_CRC_2235, '-x','Color','#0072BD'); hold on
 semilogy(SNRs_TBCC_27_31_CRC_2321, P_UE_TBCC_27_31_CRC_2321, '-s','Color','#D95319'); hold on
@@ -83,7 +83,8 @@ semilogy(SNRs_TBCC_2473_3217_CRC_2335, P_UE_TBCC_2473_3217_CRC_2335, '-o','Color
 semilogy(gamma_s, rcu_bounds, '-.k'); hold on
 semilogy(gamma_s, mc_bounds, '-','Color','#A2142F'); hold on
 grid on
-ylim([10^(-6), 1]);
+ylim([10^(-7), 10^(-1)]);
+xlim([1, 3])
 legend('$m=10, \nu=3$',...
     '$m=10, \nu=4$',...
     '$m=10, \nu=5$',...
@@ -93,7 +94,7 @@ legend('$m=10, \nu=3$',...
     '$m=10, \nu=9$',...
     '$m=10, \nu=10$',...
     'RCU bound',...
-    'MC bound','Location','northeast');
+    'MC bound','Location','southwest');
 
 xlabel('SNR $\gamma_s$ (dB)', 'interpreter', 'latex');
 ylabel('Probability of UE $P_{e, \lambda}$', 'interpreter', 'latex');

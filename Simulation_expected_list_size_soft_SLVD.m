@@ -9,7 +9,7 @@ clear all;
 clc;
 
 % System parameters
-k = 4;
+k = 64;
 crc_gen_poly = '11';
 constraint_length = 4;
 code_generator = [13, 17];
@@ -21,15 +21,15 @@ poly = dec2base(base2dec(crc_gen_poly, 8), 2) - '0';
 poly = fliplr(poly);
 m = length(poly)-1; % CRC degree
 
-snr_dBs = -10:0.5:5;
-% snr_dBs = 3;
+% snr_dBs = -10:0.5:5;
+snr_dBs = 0;
 
 Max_list_size = 2^(k+m) - 2^k + 1;
 List_size_instances = cell(size(snr_dBs, 2), 1);
 Ave_list_sizes = zeros(size(snr_dBs, 2), 1);
 
 % Simulation part
-parfor iter = 1:size(snr_dBs, 2)
+for iter = 1:size(snr_dBs, 2)
     snr = 10^(snr_dBs(iter)/10);
 %     alpha = qfunc(sqrt(snr)); % the crossover probability
     

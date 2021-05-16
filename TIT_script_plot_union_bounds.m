@@ -34,13 +34,14 @@ low_rate_spectra = zeros(num_crc, n+1);
 
 % Step 1: Find the low-rate code distance spectra for each CRC poly.
 for iter = 1:num_crc
+    disp(['Current CRC index: ', num2str(iter), ' out of ',num2str(num_crc)]);
     weight_node = Compute_relative_distance_spectrum_brute_force(v+1, code_generator, k+m, crc_polys(iter, :), zeros(1,n));
     low_rate_spectra(iter, :) = weight_node.distance_spectrum_low_rate';
 end
 disp('Step 1 Finished!');
 
 %% Step 2: Compute the union bound
-SNR_dBs = -0.5:0.01:4;
+SNR_dBs = -0.5:0.01:2;
 union_bounds = zeros(num_crc, length(SNR_dBs));
 
 dists = 1:n;
@@ -83,13 +84,50 @@ semilogy(SNR_dBs, union_bounds(7,:), '-.');hold on
 % semilogy(SNR_dBs, union_bounds(14,:), '-o');hold on
 % semilogy(SNR_dBs, union_bounds(15,:), '-o');hold on
 % semilogy(SNR_dBs, union_bounds(16,:), '-o');hold on
-xline(threshold,'--r');
-txt = '$\leftarrow threshold$';
-text(threshold,5*10^(-3),txt,'interpreter','latex','HorizontalAlignment','left');
+xline(threshold,'--k');
+txt = '$\leftarrow$ threshold';
+text(threshold,7*10^(-2),txt,'interpreter','latex','HorizontalAlignment','left');
 legend('degree-$5$ CRC poly. 0x3B', 'degree-$5$ CRC poly. 0x2D');
 xlabel('$\gamma_s$ (dB)','interpreter','latex');
 ylabel('Probability of UE','interpreter','latex');
 grid on
+
+
+
+% Specify the position and the size of the rectangle
+x_r = -0.474; y_r = 0.086; w_r = 0.05; h_r = 0.006;
+rectangle('Position', [x_r-w_r/2, y_r-h_r/2, w_r, h_r], ...
+'EdgeColor', [0.4, 0.1, 0.4], 'LineWidth',2);
+
+
+% Specify the position and the size of the second box and thus add a second axis for plotting
+x_a = 0.22; y_a = 0.14; w_a = 0.35; h_a = 0.35;
+ax = axes('Units', 'Normalized', ...
+'Position', [x_a, y_a, w_a, h_a], ...
+'XTick', [], ...
+'YTick', [], ...
+'Box', 'on', ...
+'LineWidth', 1, ...
+'Color', [1, 1, 1]);
+hold on;
+
+semilogy(SNR_dBs, union_bounds(12,:), '-');hold on
+semilogy(SNR_dBs, union_bounds(7,:), '-.');hold on
+grid on
+txt = '$P_{e,\lambda}\in[0.083, 0.089]$';
+text(-0.485,0.0885,txt,'interpreter','latex','HorizontalAlignment','left');
+txt = '$\gamma_s\in[-0.5, -0.45]$';
+text(-0.482,0.0877,txt,'interpreter','latex','HorizontalAlignment','left');
+% xlabel('Detail at $-0.474$ (dB)','interpreter','latex');
+axis([x_r-w_r/2, x_r+w_r/2, y_r-h_r/2, y_r+h_r/2]);
+
+
+
+
+
+
+
+
 
 
 
