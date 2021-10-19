@@ -37,19 +37,30 @@ v_8_m_10_punctured = [0.105500000000000,0.0577000000000000,...
     0.00265287173365168,0.00112078724095805,0.000356266187844910,...
     0.000106820830489229,3.13851621624251e-05, 7.28188231997567e-06];
 
+Fabian_m_11_snr = [1,1.5,2,2.5,3,3.5,4];
+Fabian_m_11 = [0.0998004,0.0398565,0.0101513,0.00137722,1.38E-04,1.27E-05,9.51E-07];
+
+Fabian_m_14_snr = [1,1.5,2,2.5,3,3.5];
+Fabian_m_14 = [0.119332,0.0340599,0.00840015,0.000986405,9.01E-05,5.17E-06];
+
+
 
 
 figure;
 semilogy(EbN0_BCH_128_64_t3, FER_BCH_128_64_t3, 'k-o'); hold on
 semilogy(EbN0_LDPC_128_64_t4, FER_LDPC_128_64_t4, 'r-^'); hold on
+semilogy(Fabian_m_11_snr, Fabian_m_11, '-x'); hold on
 semilogy(EbN0_BCH_128_64_t4, FER_BCH_128_64_t4, 'b-s'); hold on
 semilogy(v_8_m_10_punctured_snr, v_8_m_10_punctured, '-d'); hold on
+semilogy(Fabian_m_14_snr, Fabian_m_14, '-v'); hold on
 legend('Extended BCH code, OSD $t = 3$',...
     'LDPC code $\mathcal{F}_{256}$, OSD $t=4$',...
+    'TBCC with $\nu=11$, WAVA',...
     'Extended BCH code, OSD $t = 4$',...
-    'Punctured CRC-TBCC, SLVD');
+    'Punctured CRC-TBCC, SLVD',...
+    'TBCC with $\nu=14$, WAVA');
 
 grid on
 xlabel('$E_b/N_0$ (dB)', 'interpreter', 'latex');
 ylabel('FER');
-
+title('(128, 64) Short Blocklength Code Comparison');
