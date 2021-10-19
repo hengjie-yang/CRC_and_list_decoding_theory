@@ -29,8 +29,8 @@ gamma_s = 1:0.1:7;  % the definition aligns with the journal manuscript
 % n = omega*(k + m);
 % R = k / n;
 
-k = 60;
-n = 82;
+k = 90;
+n = 128;
 R = k/n;
 
 pX = [.5; .5];
@@ -53,8 +53,8 @@ end
 path = './TCOM_sim_data/';
 % timestamp = datestr(now, 'mmddyy_HHMMSS');
 
-fileName = ['RCU_and_MC_bound_n_',num2str(n),'_k_',num2str(k),'.mat'];
-save([path, fileName], 'gamma_s','rcu_bounds','mc_bounds');
+% fileName = ['RCU_and_MC_bound_n_',num2str(n),'_k_',num2str(k),'.mat'];
+% save([path, fileName], 'gamma_s','rcu_bounds','mc_bounds');
 
 %%
 figure;

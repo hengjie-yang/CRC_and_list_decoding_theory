@@ -65,6 +65,11 @@ load([path, fileName, '.mat'], 'P_UE_maxs', 'SNRs');
 P_UE_TBCC_2473_3217_CRC_2335 = P_UE_maxs;
 SNRs_TBCC_2473_3217_CRC_2335 = SNRs;
 
+% delete last point
+P_UE_TBCC_2473_3217_CRC_2335(end) = [];
+SNRs_TBCC_2473_3217_CRC_2335(end) = [];
+
+
 fileName = ['RCU_and_MC_bound_n_',num2str(n),'_k_',num2str(k)];
 load([path, fileName, '.mat'],'gamma_s', 'rcu_bounds','mc_bounds');
 
