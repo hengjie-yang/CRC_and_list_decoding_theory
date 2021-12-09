@@ -22,6 +22,7 @@ This repo is associated with the ongoing IT Transaction manuscript "CRC-Aided Li
 - TIT_script_plot_prob_of_UE_vs_Psi.m
 - TIT_script_plot_prob_of_UE_vs_SNR.m
 - TIT_script_plot_union_bounds.m
+- TIT_script_plot_tangential_sphere_bounds.m
 
 
 ## Scripts for plotting the saddlepoint approximation of the RCU bound and MC bound
