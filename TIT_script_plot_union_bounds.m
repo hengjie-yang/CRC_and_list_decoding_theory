@@ -1,4 +1,4 @@
-% This script is to prepare Fig. 2 in current TCOM manuscript.
+% This script is to prepare Fig. 2 in current TIT manuscript.
 % 
 % Plot the union bound of all degree-3 CRC polynomials for k = 4, ZTCC (13,
 % 17).
@@ -13,7 +13,7 @@ set(0,'DefaultTextFontName','Times','DefaultTextFontSize',16,...
 set(groot, 'defaultAxesTickLabelInterpreter','latex'); 
 set(groot, 'defaultLegendInterpreter','latex');
 
-% Basic parameters
+%% Basic parameters
 
 k = 10;
 m = 5;
@@ -67,27 +67,36 @@ threshold = 10*log10(threshold);
 % Step 3: Plot the union bound
 
 figure;
-% semilogy(SNR_dBs, union_bounds(1,:), '-o');hold on
-% semilogy(SNR_dBs, union_bounds(2,:), '-o');hold on
-% semilogy(SNR_dBs, union_bounds(3,:), '-o');hold on
-% semilogy(SNR_dBs, union_bounds(4,:), '-o');hold on
-% semilogy(SNR_dBs, union_bounds(5,:), '-o');hold on
-% semilogy(SNR_dBs, union_bounds(6,:), '-o');hold on
-semilogy(SNR_dBs, union_bounds(12,:), '-');hold on
-semilogy(SNR_dBs, union_bounds(7,:), '-.');hold on
-% semilogy(SNR_dBs, union_bounds(8,:), '-o');hold on
-% semilogy(SNR_dBs, union_bounds(9,:), '-o');hold on
-% semilogy(SNR_dBs, union_bounds(10,:), '-o');hold on
-% semilogy(SNR_dBs, union_bounds(11,:), '-o');hold on
+% semilogy(SNR_dBs, union_bounds(1,:), '-');hold on
+% semilogy(SNR_dBs, union_bounds(2,:), '-');hold on
+% semilogy(SNR_dBs, union_bounds(3,:), '-');hold on
+% semilogy(SNR_dBs, union_bounds(4,:), '-');hold on
+% semilogy(SNR_dBs, union_bounds(5,:), '-');hold on
+% semilogy(SNR_dBs, union_bounds(6,:), '-');hold on
+% 
+% semilogy(SNR_dBs, union_bounds(8,:), '-');hold on
+% semilogy(SNR_dBs, union_bounds(9,:), '-');hold on
+% 
+% semilogy(SNR_dBs, union_bounds(11,:), '-');hold on
+% 
+% semilogy(SNR_dBs, union_bounds(13,:), '-');hold on
+% semilogy(SNR_dBs, union_bounds(14,:), '-');hold on
+% semilogy(SNR_dBs, union_bounds(15,:), '-');hold on
+% semilogy(SNR_dBs, union_bounds(16,:), '-');hold on
 
-% semilogy(SNR_dBs, union_bounds(13,:), '-o');hold on
-% semilogy(SNR_dBs, union_bounds(14,:), '-o');hold on
-% semilogy(SNR_dBs, union_bounds(15,:), '-o');hold on
-% semilogy(SNR_dBs, union_bounds(16,:), '-o');hold on
+
+% --------------------------------------------------
+
+semilogy(SNR_dBs, union_bounds(10,:), 'k-');hold on
+semilogy(SNR_dBs, union_bounds(12,:), 'r-');hold on
+semilogy(SNR_dBs, union_bounds(7,:), 'b-.');hold on
+
 xline(threshold,'--k');
 txt = '$\leftarrow$ threshold';
 text(threshold,7*10^(-2),txt,'interpreter','latex','HorizontalAlignment','left');
-legend('degree-$5$ CRC poly. 0x3B', 'degree-$5$ CRC poly. 0x2D');
+legend('degree-$5$ CRC poly. 0x33',...
+    'degree-$5$ CRC poly. 0x37',...
+    'degree-$5$ CRC poly. 0x2D');
 xlabel('$\gamma_s$ (dB)','interpreter','latex');
 ylabel('Probability of UE','interpreter','latex');
 grid on
@@ -101,7 +110,7 @@ rectangle('Position', [x_r-w_r/2, y_r-h_r/2, w_r, h_r], ...
 
 
 % Specify the position and the size of the second box and thus add a second axis for plotting
-x_a = 0.22; y_a = 0.14; w_a = 0.35; h_a = 0.35;
+x_a = 0.22; y_a = 0.14; w_a = 0.35; h_a = 0.32;
 ax = axes('Units', 'Normalized', ...
 'Position', [x_a, y_a, w_a, h_a], ...
 'XTick', [], ...
@@ -111,8 +120,8 @@ ax = axes('Units', 'Normalized', ...
 'Color', [1, 1, 1]);
 hold on;
 
-semilogy(SNR_dBs, union_bounds(12,:), '-');hold on
-semilogy(SNR_dBs, union_bounds(7,:), '-.');hold on
+semilogy(SNR_dBs, union_bounds(12,:), 'r-');hold on
+semilogy(SNR_dBs, union_bounds(7,:), 'b-.');hold on
 grid on
 txt = '$P_{e,\lambda}\in[0.083, 0.089]$';
 text(-0.485,0.0885,txt,'interpreter','latex','HorizontalAlignment','left');

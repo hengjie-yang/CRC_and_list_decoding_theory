@@ -29,13 +29,19 @@ gamma_s = 1:0.1:7;  % the definition aligns with the journal manuscript
 % n = omega*(k + m);
 % R = k / n;
 
-k = 90;
+k = 64;
 n = 128;
 R = k/n;
 
 pX = [.5; .5];
 X = [-1; 1];
-EbN0 = gamma_s/(2*R); % E_b/N_0 = gamma_s/(2*R)
+EbN0 = 1:0.5:3;
+gamma_s = EbN0*2*R;
+% gamma_s = EbN0;
+
+
+% sim_CER = [0.064716864, 0.015585194, 0.001682548, 0.000138283, 0.000012555];
+% EbN0 = gamma_s/(2*R); % E_b/N_0 = gamma_s/(2*R)
 
 
 rcu_bounds = zeros(1, size(gamma_s, 2));
@@ -50,7 +56,7 @@ for ii = 1:size(gamma_s, 2)
 end
 
 
-path = './TCOM_sim_data/';
+% path = './TCOM_sim_data/';
 % timestamp = datestr(now, 'mmddyy_HHMMSS');
 
 % fileName = ['RCU_and_MC_bound_n_',num2str(n),'_k_',num2str(k),'.mat'];
@@ -58,14 +64,15 @@ path = './TCOM_sim_data/';
 
 %%
 figure;
-semilogy(gamma_s, rcu_bounds, '-'); hold on
-semilogy(gamma_s, mc_bounds, '-');hold on
+% semilogy(EbN0, sim_CER, '-+'); hold on
+semilogy(EbN0, rcu_bounds, '-'); hold on
+semilogy(EbN0, mc_bounds, '-');hold on
 % xline(2.5, '--k');
 grid on
-ylim([10^-6, 1]);
+ylim([10^-5, 1]);
 legend('RCU bound','MC bound');
 xlabel('SNR $\gamma_s$ (dB)', 'interpreter','latex');
 ylabel('Probability of error');
-title('K = 60, N = 82, BI-AWGN channel');
+title('K = 64, N = 128, BI-AWGN channel');
 
 
