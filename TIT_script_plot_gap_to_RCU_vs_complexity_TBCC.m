@@ -1,4 +1,4 @@
-% This script is to generate the SNR gap to the RCU bound vs. E[L] plot for
+% This script is to generate the SNR gap to the RCU bound vs. Complexity plot for
 % CRC-TBCC codes.
 %
 % Written by Hengjie Yang (hengjie.yang@ucla.edu)   03/11/21
@@ -95,7 +95,10 @@ fileNames{7} = {'031521_181959_sim_data_vs_SNR_TBCC_1131_1537_CRC_15_k_64';...
     '031521_182742_sim_data_vs_SNR_TBCC_1131_1537_CRC_305_k_64';...
     '031521_182939_sim_data_vs_SNR_TBCC_1131_1537_CRC_777_k_64';...
     '031521_183224_sim_data_vs_SNR_TBCC_1131_1537_CRC_1511_k_64';...
-    '042721_184847_sim_data_vs_SNR_TBCC_1131_1537_CRC_2603_k_64'};
+    '031521_183642_sim_data_vs_SNR_TBCC_1131_1537_CRC_2603_k_64'};
+
+% 031521_183642_sim_data_vs_SNR_TBCC_1131_1537_CRC_2603_k_64
+% 042721_184847_sim_data_vs_SNR_TBCC_1131_1537_CRC_2603_k_64
 
 % v = 10
 fileNames{8} = {'031521_182013_sim_data_vs_SNR_TBCC_2473_3217_CRC_17_k_64';...
@@ -107,11 +110,13 @@ fileNames{8} = {'031521_182013_sim_data_vs_SNR_TBCC_2473_3217_CRC_17_k_64';...
     '031521_183259_sim_data_vs_SNR_TBCC_2473_3217_CRC_1027_k_64';...
     '051621_104531_sim_data_vs_SNR_TBCC_2473_3217_CRC_2335_k_64'};
 
-c1 = 1;
-c2 = 1;
+c1 = 1.5;
+c2 = 2.2;
 
 for iter = 1:length(vs)
     v = vs(iter);
+%     iter = 8;
+%     v = vs(iter);
     SNR_gaps{iter} = zeros(size(fileNames{iter}, 1), 1);
     Complexities{iter} = zeros(size(fileNames{iter}, 1), 1);
     for ii = 1:size(fileNames{iter}, 1)
@@ -129,8 +134,11 @@ for iter = 1:length(vs)
             Exp_list_size_maxs = Exp_list_size_maxs(idx:end);
             Exp_insertions = Exp_insertions(idx:end);
         end
-        log_SNRs = log10(P_UE_maxs);
-        snr_val = interp1(log_SNRs, SNRs, log10(target_prob_UE));
+        log_probs = log10(P_UE_maxs);
+        snr_val = interp1(log_probs, SNRs, log10(target_prob_UE));
+%         if ~isnan(snr_val)
+%             disp(['v = ',num2str(iter + 2), ', m = ', num2str(m)]);
+%         end
         SNR_gaps{iter}(ii) = snr_val - opt_snr;
         exp_list_rank = interp1(SNRs, Exp_list_size_maxs, snr_val);
         exp_insertion = (k+m)*exp_list_rank+2^v-1;
@@ -145,14 +153,16 @@ end
 
 %%
 figure;
-semilogx(Complexities{1}, SNR_gaps{1}, '+b','MarkerSize',8); hold on
-semilogx(Complexities{2}, SNR_gaps{2}, 'o','MarkerSize',8); hold on
-semilogx(Complexities{3}, SNR_gaps{3}, '*','MarkerSize',8); hold on
-semilogx(Complexities{4}, SNR_gaps{4}, 'x','MarkerSize',8); hold on
-semilogx(Complexities{5}, SNR_gaps{5}, 'v','MarkerSize',8); hold on
-semilogx(Complexities{6}, SNR_gaps{6}, 'd','MarkerSize',8); hold on
-semilogx(Complexities{7}, SNR_gaps{7}, '^','MarkerSize',8); hold on
-semilogx(Complexities{8}, SNR_gaps{8}, 's','MarkerSize',8); hold on
+
+semilogx(Complexities{1}, SNR_gaps{1}, '+b','MarkerSize',8, 'Color', 'b'); hold on
+semilogx(Complexities{2}, SNR_gaps{2}, 'o','MarkerSize',8, 'Color', '#0072BD'); hold on
+semilogx(Complexities{3}, SNR_gaps{3}, '*','MarkerSize',8, 'Color', '#D95319'); hold on
+semilogx(Complexities{4}, SNR_gaps{4}, 'x','MarkerSize',8, 'Color', '#EDB120'); hold on
+semilogx(Complexities{5}, SNR_gaps{5}, 'v','MarkerSize',8, 'Color', '#7E2F8E'); hold on
+semilogx(Complexities{6}, SNR_gaps{6}, 'd','MarkerSize',8, 'Color', '#77AC30'); hold on
+semilogx(Complexities{7}, SNR_gaps{7}, '^','MarkerSize',8, 'Color', '#4DBEEE'); hold on
+semilogx(Complexities{8}, SNR_gaps{8}, 's','MarkerSize',8, 'Color', '#A2142F'); hold on
+yline(0, 'k-', 'LineWidth', 1.0); hold on
 
 legend('$\nu=3\ (13, 17)$',...
     '$\nu=4\ (27, 31)$',...

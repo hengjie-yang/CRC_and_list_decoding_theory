@@ -43,24 +43,26 @@ Fabian_m_11 = [0.0998004,0.0398565,0.0101513,0.00137722,1.38E-04,1.27E-05,9.51E-
 Fabian_m_14_snr = [1,1.5,2,2.5,3,3.5];
 Fabian_m_14 = [0.119332,0.0340599,0.00840015,0.000986405,9.01E-05,5.17E-06];
 
+n = 128;
+k = 64;
+fileName = ['RCU_and_MC_bound_n_',num2str(n),'_k_',num2str(k)];
+load([fileName, '.mat'],'gamma_s', 'rcu_bounds','mc_bounds');
+
+
 
 
 
 figure;
-semilogy(EbN0_BCH_128_64_t3, FER_BCH_128_64_t3, 'k-o'); hold on
-semilogy(EbN0_LDPC_128_64_t4, FER_LDPC_128_64_t4, 'r-^'); hold on
-semilogy(Fabian_m_11_snr, Fabian_m_11, '-x'); hold on
-semilogy(EbN0_BCH_128_64_t4, FER_BCH_128_64_t4, 'b-s'); hold on
-semilogy(v_8_m_10_punctured_snr, v_8_m_10_punctured, '-d'); hold on
-semilogy(Fabian_m_14_snr, Fabian_m_14, '-v'); hold on
-legend('Extended BCH code, OSD $t = 3$',...
-    'LDPC code $\mathcal{F}_{256}$, OSD $t=4$',...
-    'TBCC with $\nu=11$, WAVA',...
-    'Extended BCH code, OSD $t = 4$',...
-    'Punctured CRC-TBCC, SLVD',...
-    'TBCC with $\nu=14$, WAVA');
+semilogy(EbN0_BCH_128_64_t3, FER_BCH_128_64_t3, '-o','Color','#7E2F8E','LineWidth',1.0, 'DisplayName','Extended BCH code, order-$3$ OSD'); hold on
+semilogy(EbN0_LDPC_128_64_t4, FER_LDPC_128_64_t4, 'r-^','LineWidth',1.0 ,'DisplayName','LDPC code over GF($2^8$), order-$4$ OSD'); hold on
+semilogy(Fabian_m_11_snr, Fabian_m_11, '-x','LineWidth',1.0,'DisplayName','TBCC with $\nu=11$, WAVA'); hold on
+semilogy(EbN0_BCH_128_64_t4, FER_BCH_128_64_t4, 'b-s','LineWidth',1.0 ,'DisplayName','Extended BCH code, order-$4$ OSD'); hold on
+semilogy(v_8_m_10_punctured_snr, v_8_m_10_punctured, '-d','Color','#A2142F','LineWidth',1.0,'DisplayName','$\nu=8, m=10$ punc. CRC-TBCC, SLVD'); hold on
+semilogy(Fabian_m_14_snr, Fabian_m_14, '-v','LineWidth',1.0,'DisplayName','TBCC with $\nu=14$, WAVA'); hold on
+semilogy(gamma_s(1:31), rcu_bounds(1:31), 'k-.','LineWidth',1.5,'DisplayName','RCU bound')
+legend('Location','southwest');
 
 grid on
-xlabel('$E_b/N_0$ (dB)', 'interpreter', 'latex');
-ylabel('FER');
-title('(128, 64) Short Blocklength Code Comparison');
+xlabel('SNR $\gamma_s$ (dB)', 'interpreter', 'latex');
+ylabel('Frame error rate','Interpreter','latex');
+% title('(128, 64) Short Blocklength Code Comparison');

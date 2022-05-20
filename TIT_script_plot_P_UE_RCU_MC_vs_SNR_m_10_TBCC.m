@@ -55,19 +55,25 @@ load([path, fileName, '.mat'], 'P_UE_maxs', 'SNRs');
 P_UE_TBCC_561_753_CRC_2365 = P_UE_maxs;
 SNRs_TBCC_561_753_CRC_2365 = SNRs;
 
-fileName = '051621_104807_sim_data_vs_SNR_TBCC_1131_1537_CRC_2603_k_64';
+% 031521_183642_sim_data_vs_SNR_TBCC_1131_1537_CRC_2603_k_64
+% 042721_184847_sim_data_vs_SNR_TBCC_1131_1537_CRC_2603_k_64
+% 051621_104807_sim_data_vs_SNR_TBCC_1131_1537_CRC_2603_k_64
+
+fileName = '031521_183642_sim_data_vs_SNR_TBCC_1131_1537_CRC_2603_k_64';
 load([path, fileName, '.mat'], 'P_UE_maxs', 'SNRs');
 P_UE_TBCC_1131_1537_CRC_2603 = P_UE_maxs;
 SNRs_TBCC_1131_1537_CRC_2603 = SNRs;
+% P_UE_TBCC_1131_1537_CRC_2603 = [P_UE_TBCC_1131_1537_CRC_2603, 1.2825*1e-6]; % the appended point comes from 051621 dataset
+% SNRs_TBCC_1131_1537_CRC_2603 = [SNRs_TBCC_1131_1537_CRC_2603, 2.8]; % the appended point comes from 051621 dataset
 
 fileName = '051621_104531_sim_data_vs_SNR_TBCC_2473_3217_CRC_2335_k_64';
 load([path, fileName, '.mat'], 'P_UE_maxs', 'SNRs');
 P_UE_TBCC_2473_3217_CRC_2335 = P_UE_maxs;
 SNRs_TBCC_2473_3217_CRC_2335 = SNRs;
 
-% delete last point
-P_UE_TBCC_2473_3217_CRC_2335(end) = [];
-SNRs_TBCC_2473_3217_CRC_2335(end) = [];
+% delete last 2 points
+P_UE_TBCC_2473_3217_CRC_2335(end-1:end) = [];
+SNRs_TBCC_2473_3217_CRC_2335(end-1:end) = [];
 
 
 fileName = ['RCU_and_MC_bound_n_',num2str(n),'_k_',num2str(k)];

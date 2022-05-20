@@ -17,7 +17,7 @@ set(groot, 'defaultAxesTickLabelInterpreter','latex');
 set(groot, 'defaultLegendInterpreter','latex');
 
 
-% Step 1: set up basic parameters
+%% Step 1: set up basic parameters
 k = 64;
 v = 3;
 omega = 2;
@@ -82,6 +82,22 @@ end
 
 
 
+% Compute the truncated union bound for P_{NACK, 1}
+TU_bound_on_P_NACK_min = zeros(size(SNRs));
+
+for iter = 1:length(SNRs)
+    snr = 10^(SNRs(iter)/10);
+    A = sqrt(snr);
+    for w = high_rate_d_min:d_tilde
+        S_w = high_rate_spec(w+1);
+        TU_bound_on_P_NACK_min(iter) = TU_bound_on_P_NACK_min(iter) + S_w * qfunc(A*sqrt(w));
+    end
+    TU_bound_on_P_NACK_min(iter) = min(1 - 2^(-m), TU_bound_on_P_NACK_min(iter));
+end
+
+
+
+
 % Compute the truncated union bound for P_{e, \lambda}
 TU_bound_on_P_UE_max = zeros(size(SNRs));
 low_rate_d_min = find(low_rate_spec > 0);
@@ -114,13 +130,14 @@ end
 
 
 
-% Plot curves
+%% Plot curves
 figure;
-semilogy(SNRs, TS_bound_on_P_NACK_min, '-.','LineWidth', 1.5, 'Color', '#0072BD', 'DisplayName','Approx. in Eq. (59)');hold on
+semilogy(SNRs, TU_bound_on_P_NACK_min, '-.','LineWidth', 1.5, 'Color', '#0072BD', 'DisplayName','Approximation in (59)');hold on
+semilogy(SNRs, TS_bound_on_P_NACK_min, '--','LineWidth', 1.5, 'Color', '#0072BD', 'DisplayName','$\min\{1-2^{-m},$ TS bound$\}$');hold on
 semilogy(SNRs, P_NACK_mins, '-+','MarkerSize',5, 'Color', '#0072BD','DisplayName','$P_{\mathit{NACK}, 1}$');hold on
-semilogy(SNRs, TU_bound_on_P_UE_max, '-.','LineWidth', 1.5, 'Color', '#D95319','DisplayName','Approx. in Eq. (58)');hold on
+semilogy(SNRs, TU_bound_on_P_UE_max, '-.','LineWidth', 1.5, 'Color', '#D95319','DisplayName','Approximation in (58)');hold on
 semilogy(SNRs, P_UE_maxs, '-+','MarkerSize',5, 'Color', '#D95319','DisplayName','$P_{e, \lambda}$');hold on
-semilogy(SNRs, NNA_on_P_UE_min, '-.','LineWidth', 1.5, 'Color', '#77AC30','DisplayName','Approx. in Eq. $(56)$');hold on
+semilogy(SNRs, NNA_on_P_UE_min, '-.','LineWidth', 1.5, 'Color', '#77AC30','DisplayName','Approximation in $(56)$');hold on
 semilogy(SNRs, P_UE_mins, '-+','MarkerSize',5, 'Color', '#77AC30','DisplayName','$P_{e, 1}$');hold on
 grid on
 ylim([10^(-7), 1]);

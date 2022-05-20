@@ -299,8 +299,9 @@ end
 
 function point=Get_Point(output)
 
-point = output;
-point(point == 0) = -1;
+% point = output;
+% point(point == 0) = -1;
+point = -2*output + 1;
 
 end
 
